@@ -48,7 +48,7 @@
     selector.find('[data-amount]').each(function(_, input) {
       var input = $(input);
       var amountSettledText = input.attr('data-amount') || input.val()
-      var amountSettled = parseFloat(amountSettledText, 10);
+      var amountSettled = accounting.unformat(amountSettledText);
       totalAmountSettled = totalAmountSettled + amountSettled;
     });
     return totalAmountSettled
@@ -61,6 +61,10 @@
         var formattedSubTotal = accounting.formatMoney(subTotal, '')
 
         table.find('[data-behaviour^=subtotal] input').val(formattedSubTotal)
+
+        var grandTotal = $('[data-behaviour^=subtotal]').total()
+        var formattedGrandTotal = accounting.formatMoney(grandTotal, '£')
+        $('[data-behaviour^=grand-total]').text(formattedGrandTotal)
       }
 
       table
@@ -92,5 +96,4 @@ $(document).ready(function() {
     .on('blur', 'tbody input[type=text]', function() {
       $(this).parents('table').trigger('recalculate')
     })
-
 });
