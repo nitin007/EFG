@@ -36,35 +36,42 @@
     })
   }
 
+  $.fn.total = function (filter) {
+    var selector
+    if(filter) {
+      selector = $(filter, this)
+    } else {
+      selector = $(this)
+    }
+
+    var totalAmountSettled = 0;
+    selector.find('[data-amount]').each(function(_, input) {
+      var input = $(input);
+      var amountSettledText = input.attr('data-amount') || input.val()
+      var amountSettled = parseFloat(amountSettledText, 10);
+      totalAmountSettled = totalAmountSettled + amountSettled;
+    });
+    return totalAmountSettled
+  }
+
   $.fn.subTotal = function() {
-    function subTotalView(table) {
+    function setupSubTotal(table) {
       function render () {
-        var subTotal = calculateSubTotal(table)
+        var subTotal = table.total('tbody tr[data-selected]')
         var formattedSubTotal = accounting.formatMoney(subTotal, '')
 
         table.find('[data-behaviour^=subtotal] input').val(formattedSubTotal)
       }
 
-      function calculateSubTotal() {
-        var totalAmountSettled = 0;
-        table.find('tbody tr[data-selected] [data-amount]').each(function(_, input) {
-          var input = $(input);
-          var amountSettledText = input.attr('data-amount') || input.val()
-          var amountSettled = parseFloat(amountSettledText, 10);
-          totalAmountSettled = totalAmountSettled + amountSettled;
-        });
-        return totalAmountSettled
-      }
-
       table
-        .bind('rowSelect', render)
+        .bind('rowSelectionChange', render)
         .bind('recalculate', render)
 
       render()
     }
 
     return $(this).each(function (_, table) {
-      subTotalView($(table))
+      setupSubTotal($(table))
     })
   }
 })(jQuery);
@@ -85,4 +92,5 @@ $(document).ready(function() {
     .on('blur', 'tbody input[type=text]', function() {
       $(this).parents('table').trigger('recalculate')
     })
+
 });
