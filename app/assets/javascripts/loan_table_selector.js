@@ -35,47 +35,53 @@
       })
     })
   }
+
+  $.fn.subTotal = function() {
+    function subTotalView(table) {
+      function render () {
+        var subTotal = calculateSubTotal(table)
+        var formattedSubTotal = accounting.formatMoney(subTotal, '')
+
+        table.find('[data-behaviour^=subtotal] input').val(formattedSubTotal)
+      }
+
+      function calculateSubTotal() {
+        var totalAmountSettled = 0;
+        table.find('tbody tr[data-selected] input[type=text]').each(function(_, input) {
+          var input = $(input);
+          var amountSettledText = input.val();
+          var amountSettled = parseFloat(amountSettledText, 10);
+          totalAmountSettled = totalAmountSettled + amountSettled;
+        });
+        return totalAmountSettled
+      }
+
+      table
+        .bind('rowSelect', render)
+        .bind('recalculate', render)
+
+      render()
+    }
+
+    return $(this).each(function (_, table) {
+      subTotalView($(table))
+    })
+  }
 })(jQuery);
 
 $(document).ready(function() {
-  function totalsView(table) {
-
-    function render () {
-      var subTotal = calculateSubTotal(table)
-      var formattedSubTotal = accounting.formatMoney(subTotal, '')
-
-      table.find('[data-behaviour^=subtotal] input').val(formattedSubTotal)
-    }
-
-    function calculateSubTotal() {
-      var totalAmountSettled = 0;
-      table.find('tbody tr[data-selected] input[type=text]').each(function(_, input) {
-        var input = $(input);
-        var amountSettledText = input.val();
-        var amountSettled = parseFloat(amountSettledText, 10);
-        totalAmountSettled = totalAmountSettled + amountSettled;
-      });
-      return totalAmountSettled
-    }
-
-    table
-      .bind('rowSelect', render)
-      .on('blur', 'tbody input[type=text]', render)
-
-    render()
-  }
 
   function highlightRow(evt, row) {
     var row = $(row)
     row.toggleClass('info', !!row.attr('data-selected'))
   }
 
-
-  $('[data-behaviour^=loan-table-selector]').each(function (_, table) {
-    totalsView($(table))
-  })
-
   $('[data-behaviour^=loan-table-selector]')
     .selectableRows()
+    .subTotal()
     .bind('rowSelect', highlightRow)
+    .on('blur', 'tbody input[type=text]', function() {
+      $(this).parents('table').trigger('recalculate')
+    })
+
 });
