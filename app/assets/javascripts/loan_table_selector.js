@@ -47,9 +47,9 @@
 
       function calculateSubTotal() {
         var totalAmountSettled = 0;
-        table.find('tbody tr[data-selected] input[type=text]').each(function(_, input) {
+        table.find('tbody tr[data-selected] [data-amount]').each(function(_, input) {
           var input = $(input);
-          var amountSettledText = input.val();
+          var amountSettledText = input.attr('data-amount') || input.val()
           var amountSettled = parseFloat(amountSettledText, 10);
           totalAmountSettled = totalAmountSettled + amountSettled;
         });
@@ -76,12 +76,13 @@ $(document).ready(function() {
     row.toggleClass('info', !!row.attr('data-selected'))
   }
 
-  $('[data-behaviour^=loan-table-selector]')
+  $('[data-behaviour^=invoice-received-table], [data-behaviour^=recoveries-statement-table]')
     .selectableRows()
     .subTotal()
     .bind('rowSelect', highlightRow)
+
+  $('[data-behaviour^=invoice-received-table]')
     .on('blur', 'tbody input[type=text]', function() {
       $(this).parents('table').trigger('recalculate')
     })
-
 });

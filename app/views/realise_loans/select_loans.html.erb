@@ -32,7 +32,7 @@
       <% if group.recoveries.any? %>
         <h2><%= group.name %></h2>
 
-        <table class="table table-striped">
+        <table class="table table-striped" data-behaviour="recoveries-statement-table">
           <thead>
             <tr>
               <th>Confirm Realised?</th>
@@ -59,10 +59,23 @@
                 <td><%= recovery.loan_business_name %></td>
                 <td><%= recovery.recovered_on.to_s(:screen) %></td>
                 <td><%= recovery.loan_dti_amount_claimed.try(:format) %></td>
-                <td><%= recovery.amount_due_to_dti.format %></td>
+                <td data-amount="<%= recovery.amount_due_to_dti %>"><%= recovery.amount_due_to_dti.format %></td>
               </tr>
             <% end %>
           </tbody>
+          <tfoot>
+            <tr data-behaviour="subtotal">
+              <th colspan="7">Total Recovered Amount</th>
+              <td>
+                <div class="currency">
+                  <div class="input-prepend">
+                    <span class="add-on">£</span>
+                    <input type="text" disabled="disabled">
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
         </table>
       <% end %>
     <% end %>

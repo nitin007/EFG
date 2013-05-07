@@ -28,7 +28,7 @@
       <% if group.loans.any? %>
         <h2><%= group.name %></h2>
 
-        <table class="table table-striped" data-behaviour="loan-table-selector">
+        <table class="table table-striped" data-behaviour="invoice-received-table">
           <thead>
             <tr>
               <th>Settle Claim?</th>
@@ -55,7 +55,7 @@
                 <td><%= loan.business_name %></td>
                 <td><%= loan.dti_demanded_on.to_s(:screen) %></td>
                 <td><%= loan.dti_amount_claimed.try(:format) %></td>
-                <td><%= loan_form.input :settled_amount, as: :currency, label: false %></td>
+                <td><%= loan_form.input :settled_amount, as: :currency, label: false, input_html: {data: {amount: ''}} %></td>
               </tr>
             <% end %>
           </tbody>
