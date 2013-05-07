@@ -60,7 +60,19 @@
             <% end %>
           </tbody>
           <tfoot>
-            <tr><td colspan="7">( <strong>*</strong> indicates corrected loans )</td></tr>
+            <tr data-behaviour="subtotal">
+              <th colspan="7">Total Amount to be Settled</th>
+              <td>
+                <div class="currency">
+                  <div class="input-prepend">
+                    <span class="add-on">£</span>
+                    <input type="text" disabled="disabled">
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+            <tr><td colspan="8">( <strong>*</strong> indicates corrected loans )</td></tr>
           </tfoot>
         </table>
       <% end %>
