@@ -74,7 +74,7 @@ class InvoiceReceived
   end
 
   def grouped_loans
-    @groups ||= LoanGroupSet.filter(loans)
+    @grouped_loans ||= LoanTypeGroupSet.filter(:loans, loans)
   end
 
   private
