@@ -1,6 +1,11 @@
 class RepaymentFrequency < StaticAssociation
   self.data = [
     {
+      id: 0,
+      name: 'LegacyMissing',
+      months_per_repayment_period: 1
+    },
+    {
       id: 1,
       name: 'Annually',
       months_per_repayment_period: 12
