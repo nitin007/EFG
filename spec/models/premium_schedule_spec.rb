@@ -943,5 +943,25 @@ describe PremiumSchedule do
         end
       end
     end
+
+    context 'when the loan has a repayment frequency id of 0' do
+      let(:premium_schedule) {
+        FactoryGirl.build_stubbed(:premium_schedule,
+          repayment_duration: 12,
+          initial_draw_amount: Money.new(12_000_00),
+          legacy_premium_calculation: false
+        )
+      }
+
+      before do
+        premium_schedule.loan.repayment_frequency_id = 0
+      end
+
+      it 'does not raise an exception' do
+        expect {
+          premium_schedule.premiums
+        }.to_not raise_exception
+      end
+    end
   end
 end
