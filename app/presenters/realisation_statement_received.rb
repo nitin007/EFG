@@ -58,7 +58,7 @@ class RealisationStatementReceived
   end
 
   def grouped_recoveries
-    @grouped_recoveries ||= RecoveriesGroupSet.filter(recoveries)
+    @grouped_recoveries ||= LoanTypeGroupSet.filter(:recoveries, recoveries) {|recovery| recovery.loan }
   end
 
   def save
