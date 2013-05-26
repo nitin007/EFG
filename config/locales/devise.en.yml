@@ -3,6 +3,7 @@
 en:
   errors:
     messages:
+      equal_to_current_password: "must be different to the current passphrase!"
       expired: "has expired, please reset your password via the login page to receive a new one"
       not_found: "not found"
       already_confirmed: "was already confirmed, please try signing in"
@@ -10,7 +11,7 @@ en:
       not_saved:
         one: "1 error prohibited this %{resource} from being saved:"
         other: "%{count} errors prohibited this %{resource} from being saved:"
-
+      taken_in_past: "was already taken in the past!"
   devise:
     failure:
       already_authenticated: 'You are already signed in.'
@@ -25,6 +26,9 @@ en:
     sessions:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
+    password_expired:
+      change_required: "Your passphrase has expired. Please choose a new passphrase"
+      updated: "Your new passphrase is saved."
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was set successfully. You are now signed in.'

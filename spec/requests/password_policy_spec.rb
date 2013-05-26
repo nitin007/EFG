@@ -20,7 +20,7 @@ describe 'password policy' do
 
         visit root_path
         submit_sign_in_form(current_user.username, current_user.password)
-        page.should have_content('Your password is expired')
+        page.should have_content(I18n.t('devise.password_expired.change_required'))
       end
 
       it "should be able to login as a #{user_type.humanize} when the password has not expired" do
