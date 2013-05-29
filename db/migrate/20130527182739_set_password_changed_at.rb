@@ -31,7 +31,7 @@ class SetPasswordChangedAt < ActiveRecord::Migration
           user.save!
           AdminAudit.log("password_changed_at forcibly updated", user, modifier)
         rescue Exception => e
-          puts "#{user.type} with id #{user.id} raised an #{e.class}: #{e}"
+          printf("%12s with id %4s raised an %s - %s\n", user.type, user.id, e.class, e)
         end
       end
      end
