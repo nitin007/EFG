@@ -3,7 +3,7 @@
 en:
   errors:
     messages:
-      equal_to_current_password: "must be different to the current passphrase!"
+      equal_to_current_password: "must be different to the current password!"
       expired: "has expired, please reset your password via the login page to receive a new one"
       not_found: "not found"
       already_confirmed: "was already confirmed, please try signing in"
@@ -27,8 +27,8 @@ en:
       signed_in: 'Signed in successfully.'
       signed_out: 'Signed out successfully.'
     password_expired:
-      change_required: "Your passphrase has expired. Please choose a new passphrase"
-      updated: "Your new passphrase is saved."
+      change_required: "Your password has expired. Please choose a new password"
+      updated: "Your new password is saved."
     passwords:
       send_instructions: 'You will receive an email with instructions about how to reset your password in a few minutes.'
       updated: 'Your password was set successfully. You are now signed in.'
