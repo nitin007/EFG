@@ -31,7 +31,7 @@
     <%= f.input :amount, as: :currency %>
     <%= f.input :lending_limit_id, as: :select, collection: @loan_entry.lender.lending_limits.where(id: @loan_entry.lending_limit_id) %>
     <%= f.input :repayment_duration, as: :duration %>
-    <%= f.input :repayment_frequency_id, as: :select, collection: RepaymentFrequency.all, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
+    <%= f.input :repayment_frequency_id, as: :select, collection: RepaymentFrequency.selectable, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
     <%= simple_form_row t('simple_form.labels.loan_entry.sic_code'), @loan.sic_code %>
     <%= simple_form_row t('simple_form.labels.loan_entry.sic_desc'), @loan.sic_desc %>
     <%= f.input :reason_id, as: :select, collection: LoanReason.active, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
