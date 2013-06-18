@@ -71,7 +71,7 @@
             <%= nav.item 'Transfer a Legacy Loan', new_legacy_loan_transfer_path %>
           <% end %>
 
-          <%= nav.dropdown('Reports') do |dropdown| %>
+          <%= nav.dropdown('Reports', collapse: true) do |dropdown| %>
             <% if current_user.can_create?(LoanReport) %>
               <%= dropdown.item 'Generate a Loan Report', new_loan_report_path %>
             <% end %>
