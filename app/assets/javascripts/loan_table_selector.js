@@ -1,40 +1,99 @@
 //= require accounting
 
-$(document).ready(function() {
-  $('[data-behaviour^=loan-table-selector]').each(function(_, element) {
-    var totalAmountHeader = $('<th>').attr({colspan: 6}).text('Total Amount to be Settled');
-    var totalAmountInput = $('<input>').attr({type: 'text', disabled: true});
-    var totalAmountCell = $('<td>').html('<div class="currency"><div class="input-prepend"><span class="add-on">£</span></div></div>');
-    totalAmountCell.find('.input-prepend').append(totalAmountInput)
-    var footerRow = $('<tr>').append(totalAmountHeader, totalAmountCell);
+(function ($) {
+  $.fn.selectableRows = function () {
+    var dataAttribute = 'data-selected'
+    var rowInputSelector = 'input[type=checkbox]'
 
-    $(element).find('tfoot').prepend(footerRow);
+    return $(this).each(function (idx, tableElement) {
+      var table = $(tableElement)
 
-    var calculateAmountSettledTotal = function() {
-      var totalAmountSettled = 0;
+      var toggleSelected = function(rowElement) {
+        var row = $(rowElement)
+        var checked = row.find(rowInputSelector).is(':checked');
 
-      $(element).find('tbody tr').each(function(_, row) {
-        var row = $(row);
-        var selected = row.find('input[type=checkbox]').attr('checked');
-
-        if(selected) {
-          var amountSettledText = row.find('input[type=text]').val();
-          var amountSettled = parseFloat(amountSettledText, 10);
-          totalAmountSettled = totalAmountSettled + amountSettled;
+        if(checked) {
+          row.attr(dataAttribute, 'true')
+        } else {
+          row.removeAttr(dataAttribute)
         }
-      });
 
-      totalAmountInput.val(accounting.formatMoney(totalAmountSettled, ''));
+        table.trigger('rowSelect', row)
+      }
+
+      setTimeout(function() {
+        table.find('tr').each(function(idx, row) {
+          toggleSelected(row)
+        })
+        table.trigger('rowSelectionChange')
+      })
+
+      table.on('change', rowInputSelector, function () {
+        var row = $(this).parents('tr');
+        toggleSelected(row)
+        table.trigger('rowSelectionChange')
+      })
+    })
+  }
+
+  $.fn.total = function (filter) {
+    var selector
+    if(filter) {
+      selector = $(filter, this)
+    } else {
+      selector = $(this)
     }
 
-    calculateAmountSettledTotal();
-
-    $(element).on('change', 'input[type=checkbox]', function() {
-      var checked = $(this).attr('checked');
-      var row = $(this).parents('tr');
-      row.toggleClass('info', checked);
-
-      calculateAmountSettledTotal();
+    var totalAmountSettled = 0;
+    selector.find('[data-amount]').each(function(_, inputElement) {
+      var input = $(inputElement);
+      var amountSettledText = input.attr('data-amount') || input.val()
+      var amountSettled = accounting.unformat(amountSettledText);
+      totalAmountSettled = totalAmountSettled + amountSettled;
     });
-  });
+    return totalAmountSettled
+  }
+
+  $.fn.subTotal = function() {
+    function setupSubTotal(table) {
+      function render () {
+        var subTotal = table.total('tbody tr[data-selected]')
+        var formattedSubTotal = accounting.formatMoney(subTotal, '')
+
+        table.find('[data-behaviour^=subtotal] input').val(formattedSubTotal)
+
+        var grandTotal = $('[data-behaviour^=subtotal]').total()
+        var formattedGrandTotal = accounting.formatMoney(grandTotal, '£')
+        $('[data-behaviour^=grand-total]').text(formattedGrandTotal)
+      }
+
+      table
+        .bind('rowSelectionChange', render)
+        .bind('recalculate', render)
+
+      render()
+    }
+
+    return $(this).each(function (_, table) {
+      setupSubTotal($(table))
+    })
+  }
+})(jQuery);
+
+$(document).ready(function() {
+
+  function highlightRow(evt, rowElement) {
+    var row = $(rowElement)
+    row.toggleClass('info', !!row.attr('data-selected'))
+  }
+
+  $('[data-behaviour^=invoice-received-table], [data-behaviour^=recoveries-statement-table]')
+    .selectableRows()
+    .subTotal()
+    .bind('rowSelect', highlightRow)
+
+  $('[data-behaviour^=invoice-received-table]')
+    .on('blur', 'tbody input[type=text]', function() {
+      $(this).parents('table').trigger('recalculate')
+    })
 });
