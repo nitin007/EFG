@@ -5,11 +5,11 @@
     var dataAttribute = 'data-selected'
     var rowInputSelector = 'input[type=checkbox]'
 
-    return $(this).each(function (idx, table) {
-      var table = $(table)
+    return $(this).each(function (idx, tableElement) {
+      var table = $(tableElement)
 
-      var toggleSelected = function(row) {
-        var row = $(row)
+      var toggleSelected = function(rowElement) {
+        var row = $(rowElement)
         var checked = row.find(rowInputSelector).is(':checked');
 
         if(checked) {
@@ -45,8 +45,8 @@
     }
 
     var totalAmountSettled = 0;
-    selector.find('[data-amount]').each(function(_, input) {
-      var input = $(input);
+    selector.find('[data-amount]').each(function(_, inputElement) {
+      var input = $(inputElement);
       var amountSettledText = input.attr('data-amount') || input.val()
       var amountSettled = accounting.unformat(amountSettledText);
       totalAmountSettled = totalAmountSettled + amountSettled;
@@ -82,8 +82,8 @@
 
 $(document).ready(function() {
 
-  function highlightRow(evt, row) {
-    var row = $(row)
+  function highlightRow(evt, rowElement) {
+    var row = $(rowElement)
     row.toggleClass('info', !!row.attr('data-selected'))
   }
 
