@@ -42,13 +42,19 @@ module NavbarHelper
       content_tag(:li, link)
     end
 
-    def dropdown(name, &dropdown)
+    def dropdown(name, options = {}, &dropdown)
+      content = helper.capture(Dropdown.new, &dropdown)
+
+      collapse = options[:collapse]
+      if collapse && content.nil?
+        return
+      end
+
       content_tag(:li, class: 'dropdown') do
         name = ERB::Util.html_escape(name)
         link_text = name.concat(%Q{ <b class="caret"></b>}.html_safe)
 
         link = link_to(name, '#', 'class' => 'dropdown-toggle', 'data-toggle' => 'dropdown')
-        content = helper.capture(Dropdown.new, &dropdown)
         dropdown = content_tag(:ul, content, class: 'dropdown-menu')
         link + dropdown
       end

@@ -1,9 +1,19 @@
 class PremiumSchedulesController < ApplicationController
   before_filter :verify_update_permission, only: [:edit, :update]
-  before_filter :load_loan, only: [:edit, :update]
+  before_filter :verify_view_permission, only: [:show]
+
+  before_filter :load_loan
   before_filter :load_premium_schedule, only: [:edit, :update]
 
   def edit
+    unless @premium_schedule.repayment_frequency
+      flash[:notice] = I18n.t('premium_schedule.repayment_frequency_not_set')
+      redirect_to new_loan_entry_path(@loan)
+    end
+  end
+
+  def show
+    @premium_schedule = @loan.premium_schedule
   end
 
   def update
@@ -44,5 +54,9 @@ class PremiumSchedulesController < ApplicationController
 
   def verify_update_permission
     enforce_update_permission(PremiumSchedule)
+  end
+
+  def verify_view_permission
+    enforce_view_permission(PremiumSchedule)
   end
 end
