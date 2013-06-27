@@ -7,9 +7,12 @@
 }
 
 #loan_lookup {
-
   input[type='submit'] {
     margin-right: 0;
+  }
+
+  .ui-helper-hidden-accessible {
+    display: none;
   }
 }
 
