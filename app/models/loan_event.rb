@@ -24,7 +24,8 @@ class LoanEvent < StaticAssociation
     {id: 21, name: 'Legacy loan imported'},
     {id: 22, name: 'Data correction'},
     {id: 23, name: 'Transfer (legacy)'},
-    {id: 24, name: 'Data cleanup'}
+    {id: 24, name: 'Data cleanup'},
+    {id: 25, name: 'EFG Transfer'}
   ]
 
   Reject = find(0)
@@ -52,6 +53,7 @@ class LoanEvent < StaticAssociation
   DataCorrection = find(22)
   TransferLegacy = find(23)
   DataCleanup = find(24)
+  EFGTransfer = find(25)
 
   def self.ids
     all.map(&:id)
