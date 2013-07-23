@@ -105,11 +105,11 @@ class RealisationStatementReceived
   def realise_loans!
     loan_ids = realised_recoveries.map {|recovery| recovery.loan.id }.uniq
 
-    Loan.where(id: loan_ids).update_all(
-      modified_by_id: creator.id,
-      state: Loan::Realised,
-      realised_money_date: Date.today
-    )
+    Loan.find(loan_ids).each do |loan|
+      loan.realised_money_date = Date.today
+      loan.modified_by = creator
+      loan.update_state!(Loan::Realised, LoanEvent::RealiseMoney, creator)
+    end
   end
 
   def realise_recoveries!
