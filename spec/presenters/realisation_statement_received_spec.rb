@@ -116,6 +116,11 @@ describe RealisationStatementReceived do
         loan2.reload.state.should == Loan::Realised
       end
 
+      it "logs the loan's state change" do
+        expect(loan1.state_changes.where(state: 'realised', event_id: LoanEvent::RealiseMoney.id)).to exist
+        expect(loan2.state_changes.where(state: 'realised', event_id: LoanEvent::RealiseMoney.id)).to exist
+      end
+
       it 'updates recoveries to be realised' do
         recovery1.reload.realise_flag.should be_true
         recovery2.reload.realise_flag.should be_true
