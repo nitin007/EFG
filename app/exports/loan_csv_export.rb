@@ -139,6 +139,7 @@ class LoanCsvExport < BaseCsvExport
       :viable_proposition,
       :would_you_lend,
       :lender_reference,
+      :settled_amount
     ]
   end
 

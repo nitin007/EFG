@@ -14,7 +14,9 @@ describe LoanCsvExport do
         maturity_date: Date.new(2022, 2, 22),
         reference: 'ABC2345-01',
         trading_date: Date.new(1999, 9, 9),
-        lender_reference: 'lenderref1'
+        lender_reference: 'lenderref1',
+        dti_amount_claimed: Money.new(123_45),
+        settled_amount: Money.new(100_00)
       )
     }
     let(:csv) {
@@ -60,7 +62,8 @@ describe LoanCsvExport do
         sic_eligible sic_notified_aid sic_parent_desc
         signed_direct_debit_received standard_cap state state_aid
         state_aid_is_valid trading_date trading_name transferred_from
-        turnover updated_at viable_proposition would_you_lend lender_reference)
+        turnover updated_at viable_proposition would_you_lend lender_reference
+        settled_amount)
     end
 
     it 'should return correct csv data for loans' do
@@ -82,7 +85,7 @@ describe LoanCsvExport do
       row['debtor_book_topup'].should == ''
       row['declaration_signed'].should == ''
       row['dti_break_costs'].should == ''
-      row['dti_amount_claimed'].should == ''
+      row['dti_amount_claimed'].should == '123.45'
       row['dti_ded_code'].should == ''
       row['dti_demand_outstanding'].should == ''
       row['dti_demanded_on'].should == ''
@@ -161,6 +164,7 @@ describe LoanCsvExport do
       row['viable_proposition'].should == 'Yes'
       row['would_you_lend'].should == 'Yes'
       row['lender_reference'].should == 'lenderref1'
+      row['settled_amount'].should == '100.00'
     end
   end
 end
