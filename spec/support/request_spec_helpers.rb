@@ -53,6 +53,7 @@ module RequestSpecHelpers
     select RepaymentFrequency.find(3).name, from: 'loan_entry_repayment_frequency_id' # quarterly
 
     calculate_state_aid(loan)
+    check 'loan_entry_state_aid_is_valid'
 
     fill_in 'loan_entry_lender_reference', with: 'lenderref1'
 

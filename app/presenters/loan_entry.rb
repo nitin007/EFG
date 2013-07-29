@@ -63,6 +63,7 @@ class LoanEntry
   validate :state_aid_calculated
   validate :repayment_frequency_allowed
   validate :company_turnover_is_allowed, if: :turnover
+  validates_acceptance_of :state_aid_is_valid, allow_nil: false, accept: true
 
   validate do
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
