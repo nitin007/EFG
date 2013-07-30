@@ -82,7 +82,8 @@ class LoanReportCsvRow
       Money.new(row['invoice_discount_limit'] || 0).to_s,
       row['debtor_book_coverage'],
       row['debtor_book_topup'],
-      row['lender_reference']
+      row['lender_reference'],
+      Money.new(row['settled_amount'] || 0).to_s
     ]
   end
 

@@ -78,6 +78,7 @@ en:
       type_f2: (For Type F only) What percentage of the Applicant's approved debtor book value is covered by their existing invoice discounting facility?
       type_f3: (For Type F only) What additional percentage (not exceeding either 100% less the existing approved percentage or 30%) of the Applicant's approved debtor book value will the enhancement represent?
       loan_lender_reference: Lender's loan reference
+      settled_amount: Settled amount
 
     loan_audit_report:
       loan_reference: Loan reference

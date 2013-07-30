@@ -124,6 +124,7 @@ describe LoanReportCsvExport do
         remove_guarantee_reason: 'removal reason',
         state_aid: 5600,
         settled_on: Date.new(2012, 7, 17),
+        settled_amount: 1_000.00,
         loan_category_id: 1,
         interest_rate_type_id: 1,
         interest_rate: 2.0,
@@ -226,7 +227,8 @@ describe LoanReportCsvExport do
           :type_f1,
           :type_f2,
           :type_f3,
-          :loan_lender_reference
+          :loan_lender_reference,
+          :settled_amount
         ].map {|h| t(h) }
     end
 
@@ -308,6 +310,7 @@ describe LoanReportCsvExport do
       row[t(:type_f2)].should == '30.0'
       row[t(:type_f3)].should == '5.0'
       row[t(:loan_lender_reference)].should == 'lenderref1'
+      row[t(:settled_amount)].should == '1000.00'
     end
   end
 
