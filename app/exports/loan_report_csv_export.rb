@@ -82,7 +82,9 @@ class LoanReportCsvExport < BaseCsvExport
       :type_f2,
       :type_f3,
       :loan_lender_reference,
-      :settled_amount
+      :settled_amount,
+      :cumulative_pre_claim_limit_realised_amount,
+      :cumulative_post_claim_limit_realised_amount
     ]
   end
 

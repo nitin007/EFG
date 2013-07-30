@@ -83,7 +83,9 @@ class LoanReportCsvRow
       row['debtor_book_coverage'],
       row['debtor_book_topup'],
       row['lender_reference'],
-      Money.new(row['settled_amount'] || 0).to_s
+      Money.new(row['settled_amount'] || 0).to_s,
+      Money.new(row['cumulative_pre_claim_limit_realised_amount'] || 0),
+      Money.new(row['cumulative_post_claim_limit_realised_amount'] || 0)
     ]
   end
 
