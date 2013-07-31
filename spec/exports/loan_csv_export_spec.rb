@@ -20,16 +20,27 @@ describe LoanCsvExport do
       )
     }
     let(:csv) {
-      Timecop.freeze(2012, 10, 1, 16, 23, 45) do
-        loan
-      end
-
-      csv = LoanCsvExport.new(Loan.scoped).generate
+      csv = LoanCsvExport.new(Loan.where(id: loan.id)).generate
       CSV.new(csv, { headers: :first_row })
     }
 
     let(:row) { csv.shift }
     let(:header) { row.headers }
+
+    before do
+      Timecop.freeze(2012, 10, 1, 16, 23, 45) do
+        loan # Ensure created_at and initial_draw_date are known.
+      end
+
+      FactoryGirl.create(:loan_realisation, :pre,
+        realised_amount: Money.new(300_00),
+        realised_loan: loan
+      )
+      FactoryGirl.create(:loan_realisation, :post,
+        realised_amount: Money.new(200_00),
+        realised_loan: loan
+      )
+    end
 
     it 'should return csv data with one row of data' do
       csv.to_a.size.should eq(1)
@@ -63,7 +74,8 @@ describe LoanCsvExport do
         signed_direct_debit_received standard_cap state state_aid
         state_aid_is_valid trading_date trading_name transferred_from
         turnover updated_at viable_proposition would_you_lend lender_reference
-        settled_amount)
+        settled_amount cumulative_pre_claim_limit_realised_amount
+        cumulative_post_claim_limit_realised_amount)
     end
 
     it 'should return correct csv data for loans' do
@@ -165,6 +177,8 @@ describe LoanCsvExport do
       row['would_you_lend'].should == 'Yes'
       row['lender_reference'].should == 'lenderref1'
       row['settled_amount'].should == '100.00'
+      row['cumulative_pre_claim_limit_realised_amount'].should == '300.00'
+      row['cumulative_post_claim_limit_realised_amount'].should == '200.00'
     end
   end
 end
