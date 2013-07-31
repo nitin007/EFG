@@ -33,7 +33,7 @@ class LoanReportCsvRow
       row['cancelled_comment'],
       row['cancelled_on'].try(:strftime, '%d-%m-%Y'),
       row['facility_letter_date'].try(:strftime, '%d-%m-%Y'),
-      row['initial_draw_amount'] ? Money.new(row['initial_draw_amount']) : '',
+      row['initial_draw_amount'] ? Money.new(row['initial_draw_amount']).to_s : '',
       row['initial_draw_date'].try(:strftime, '%d-%m-%Y'),
       row['borrower_demanded_on'].try(:strftime, '%d-%m-%Y'),
       Money.new(row['amount_demanded'] || 0).to_s,
@@ -84,8 +84,8 @@ class LoanReportCsvRow
       row['debtor_book_topup'],
       row['lender_reference'],
       Money.new(row['settled_amount'] || 0).to_s,
-      Money.new(row['cumulative_pre_claim_limit_realised_amount'] || 0),
-      Money.new(row['cumulative_post_claim_limit_realised_amount'] || 0)
+      Money.new(row['cumulative_pre_claim_limit_realised_amount'] || 0).to_s,
+      Money.new(row['cumulative_post_claim_limit_realised_amount'] || 0).to_s
     ]
   end
 
