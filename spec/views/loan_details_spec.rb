@@ -173,7 +173,7 @@ describe 'loans/details' do
     let(:loan) { FactoryGirl.create(:loan, :settled) }
 
     it_behaves_like 'rendered loan_details' do
-      let(:visible_details) { %w(loan_settle_claim.settled_on) }
+      let(:visible_details) { %w(loan_settle_claim.settled_amount loan_settle_claim.settled_on) }
     end
 
     it 'does not include invoice details if it has no invoice' do

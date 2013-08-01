@@ -243,6 +243,60 @@ describe Loan do
     end
   end
 
+  describe '#cumulative_pre_claim_limit_realised_amount' do
+    context 'with loan_realisations' do
+      before do
+        loan.save!
+
+        FactoryGirl.create(:loan_realisation, :pre,
+          realised_amount: Money.new(1_000_00),
+          realised_loan: loan
+        )
+        FactoryGirl.create(:loan_realisation, :pre,
+          realised_amount: Money.new(2_000_00),
+          realised_loan: loan
+        )
+      end
+
+      it do
+        loan.cumulative_pre_claim_limit_realised_amount.should == Money.new(3_000_00)
+      end
+    end
+
+    context 'without loan_realisations' do
+      it do
+        loan.cumulative_pre_claim_limit_realised_amount.should eql Money.new(0)
+      end
+    end
+  end
+
+  describe '#cumulative_post_claim_limit_realised_amount' do
+    context 'with loan_realisations' do
+      before do
+        loan.save!
+
+        FactoryGirl.create(:loan_realisation, :post,
+          realised_amount: Money.new(1_000_00),
+          realised_loan: loan
+        )
+        FactoryGirl.create(:loan_realisation, :post,
+          realised_amount: Money.new(2_000_00),
+          realised_loan: loan
+        )
+      end
+
+      it do
+        loan.cumulative_post_claim_limit_realised_amount.should == Money.new(3_000_00)
+      end
+    end
+
+    context 'without loan_realisations' do
+      it do
+        loan.cumulative_post_claim_limit_realised_amount.should eql Money.new(0)
+      end
+    end
+  end
+
   describe '#cumulative_realised_amount' do
     before do
       loan.save!

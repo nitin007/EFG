@@ -52,6 +52,8 @@ class Loan < ActiveRecord::Base
   has_many :loan_changes
   has_many :loan_modifications
   has_many :loan_realisations, foreign_key: 'realised_loan_id'
+  has_many :loan_realisations_post_claim_limit, class_name: 'LoanRealisation', foreign_key: 'realised_loan_id', conditions: { post_claim_limit: true }
+  has_many :loan_realisations_pre_claim_limit,  class_name: 'LoanRealisation', foreign_key: 'realised_loan_id', conditions: { post_claim_limit: false }
   has_many :recoveries
   has_many :loan_securities
   has_many :ineligibility_reasons, class_name: 'LoanIneligibilityReason'
@@ -164,11 +166,11 @@ class Loan < ActiveRecord::Base
   end
 
   def cumulative_pre_claim_limit_realised_amount
-    Money.new(loan_realisations.pre_claim_limit.sum(:realised_amount))
+    sum_realised_amount(loan_realisations_pre_claim_limit)
   end
 
   def cumulative_post_claim_limit_realised_amount
-    Money.new(loan_realisations.post_claim_limit.sum(:realised_amount))
+    sum_realised_amount(loan_realisations_post_claim_limit)
   end
 
   def cumulative_unrealised_recoveries_amount
@@ -294,6 +296,14 @@ class Loan < ActiveRecord::Base
     unless reference.present?
       reference_string = LoanReference.generate
       self.reference = self.class.exists?(reference: reference_string) ? set_reference : reference_string
+    end
+  end
+
+  def sum_realised_amount(realisations)
+    if realisations.any?
+      realisations.map(&:realised_amount).sum
+    else
+      Money.new(0)
     end
   end
 

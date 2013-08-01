@@ -3,7 +3,16 @@ require 'initial_draw_attributes'
 class LoanCsvExport < BaseCsvExport
   def initialize(records)
     if records.respond_to?(:includes)
-      records = records.includes(:lender, :lending_limit, :created_by, :modified_by, :initial_draw_change, :transferred_from)
+      records = records.includes(
+        :created_by,
+        :initial_draw_change,
+        :lender,
+        :lending_limit,
+        :loan_realisations_post_claim_limit,
+        :loan_realisations_pre_claim_limit,
+        :modified_by,
+        :transferred_from
+      )
     end
 
     super(records)
@@ -139,6 +148,9 @@ class LoanCsvExport < BaseCsvExport
       :viable_proposition,
       :would_you_lend,
       :lender_reference,
+      :settled_amount,
+      :cumulative_pre_claim_limit_realised_amount,
+      :cumulative_post_claim_limit_realised_amount
     ]
   end
 

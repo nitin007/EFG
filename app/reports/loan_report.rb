@@ -49,6 +49,8 @@ class LoanReport
     loans = loans.select('(SELECT SUM(realised_amount) FROM loan_realisations WHERE realised_loan_id = loans.id) AS total_loan_realisations')
     loans = loans.select('(SELECT SUM(amount_drawn) FROM loan_modifications WHERE loan_id = loans.id) AS total_amount_drawn')
     loans = loans.select('(SELECT SUM(lump_sum_repayment) FROM loan_modifications WHERE loan_id = loans.id) AS total_lump_sum_repayment')
+    loans = loans.select('(SELECT SUM(realised_amount) FROM loan_realisations WHERE realised_loan_id = loans.id AND post_claim_limit = 0) AS cumulative_pre_claim_limit_realised_amount')
+    loans = loans.select('(SELECT SUM(realised_amount) FROM loan_realisations WHERE realised_loan_id = loans.id AND post_claim_limit = 1) AS cumulative_post_claim_limit_realised_amount')
 
     loans
   end

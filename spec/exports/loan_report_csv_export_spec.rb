@@ -41,10 +41,17 @@ describe LoanReportCsvExport do
         name: 'lending limit'
       )
     }
-    let!(:loan_realisation) {
-      FactoryGirl.create(:loan_realisation,
+    let!(:loan_realisation_1) {
+      FactoryGirl.create(:loan_realisation, :pre,
         created_at: Time.gm(2012, 8, 6),
         realised_amount: Money.new(3_000_00),
+        realised_loan: loan
+      )
+    }
+    let!(:loan_realisation_2) {
+      FactoryGirl.create(:loan_realisation, :post,
+        created_at: Time.gm(2012, 8, 6),
+        realised_amount: Money.new(2_000_00),
         realised_loan: loan
       )
     }
@@ -124,6 +131,7 @@ describe LoanReportCsvExport do
         remove_guarantee_reason: 'removal reason',
         state_aid: 5600,
         settled_on: Date.new(2012, 7, 17),
+        settled_amount: 1_000.00,
         loan_category_id: 1,
         interest_rate_type_id: 1,
         interest_rate: 2.0,
@@ -226,7 +234,10 @@ describe LoanReportCsvExport do
           :type_f1,
           :type_f2,
           :type_f3,
-          :loan_lender_reference
+          :loan_lender_reference,
+          :settled_amount,
+          :cumulative_pre_claim_limit_realised_amount,
+          :cumulative_post_claim_limit_realised_amount
         ].map {|h| t(h) }
     end
 
@@ -277,7 +288,7 @@ describe LoanReportCsvExport do
       row[t(:latest_recovery_date)].should == '18-07-2012'
       row[t(:total_recovered)].should == "150000.00"
       row[t(:latest_realised_date)].should == '06-08-2012'
-      row[t(:total_realised)].should == "3000.00"
+      row[t(:total_realised)].should == '5000.00'
       row[t(:cumulative_amount_drawn)].should == "10000.00"
       row[t(:total_lump_sum_repayments)].should == "5000.00"
       row[t(:created_by)].should == 'bobby.t'
@@ -308,6 +319,9 @@ describe LoanReportCsvExport do
       row[t(:type_f2)].should == '30.0'
       row[t(:type_f3)].should == '5.0'
       row[t(:loan_lender_reference)].should == 'lenderref1'
+      row[t(:settled_amount)].should == '1000.00'
+      row[t(:cumulative_pre_claim_limit_realised_amount)].should == '3000.00'
+      row[t(:cumulative_post_claim_limit_realised_amount)].should == '2000.00'
     end
   end
 
