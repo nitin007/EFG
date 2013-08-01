@@ -7,7 +7,7 @@ describe LoanCsvExport do
     let(:lender) { FactoryGirl.create(:lender, name: 'Little Tinkers') }
     let(:lending_limit) { FactoryGirl.create(:lending_limit, name: 'Lending Limit') }
     let(:loan) {
-      FactoryGirl.create(:loan, :guaranteed,
+      FactoryGirl.create(:loan, :completed, :guaranteed,
         created_by: user,
         lender: lender,
         lending_limit: lending_limit,

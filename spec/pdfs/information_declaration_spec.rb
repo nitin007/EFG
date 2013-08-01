@@ -5,7 +5,7 @@ require 'spec_helper'
 describe InformationDeclaration do
   let(:lender) { FactoryGirl.create(:lender, name: 'Lender') }
   let(:loan) {
-    FactoryGirl.create(:loan, lender: lender,
+    FactoryGirl.create(:loan, :completed, lender: lender,
       amount: Money.new(12_345_67),
       business_name: 'ACME',
       company_registration: 'B1234567890',

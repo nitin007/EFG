@@ -26,7 +26,6 @@ FactoryGirl.define do
     private_residence_charge_required false
     personal_guarantee_required false
     state_aid 10000
-    state_aid_is_valid true
     fees 50000
     sequence(:legacy_id) { |n| n }
     created_at { Time.now }
@@ -59,6 +58,7 @@ FactoryGirl.define do
 
     trait :completed do
       state Loan::Completed
+      state_aid_is_valid true
     end
 
     trait :complete_legacy do

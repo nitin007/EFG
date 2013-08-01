@@ -9,6 +9,7 @@ FactoryGirl.define do
     repayment_frequency_id 3
     postcode 'EC1R 4RP'
     turnover '12345'
+    state_aid_is_valid true
 
     initialize_with {
       loan = FactoryGirl.build(:loan, :with_premium_schedule)

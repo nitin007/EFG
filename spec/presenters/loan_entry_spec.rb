@@ -35,6 +35,11 @@ describe LoanEntry do
       loan_entry.should_not be_valid
     end
 
+    it "should be invalid without state_aid_is_valid" do
+      loan_entry.state_aid_is_valid = nil
+      loan_entry.should_not be_valid
+    end
+
     context '#postcode' do
       it 'is required' do
         loan_entry.postcode = ''
