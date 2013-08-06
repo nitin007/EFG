@@ -33,7 +33,7 @@ gem 'will_paginate', '3.0.3'
 
 group :assets do
   gem 'sass-rails', '3.2.5'
-  gem 'therubyracer', '0.10.1'
+  gem 'therubyracer', '0.11.4'
   gem 'uglifier', '1.2.4'
 end
 
