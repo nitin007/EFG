@@ -17,3 +17,5 @@ branches:
     - master
     - premium-schedule-refactor
     - release
+notifications:
+  email: false
