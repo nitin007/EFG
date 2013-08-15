@@ -8,7 +8,7 @@ FactoryGirl.define do
     legal_form_id 1
     loan_category_id 1
     repayment_frequency_id 4
-    reason_id LoanReason.active.first.id
+    reason_id 28
     business_name 'Acme'
     trading_name 'Emca'
     postcode "EC1R 4RP"

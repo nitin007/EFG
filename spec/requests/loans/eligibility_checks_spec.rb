@@ -36,7 +36,7 @@ describe 'eligibility checks' do
     loan.trading_date.should == Date.new(2012, 1, 31)
     loan.sic_code.should == sic_code.code
     loan.loan_category_id.should == 2
-    loan.reason_id.should == LoanReason.active.first.id
+    loan.reason_id.should == 28
     loan.previous_borrowing.should be_true
     loan.private_residence_charge_required.should be_false
     loan.personal_guarantee_required.should be_false
