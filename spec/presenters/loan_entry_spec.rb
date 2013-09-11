@@ -55,6 +55,11 @@ describe LoanEntry do
         loan_entry.postcode = 'EC1A'
         loan_entry.should_not be_valid
       end
+
+      it 'is invalid with only letters in the incode' do
+        loan_entry.postcode = 'EC1A AAA'
+        loan_entry.should_not be_valid
+      end
     end
 
     it "should be invalid without a repayment frequency" do
@@ -263,6 +268,35 @@ describe LoanEntry do
           loan_entry.save
         }.to change(loan_entry.loan.ineligibility_reasons, :count).by(1)
       end
+    end
+  end
+
+  describe "#postcode=" do
+    subject { FactoryGirl.build(:loan_entry, postcode: postcode) }
+
+    context "correctly formatted" do
+      let(:postcode) { 'EC1R 4RP' }
+      its(:postcode) { should == 'EC1R 4RP' }
+    end
+
+    context "lower case" do
+      let(:postcode) { 'ec1r 4rp' }
+      its(:postcode) { should == 'EC1R 4RP' }
+    end
+
+    context "no space" do
+      let(:postcode) { 'EC1R4RP' }
+      its(:postcode) { should == 'EC1R 4RP' }
+    end
+
+    context "transposed" do
+      let(:postcode) { 'ECIR 4RP' }
+      its(:postcode) { should == 'EC1R 4RP' }
+    end
+
+    context "invalid" do
+      let(:postcode) { 'invalid' }
+      its(:postcode) { should == 'invalid' }
     end
   end
 end
