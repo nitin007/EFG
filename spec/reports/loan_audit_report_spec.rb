@@ -46,6 +46,13 @@ describe LoanAuditReport do
       loan_audit_report.loans.should == [ loan1 ]
     end
 
+    it "includes loans without a modified_by_legacy_id" do
+      loan1.update_attribute(:modified_by_legacy_id, nil)
+
+      loan_audit_report = LoanAuditReport.new
+      loan_audit_report.loans.should include(loan1)
+    end
+
     context 'with initial draw' do
       let!(:loan1) { FactoryGirl.create(:loan, :guaranteed) }
 
