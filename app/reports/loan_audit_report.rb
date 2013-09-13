@@ -40,7 +40,7 @@ class LoanAuditReport
         ].join(', ')
       ).joins("RIGHT OUTER JOIN loan_state_changes ON loans.id = loan_state_changes.loan_id")
        .joins("LEFT JOIN loan_modifications AS first_loan_change ON loans.id = first_loan_change.loan_id AND first_loan_change.seq = 0")
-       .where("loans.modified_by_legacy_id != 'migration'")
+       .where("loans.modified_by_legacy_id != 'migration' OR loans.modified_by_legacy_id IS NULL")
 
     scope = scope.where('loans.state = ?', state) if state.present?
     scope = scope.where('loans.lender_id = ?', lender_id) if lender_id.present?
