@@ -26,8 +26,13 @@ module EFG
     def run
       if due.any?
         @logger.info "Running #{due.size} data #{"migration".pluralize(due.size)}..."
+        failures = []
         due.sort_by(&:version).each do |migration|
-          migration.run
+          migration.run failures
+        end
+        if failures.any?
+          raise Exception.new("Some migrations failed - please use trace to find out more\n" \
+            + failures.join("\n") + "\n\n")
         end
       else
         @logger.info "No data migrations pending."

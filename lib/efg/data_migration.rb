@@ -24,7 +24,7 @@ module EFG
       DataMigrationRecord.find_by_version(version).nil?
     end
 
-    def run
+    def run(collecting_failures)
       ActiveRecord::Base.connection.transaction do
         begin
           @logger.info "============================================="
@@ -35,6 +35,7 @@ module EFG
         rescue => e
           @logger.error "Migration failed due to #{e}"
           @logger.error "  " + e.backtrace.join("\n  ")
+          collecting_failures << @path
           raise ActiveRecord::Rollback
         end
         @logger.info "============================================="
