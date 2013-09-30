@@ -103,5 +103,12 @@ describe EligibilityCheck do
       eligibility_check.should_not be_eligible
       eligibility_check.errors[:sic_code].should_not be_empty
     end
+
+    it "should be ineligible with an ineligible loan reason" do
+      loan.reason_id = LoanReason.all.detect {|reason| !reason.eligible? }.id
+
+      eligibility_check.should_not be_eligible
+      eligibility_check.errors[:reason_id].should_not be_empty
+    end
   end
 end
