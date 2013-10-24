@@ -4,7 +4,7 @@ namespace :db do
     task :migrate => :environment do
       require 'efg/data_migrator'
       options = if Rake.verbose
-        nil
+        {}
       else
         { logger: Logger.new("/dev/null") }
       end
