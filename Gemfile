@@ -12,7 +12,7 @@ gem 'exception_notification', '2.5.2'
 gem 'jquery-rails', "2.2.1"
 gem 'less-rails', '2.2.6'
 gem 'lograge', '0.1.2'
-gem 'money', '5.0.0'
+gem 'money', '5.1.1'
 gem 'mysql2', '0.3.11'
 gem 'passphrase_entropy', git: 'https://github.com/alphagov/passphrase_entropy.git'
 gem 'plek'

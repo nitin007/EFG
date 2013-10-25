@@ -18,27 +18,27 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
 
           it 'returns the correct premium payments' do
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new('3569')),
-              BankersRoundingMoney.new(BigDecimal.new('3399')),
-              BankersRoundingMoney.new(BigDecimal.new('3229')),
-              BankersRoundingMoney.new(BigDecimal.new('3059')),
-              BankersRoundingMoney.new(BigDecimal.new('2889')),
-              BankersRoundingMoney.new(BigDecimal.new('2719')),
-              BankersRoundingMoney.new(BigDecimal.new('2549')),
-              BankersRoundingMoney.new(BigDecimal.new('2379')),
-              BankersRoundingMoney.new(BigDecimal.new('2209')),
-              BankersRoundingMoney.new(BigDecimal.new('2039')),
-              BankersRoundingMoney.new(BigDecimal.new('1869')),
-              BankersRoundingMoney.new(BigDecimal.new('1699')),
-              BankersRoundingMoney.new(BigDecimal.new('1530')),
-              BankersRoundingMoney.new(BigDecimal.new('1360')),
-              BankersRoundingMoney.new(BigDecimal.new('1190')),
-              BankersRoundingMoney.new(BigDecimal.new('1020')),
-              BankersRoundingMoney.new(BigDecimal.new( '850')),
-              BankersRoundingMoney.new(BigDecimal.new( '680')),
-              BankersRoundingMoney.new(BigDecimal.new( '510')),
-              BankersRoundingMoney.new(BigDecimal.new( '340')),
-              BankersRoundingMoney.new(BigDecimal.new( '170')),
+              Money.new(3569),
+              Money.new(3399),
+              Money.new(3229),
+              Money.new(3059),
+              Money.new(2889),
+              Money.new(2719),
+              Money.new(2549),
+              Money.new(2379),
+              Money.new(2209),
+              Money.new(2039),
+              Money.new(1869),
+              Money.new(1699),
+              Money.new(1530),
+              Money.new(1360),
+              Money.new(1190),
+              Money.new(1020),
+              Money.new(850),
+              Money.new(680),
+              Money.new(510),
+              Money.new(340),
+              Money.new(170),
             ]
           end
         end
@@ -55,14 +55,14 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
 
           it 'returns the correct premium payments' do
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new('80000')),
-              BankersRoundingMoney.new(BigDecimal.new('80000')),
-              BankersRoundingMoney.new(BigDecimal.new('80000')),
-              BankersRoundingMoney.new(BigDecimal.new('80000')),
-              BankersRoundingMoney.new(BigDecimal.new('80000')),
-              BankersRoundingMoney.new(BigDecimal.new('60000')),
-              BankersRoundingMoney.new(BigDecimal.new('40000')),
-              BankersRoundingMoney.new(BigDecimal.new('20000')),
+              Money.new(80000),
+              Money.new(80000),
+              Money.new(80000),
+              Money.new(80000),
+              Money.new(80000),
+              Money.new(60000),
+              Money.new(40000),
+              Money.new(20000),
             ]
           end
         end
@@ -82,26 +82,26 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
 
           it 'returns the correct premium payments' do
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new('150000')),
-              BankersRoundingMoney.new(BigDecimal.new('192500')),
-              BankersRoundingMoney.new(BigDecimal.new('182368')),
-              BankersRoundingMoney.new(BigDecimal.new('172237')),
-              BankersRoundingMoney.new(BigDecimal.new('162105')),
-              BankersRoundingMoney.new(BigDecimal.new('151974')),
-              BankersRoundingMoney.new(BigDecimal.new('141842')),
-              BankersRoundingMoney.new(BigDecimal.new('131711')),
-              BankersRoundingMoney.new(BigDecimal.new('121579')),
-              BankersRoundingMoney.new(BigDecimal.new('111447')),
-              BankersRoundingMoney.new(BigDecimal.new('101316')),
-              BankersRoundingMoney.new(BigDecimal.new( '91184')),
-              BankersRoundingMoney.new(BigDecimal.new( '81053')),
-              BankersRoundingMoney.new(BigDecimal.new( '70921')),
-              BankersRoundingMoney.new(BigDecimal.new( '60789')),
-              BankersRoundingMoney.new(BigDecimal.new( '50658')),
-              BankersRoundingMoney.new(BigDecimal.new( '40526')),
-              BankersRoundingMoney.new(BigDecimal.new( '30395')),
-              BankersRoundingMoney.new(BigDecimal.new( '20263')),
-              BankersRoundingMoney.new(BigDecimal.new( '10132'))
+              Money.new(150000),
+              Money.new(192500),
+              Money.new(182368),
+              Money.new(172237),
+              Money.new(162105),
+              Money.new(151974),
+              Money.new(141842),
+              Money.new(131711),
+              Money.new(121579),
+              Money.new(111447),
+              Money.new(101316),
+              Money.new(91184),
+              Money.new(81053),
+              Money.new(70921),
+              Money.new(60789),
+              Money.new(50658),
+              Money.new(40526),
+              Money.new(30395),
+              Money.new(20263),
+              Money.new(10132)
             ]
           end
         end
@@ -123,10 +123,10 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
 
           it 'returns the correct premium payments' do
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new( '6000')),
-              BankersRoundingMoney.new(BigDecimal.new('10500')),
-              BankersRoundingMoney.new(BigDecimal.new('13000')),
-              BankersRoundingMoney.new(BigDecimal.new( '6500'))
+              Money.new(6000),
+              Money.new(10500),
+              Money.new(13000),
+              Money.new(6500)
             ]
           end
         end
@@ -150,10 +150,10 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
 
           it 'returns the correct premium payments' do
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new( '50000')),
-              BankersRoundingMoney.new(BigDecimal.new( '62500')),
-              BankersRoundingMoney.new(BigDecimal.new( '66667')),
-              BankersRoundingMoney.new(BigDecimal.new('433333'))
+              Money.new(50000),
+              Money.new(62500),
+              Money.new(66667),
+              Money.new(433333)
             ]
           end
         end
@@ -176,26 +176,26 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
 
           it 'returns the correct premium payments' do
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new( '50000')),
-              BankersRoundingMoney.new(BigDecimal.new('250000')),
-              BankersRoundingMoney.new(BigDecimal.new('250000')),
-              BankersRoundingMoney.new(BigDecimal.new('236111')),
-              BankersRoundingMoney.new(BigDecimal.new('222222')),
-              BankersRoundingMoney.new(BigDecimal.new('208333')),
-              BankersRoundingMoney.new(BigDecimal.new('194444')),
-              BankersRoundingMoney.new(BigDecimal.new('180556')),
-              BankersRoundingMoney.new(BigDecimal.new('166667')),
-              BankersRoundingMoney.new(BigDecimal.new('152778')),
-              BankersRoundingMoney.new(BigDecimal.new('138889')),
-              BankersRoundingMoney.new(BigDecimal.new('125000')),
-              BankersRoundingMoney.new(BigDecimal.new('111111')),
-              BankersRoundingMoney.new(BigDecimal.new( '97222')),
-              BankersRoundingMoney.new(BigDecimal.new( '83333')),
-              BankersRoundingMoney.new(BigDecimal.new( '69444')),
-              BankersRoundingMoney.new(BigDecimal.new( '55556')),
-              BankersRoundingMoney.new(BigDecimal.new( '41667')),
-              BankersRoundingMoney.new(BigDecimal.new( '27778')),
-              BankersRoundingMoney.new(BigDecimal.new( '13889'))
+              Money.new(50000),
+              Money.new(250000),
+              Money.new(250000),
+              Money.new(236111),
+              Money.new(222222),
+              Money.new(208333),
+              Money.new(194444),
+              Money.new(180556),
+              Money.new(166667),
+              Money.new(152778),
+              Money.new(138889),
+              Money.new(125000),
+              Money.new(111111),
+              Money.new(97222),
+              Money.new(83333),
+              Money.new(69444),
+              Money.new(55556),
+              Money.new(41667),
+              Money.new(27778),
+              Money.new(13889)
             ]
           end
         end
@@ -214,16 +214,16 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
 
         it 'does not ignore the second drawdown and returns the correct premium payments' do
           premium_schedule.premiums.should == [
-            BankersRoundingMoney.new(BigDecimal.new('10000')),
-            BankersRoundingMoney.new(BigDecimal.new( '9000')),
-            BankersRoundingMoney.new(BigDecimal.new( '8000')),
-            BankersRoundingMoney.new(BigDecimal.new( '7000')),
-            BankersRoundingMoney.new(BigDecimal.new( '6000')),
-            BankersRoundingMoney.new(BigDecimal.new( '5000')),
-            BankersRoundingMoney.new(BigDecimal.new( '4000')),
-            BankersRoundingMoney.new(BigDecimal.new( '3000')),
-            BankersRoundingMoney.new(BigDecimal.new( '2000')),
-            BankersRoundingMoney.new(BigDecimal.new( '1000')),
+            Money.new(10000),
+            Money.new(9000),
+            Money.new(8000),
+            Money.new(7000),
+            Money.new(6000),
+            Money.new(5000),
+            Money.new(4000),
+            Money.new(3000),
+            Money.new(2000),
+            Money.new(1000),
           ]
         end
       end
@@ -239,7 +239,7 @@ shared_examples_for 'premium payments for a loan repaid on a monthly or quarterl
 
         it 'returns the correct single premium payment' do
           premium_schedule.premiums.should == [
-            BankersRoundingMoney.new(BigDecimal.new('50000'))
+            Money.new(50000)
           ]
         end
       end

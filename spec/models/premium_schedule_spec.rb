@@ -515,22 +515,22 @@ describe PremiumSchedule do
 
         it 'returns the correct premium payments' do
           premium_schedule.premiums.should == [
-            BankersRoundingMoney.new(BigDecimal.new('47500')),
-            BankersRoundingMoney.new(BigDecimal.new('66542')),
-            BankersRoundingMoney.new(BigDecimal.new('62106')),
-            BankersRoundingMoney.new(BigDecimal.new('57670')),
-            BankersRoundingMoney.new(BigDecimal.new('53234')),
-            BankersRoundingMoney.new(BigDecimal.new('48798')),
-            BankersRoundingMoney.new(BigDecimal.new('44361')),
-            BankersRoundingMoney.new(BigDecimal.new('39925')),
-            BankersRoundingMoney.new(BigDecimal.new('35489')),
-            BankersRoundingMoney.new(BigDecimal.new('31053')),
-            BankersRoundingMoney.new(BigDecimal.new('26617')),
-            BankersRoundingMoney.new(BigDecimal.new('22181')),
-            BankersRoundingMoney.new(BigDecimal.new('17745')),
-            BankersRoundingMoney.new(BigDecimal.new('13308')),
-            BankersRoundingMoney.new(BigDecimal.new( '8872')),
-            BankersRoundingMoney.new(BigDecimal.new( '4436')),
+            Money.new(47500),
+            Money.new(66542),
+            Money.new(62106),
+            Money.new(57670),
+            Money.new(53234),
+            Money.new(48798),
+            Money.new(44361),
+            Money.new(39925),
+            Money.new(35489),
+            Money.new(31053),
+            Money.new(26617),
+            Money.new(22181),
+            Money.new(17745),
+            Money.new(13308),
+            Money.new(8872),
+            Money.new(4436),
           ]
         end
       end
@@ -546,10 +546,10 @@ describe PremiumSchedule do
 
         it 'returns the correct premium payments, missing off the final one' do
           premium_schedule.premiums.should == [
-            BankersRoundingMoney.new(BigDecimal.new('18000')),
-            BankersRoundingMoney.new(BigDecimal.new('14143')),
-            BankersRoundingMoney.new(BigDecimal.new('10286')),
-            BankersRoundingMoney.new(BigDecimal.new( '6429')),
+            Money.new(18000),
+            Money.new(14143),
+            Money.new(10286),
+            Money.new(6429),
           ]
         end
       end
@@ -577,22 +577,22 @@ describe PremiumSchedule do
             premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Quarterly.id
 
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new('47500')),
-              BankersRoundingMoney.new(BigDecimal.new('65625')),
-              BankersRoundingMoney.new(BigDecimal.new('61250')),
-              BankersRoundingMoney.new(BigDecimal.new('56875')),
-              BankersRoundingMoney.new(BigDecimal.new('52500')),
-              BankersRoundingMoney.new(BigDecimal.new('48125')),
-              BankersRoundingMoney.new(BigDecimal.new('43750')),
-              BankersRoundingMoney.new(BigDecimal.new('39375')),
-              BankersRoundingMoney.new(BigDecimal.new('35000')),
-              BankersRoundingMoney.new(BigDecimal.new('30625')),
-              BankersRoundingMoney.new(BigDecimal.new('26250')),
-              BankersRoundingMoney.new(BigDecimal.new('21875')),
-              BankersRoundingMoney.new(BigDecimal.new('17500')),
-              BankersRoundingMoney.new(BigDecimal.new('13125')),
-              BankersRoundingMoney.new(BigDecimal.new( '8750')),
-              BankersRoundingMoney.new(BigDecimal.new( '4375')),
+              Money.new(47500),
+              Money.new(65625),
+              Money.new(61250),
+              Money.new(56875),
+              Money.new(52500),
+              Money.new(48125),
+              Money.new(43750),
+              Money.new(39375),
+              Money.new(35000),
+              Money.new(30625),
+              Money.new(26250),
+              Money.new(21875),
+              Money.new(17500),
+              Money.new(13125),
+              Money.new(8750),
+              Money.new(4375),
             ]
           end
         end
@@ -610,11 +610,11 @@ describe PremiumSchedule do
             premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Quarterly.id
 
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new('18000')),
-              BankersRoundingMoney.new(BigDecimal.new('14143')),
-              BankersRoundingMoney.new(BigDecimal.new('10286')),
-              BankersRoundingMoney.new(BigDecimal.new( '6429')),
-              BankersRoundingMoney.new(BigDecimal.new( '2571')),
+              Money.new(18000),
+              Money.new(14143),
+              Money.new(10286),
+              Money.new(6429),
+              Money.new(2571),
             ]
           end
         end
@@ -641,22 +641,22 @@ describe PremiumSchedule do
             premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Monthly.id
 
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new('47500')),
-              BankersRoundingMoney.new(BigDecimal.new('66542')),
-              BankersRoundingMoney.new(BigDecimal.new('62106')),
-              BankersRoundingMoney.new(BigDecimal.new('57670')),
-              BankersRoundingMoney.new(BigDecimal.new('53234')),
-              BankersRoundingMoney.new(BigDecimal.new('48798')),
-              BankersRoundingMoney.new(BigDecimal.new('44361')),
-              BankersRoundingMoney.new(BigDecimal.new('39925')),
-              BankersRoundingMoney.new(BigDecimal.new('35489')),
-              BankersRoundingMoney.new(BigDecimal.new('31053')),
-              BankersRoundingMoney.new(BigDecimal.new('26617')),
-              BankersRoundingMoney.new(BigDecimal.new('22181')),
-              BankersRoundingMoney.new(BigDecimal.new('17745')),
-              BankersRoundingMoney.new(BigDecimal.new('13308')),
-              BankersRoundingMoney.new(BigDecimal.new( '8872')),
-              BankersRoundingMoney.new(BigDecimal.new( '4436')),
+              Money.new(47500),
+              Money.new(66542),
+              Money.new(62106),
+              Money.new(57670),
+              Money.new(53234),
+              Money.new(48798),
+              Money.new(44361),
+              Money.new(39925),
+              Money.new(35489),
+              Money.new(31053),
+              Money.new(26617),
+              Money.new(22181),
+              Money.new(17745),
+              Money.new(13308),
+              Money.new(8872),
+              Money.new(4436),
             ]
           end
         end
@@ -674,11 +674,11 @@ describe PremiumSchedule do
             premium_schedule.loan.repayment_frequency_id = RepaymentFrequency::Monthly.id
 
             premium_schedule.premiums.should == [
-              BankersRoundingMoney.new(BigDecimal.new('18000')),
-              BankersRoundingMoney.new(BigDecimal.new('14143')),
-              BankersRoundingMoney.new(BigDecimal.new('10286')),
-              BankersRoundingMoney.new(BigDecimal.new( '6429')),
-              BankersRoundingMoney.new(BigDecimal.new( '2571')),
+              Money.new(18000),
+              Money.new(14143),
+              Money.new(10286),
+              Money.new(6429),
+              Money.new(2571),
             ]
           end
         end
@@ -701,18 +701,18 @@ describe PremiumSchedule do
 
             it 'returns the correct premium payments' do
               premium_schedule.premiums.should == [
-                BankersRoundingMoney.new(BigDecimal.new('37500')),
-                BankersRoundingMoney.new(BigDecimal.new('37500')),
-                BankersRoundingMoney.new(BigDecimal.new('31250')),
-                BankersRoundingMoney.new(BigDecimal.new('31250')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('18750')),
-                BankersRoundingMoney.new(BigDecimal.new('18750')),
-                BankersRoundingMoney.new(BigDecimal.new('12500')),
-                BankersRoundingMoney.new(BigDecimal.new('12500')),
-                BankersRoundingMoney.new(BigDecimal.new( '6250')),
-                BankersRoundingMoney.new(BigDecimal.new( '6250')),
+                Money.new(37500),
+                Money.new(37500),
+                Money.new(31250),
+                Money.new(31250),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(18750),
+                Money.new(18750),
+                Money.new(12500),
+                Money.new(12500),
+                Money.new(6250),
+                Money.new(6250),
               ]
             end
           end
@@ -729,18 +729,18 @@ describe PremiumSchedule do
 
             it 'returns the correct premium payments' do
               premium_schedule.premiums.should == [
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('18750')),
-                BankersRoundingMoney.new(BigDecimal.new('18750')),
-                BankersRoundingMoney.new(BigDecimal.new('12500')),
-                BankersRoundingMoney.new(BigDecimal.new('12500')),
-                BankersRoundingMoney.new(BigDecimal.new('6250')),
-                BankersRoundingMoney.new(BigDecimal.new('6250'))
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(18750),
+                Money.new(18750),
+                Money.new(12500),
+                Money.new(12500),
+                Money.new(6250),
+                Money.new(6250)
               ]
             end
           end
@@ -764,14 +764,14 @@ describe PremiumSchedule do
 
             it 'returns the correct premium payments' do
               premium_schedule.premiums.should == [
-                BankersRoundingMoney.new(BigDecimal.new('125000')),
-                BankersRoundingMoney.new(BigDecimal.new('500000')),
-                BankersRoundingMoney.new(BigDecimal.new('375000')),
-                BankersRoundingMoney.new(BigDecimal.new('375000')),
-                BankersRoundingMoney.new(BigDecimal.new('250000')),
-                BankersRoundingMoney.new(BigDecimal.new('250000')),
-                BankersRoundingMoney.new(BigDecimal.new('125000')),
-                BankersRoundingMoney.new(BigDecimal.new('125000')),
+                Money.new(125000),
+                Money.new(500000),
+                Money.new(375000),
+                Money.new(375000),
+                Money.new(250000),
+                Money.new(250000),
+                Money.new(125000),
+                Money.new(125000),
               ]
             end
           end
@@ -795,14 +795,14 @@ describe PremiumSchedule do
 
             it 'returns the correct premium payments' do
               premium_schedule.premiums.should == [
-                BankersRoundingMoney.new(BigDecimal.new('175000')),
-                BankersRoundingMoney.new(BigDecimal.new('175000')),
-                BankersRoundingMoney.new(BigDecimal.new('175000')),
-                BankersRoundingMoney.new(BigDecimal.new('175000')),
-                BankersRoundingMoney.new(BigDecimal.new( '87500')),
-                BankersRoundingMoney.new(BigDecimal.new( '87500')),
-                BankersRoundingMoney.new(BigDecimal.new( '87500')),
-                BankersRoundingMoney.new(BigDecimal.new( '87500')),
+                Money.new(175000),
+                Money.new(175000),
+                Money.new(175000),
+                Money.new(175000),
+                Money.new(87500),
+                Money.new(87500),
+                Money.new(87500),
+                Money.new(87500),
               ]
             end
           end
@@ -819,22 +819,22 @@ describe PremiumSchedule do
 
             it 'returns the correct premium payments' do
               premium_schedule.premiums.should == [
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('25000')),
-                BankersRoundingMoney.new(BigDecimal.new('12500')),
-                BankersRoundingMoney.new(BigDecimal.new('12500')),
-                BankersRoundingMoney.new(BigDecimal.new('12500')),
-                BankersRoundingMoney.new(BigDecimal.new('12500'))
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(25000),
+                Money.new(12500),
+                Money.new(12500),
+                Money.new(12500),
+                Money.new(12500)
               ]
             end
           end
@@ -856,14 +856,14 @@ describe PremiumSchedule do
 
             it 'returns the correct premium payments' do
               premium_schedule.premiums.should == [
-                BankersRoundingMoney.new(BigDecimal.new('350000')),
-                BankersRoundingMoney.new(BigDecimal.new('400000')),
-                BankersRoundingMoney.new(BigDecimal.new('500000')),
-                BankersRoundingMoney.new(BigDecimal.new('500000')),
-                BankersRoundingMoney.new(BigDecimal.new('250000')),
-                BankersRoundingMoney.new(BigDecimal.new('250000')),
-                BankersRoundingMoney.new(BigDecimal.new('250000')),
-                BankersRoundingMoney.new(BigDecimal.new('250000')),
+                Money.new(350000),
+                Money.new(400000),
+                Money.new(500000),
+                Money.new(500000),
+                Money.new(250000),
+                Money.new(250000),
+                Money.new(250000),
+                Money.new(250000),
               ]
             end
           end
@@ -888,14 +888,14 @@ describe PremiumSchedule do
 
               it 'returns the correct premium payments' do
                 premium_schedule.premiums.should == [
-                  BankersRoundingMoney.new(BigDecimal.new( '50000')),
-                  BankersRoundingMoney.new(BigDecimal.new('150000')),
-                  BankersRoundingMoney.new(BigDecimal.new('200000')),
-                  BankersRoundingMoney.new(BigDecimal.new('200000')),
-                  BankersRoundingMoney.new(BigDecimal.new('100000')),
-                  BankersRoundingMoney.new(BigDecimal.new('100000')),
-                  BankersRoundingMoney.new(BigDecimal.new('100000')),
-                  BankersRoundingMoney.new(BigDecimal.new('100000')),
+                  Money.new(50000),
+                  Money.new(150000),
+                  Money.new(200000),
+                  Money.new(200000),
+                  Money.new(100000),
+                  Money.new(100000),
+                  Money.new(100000),
+                  Money.new(100000),
                 ]
               end
             end
@@ -913,29 +913,29 @@ describe PremiumSchedule do
 
               it 'returns the correct premium payments' do
                 premium_schedule.premiums.should == [
-                  BankersRoundingMoney.new(BigDecimal.new( '85638')),
-                  BankersRoundingMoney.new(BigDecimal.new('171275')),
-                  BankersRoundingMoney.new(BigDecimal.new('171275')),
-                  BankersRoundingMoney.new(BigDecimal.new('171275')),
-                  BankersRoundingMoney.new(BigDecimal.new('142729')),
-                  BankersRoundingMoney.new(BigDecimal.new('142729')),
-                  BankersRoundingMoney.new(BigDecimal.new('142729')),
-                  BankersRoundingMoney.new(BigDecimal.new('142729')),
-                  BankersRoundingMoney.new(BigDecimal.new('114183')),
-                  BankersRoundingMoney.new(BigDecimal.new('114183')),
-                  BankersRoundingMoney.new(BigDecimal.new('114183')),
-                  BankersRoundingMoney.new(BigDecimal.new('114183')),
-                  BankersRoundingMoney.new(BigDecimal.new( '85638')),
-                  BankersRoundingMoney.new(BigDecimal.new( '85638')),
-                  BankersRoundingMoney.new(BigDecimal.new( '85638')),
-                  BankersRoundingMoney.new(BigDecimal.new( '85638')),
-                  BankersRoundingMoney.new(BigDecimal.new( '57092')),
-                  BankersRoundingMoney.new(BigDecimal.new( '57092')),
-                  BankersRoundingMoney.new(BigDecimal.new( '57092')),
-                  BankersRoundingMoney.new(BigDecimal.new( '57092')),
-                  BankersRoundingMoney.new(BigDecimal.new( '28546')),
-                  BankersRoundingMoney.new(BigDecimal.new( '28546')),
-                  BankersRoundingMoney.new(BigDecimal.new( '28546')),
+                  Money.new(85638),
+                  Money.new(171275),
+                  Money.new(171275),
+                  Money.new(171275),
+                  Money.new(142729),
+                  Money.new(142729),
+                  Money.new(142729),
+                  Money.new(142729),
+                  Money.new(114183),
+                  Money.new(114183),
+                  Money.new(114183),
+                  Money.new(114183),
+                  Money.new(85638),
+                  Money.new(85638),
+                  Money.new(85638),
+                  Money.new(85638),
+                  Money.new(57092),
+                  Money.new(57092),
+                  Money.new(57092),
+                  Money.new(57092),
+                  Money.new(28546),
+                  Money.new(28546),
+                  Money.new(28546),
                 ]
               end
             end
