@@ -11,6 +11,9 @@ en:
     error_notification:
       default_message: "Please review the problems below:"
     labels:
+      agreed_draw:
+        date_of_change: Date of tranche drawdown
+
       loan: &loan
         reference: "System generated identification reference"
         viable_proposition: "Other than in respect of the availability of security, are the Applicant's plans viable and serviceable, as assessed according to your Normal Commercial Lending Criteria?"
@@ -40,7 +43,7 @@ en:
 
       loan_change:
         date_of_change: 'What is the date when the change to be recorded occurred?'
-        added_months: Months to add/remove
+        added_months: Number of Months to extend or reduce the loan term (please note that if reducing the term, the figure must be entered as a negative value)
         amount_drawn: 'What is the amount now being drawn that is to be recorded? (This should include any further draws it is known will take place before the next Premium Payment is due)'
         lump_sum_repayment: 'What is the amount of the lump sum repayment?'
         initial_draw_amount: 'What is the outstanding balance at the next quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'

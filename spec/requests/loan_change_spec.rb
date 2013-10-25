@@ -46,7 +46,7 @@ describe 'loan change' do
   context 'repayment_duration' do
     before do
       visit_loan_changes
-      click_link 'Extend / Reduce'
+      click_link 'Extend or Reduce Loan Term'
     end
 
     it 'works' do
