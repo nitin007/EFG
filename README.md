@@ -3,6 +3,8 @@ EFG
 
 [![Build Status](https://travis-ci.org/alphagov/EFG.png?branch=master)](https://travis-ci.org/alphagov/EFG)
 
+[![Dependency Status](https://gemnasium.com/alphagov/EFG.png)](https://gemnasium.com/alphagov/EFG)
+
 Enterprise Finance Guarantee
 
 ## Getting started
