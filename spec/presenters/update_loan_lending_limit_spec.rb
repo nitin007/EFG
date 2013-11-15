@@ -43,8 +43,7 @@ describe UpdateLoanLendingLimit do
 
     it "stores the new state aid figure" do
       presenter.save
-
-      presenter.new_state_aid.should == Money.new(246_446, 'EUR')
+      presenter.new_state_aid.should == Money.new(246_444, 'EUR')
     end
   end
 end

@@ -101,7 +101,7 @@ class PremiumSchedule < ActiveRecord::Base
         ).amount
       end
 
-      BankersRoundingMoney.new((outstanding_loan_value_at_quarter.to_d * 100) * premium_rate_per_quarter)
+      Money.new((outstanding_loan_value_at_quarter.to_d * 100) * premium_rate_per_quarter)
     end
   end
 
