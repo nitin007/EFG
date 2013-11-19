@@ -4,6 +4,8 @@ class LoanEntry
   include LoanEligibility
   include SharedLoanValidations
 
+  attr_accessible :postcode
+
   transition from: [Loan::Eligible, Loan::Incomplete], to: Loan::Completed, event: LoanEvent::Complete
 
   attribute :lender, read_only: true
@@ -28,7 +30,7 @@ class LoanEntry
   attribute :trading_name
   attribute :legal_form_id
   attribute :company_registration
-  attribute :postcode
+  attribute :postcode, read_only: true
   attribute :sortcode
   attribute :repayment_frequency_id
   attribute :generic1
@@ -120,6 +122,11 @@ class LoanEntry
                             greater_than_or_equal_to: 1,
                             less_than_or_equal_to: 30,
                             if: lambda { loan_category_id == 6 }
+
+  def postcode=(str)
+    normalised = UKPostcode.new(str).norm
+    loan.postcode = normalised.empty? ? str : normalised
+  end
 
   def save_as_incomplete
     loan.state = Loan::Incomplete
