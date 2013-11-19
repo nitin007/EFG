@@ -22,7 +22,9 @@ class VerdeTransfer
   end
 
   def loans
-    @loans ||= old_lender.loans.where(reference: loan_references).to_a
+    @loans ||= loan_references.map { |reference|
+      old_lender.loans.where(reference: reference).first!
+    }
   end
 
   def system_user

@@ -21,6 +21,14 @@ describe VerdeTransfer do
       loan_4.update_column(:lending_limit_id, nil)
     end
 
+    context 'dealing with unknown loans' do
+      it do
+        expect {
+          VerdeTransfer.run(original_lender, new_lender, ['aaa'])
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
     context "transferring loans" do
       before { VerdeTransfer.run(original_lender, new_lender, loans_references) }
 
