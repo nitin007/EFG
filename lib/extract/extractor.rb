@@ -500,6 +500,7 @@ class Extractor
           whitelist "legacy_sic_parent_desc"
           whitelist "legacy_sic_notified_aid"
           whitelist "legacy_sic_eligible"
+          whitelist "settled_amount"
         end
 
         table 'phases' do
