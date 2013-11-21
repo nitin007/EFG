@@ -6,17 +6,27 @@ describe VerdeTransfer do
     let!(:system_user) { FactoryGirl.create(:system_user) }
     let(:original_lender) { FactoryGirl.create(:lender, name: "Original") }
     let(:new_lender) { FactoryGirl.create(:lender, name: "New") }
-    let!(:lending_limit_1) { FactoryGirl.create(:lending_limit, lender: original_lender, name: "A") }
-    let!(:lending_limit_2) { FactoryGirl.create(:lending_limit, lender: original_lender, name: "B") }
-    let(:loan_1) { FactoryGirl.create(:loan, lender: original_lender, lending_limit: lending_limit_1) }
-    let(:loan_2) { FactoryGirl.create(:loan, lender: original_lender, lending_limit: lending_limit_1) }
-    let(:loan_3) { FactoryGirl.create(:loan, lender: original_lender, lending_limit: lending_limit_2) }
+    let!(:original_lending_limit_1) { FactoryGirl.create(:lending_limit, lender: original_lender, name: 'A') }
+    let!(:original_lending_limit_2) { FactoryGirl.create(:lending_limit, lender: original_lender, name: 'B') }
+    let!(:new_lending_limit_1) { FactoryGirl.create(:lending_limit, lender: new_lender, name: 'A') }
+    let!(:new_lending_limit_2) { FactoryGirl.create(:lending_limit, lender: new_lender, name: 'C') }
+    let(:loan_1) { FactoryGirl.create(:loan, lender: original_lender, lending_limit: original_lending_limit_1) }
+    let(:loan_2) { FactoryGirl.create(:loan, lender: original_lender, lending_limit: original_lending_limit_1) }
+    let(:loan_3) { FactoryGirl.create(:loan, lender: original_lender, lending_limit: original_lending_limit_2) }
     let(:loan_4) { FactoryGirl.create(:loan, lender: original_lender, lending_limit: nil) }
     let(:loans_references) { [loan_1, loan_2, loan_3, loan_4].map(&:reference) }
 
     before do
       # TODO: Loan factory doesn't allow a nil lending_limit.
       loan_4.update_column(:lending_limit_id, nil)
+    end
+
+    context 'dealing with unknown loans' do
+      it do
+        expect {
+          VerdeTransfer.run(original_lender, new_lender, ['aaa'])
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
 
     context "transferring loans" do
@@ -61,45 +71,20 @@ describe VerdeTransfer do
     end
 
     context 'lending limits' do
-      it 'the correct number are created' do
-        expect {
-          VerdeTransfer.run(original_lender, new_lender, loans_references)
-        }.to change(LendingLimit, :count).by(2)
+      before do
+        VerdeTransfer.run(original_lender, new_lender, loans_references)
+
+        loan_1.reload
+        loan_2.reload
+        loan_3.reload
+        loan_4.reload
       end
 
-      context "copying existing lending limit details" do
-        before { VerdeTransfer.run(original_lender, new_lender, loans_references) }
-
-        shared_examples "lending limit copy" do
-          it "has the correct attributes" do
-            subject.should_not == original_lending_limit
-            subject.loans.should =~ loans
-            subject.modified_by.should == system_user
-
-            [:allocation_type_id, :active, :allocation, :starts_on,
-             :ends_on, :name, :premium_rate, :guarantee_rate, :phase_id].each do |attr|
-              subject.send(attr).should == original_lending_limit.send(attr)
-            end
-          end
-        end
-
-        context "loans 1 and 2" do
-          subject { new_lender.lending_limits.find_by_name!("A") }
-
-          it_behaves_like "lending limit copy" do
-            let(:loans) { [loan_1, loan_2] }
-            let(:original_lending_limit) { lending_limit_1 }
-          end
-        end
-
-        context "loan 3" do
-          subject { new_lender.lending_limits.find_by_name!("B") }
-
-          it_behaves_like "lending limit copy" do
-            let(:loans) { [loan_3] }
-            let(:original_lending_limit) { lending_limit_2 }
-          end
-        end
+      it 'assigns a matching lending limit from the new lender based on name' do
+        loan_1.lending_limit.should == new_lending_limit_1
+        loan_2.lending_limit.should == new_lending_limit_1
+        loan_3.lending_limit.should be_nil
+        loan_4.lending_limit.should be_nil
       end
     end
   end

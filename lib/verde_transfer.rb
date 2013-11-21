@@ -7,7 +7,6 @@ class VerdeTransfer
     @old_lender = old_lender
     @new_lender = new_lender
     @loan_references = loan_references
-    @lending_limits = {}
   end
 
   def run
@@ -19,34 +18,13 @@ class VerdeTransfer
   private
 
   def lending_limit(loan)
-    key = loan.lending_limit_id
-
-    unless lending_limits.has_key?(key)
-      lending_limits[key] = clone_lending_limit(loan.lending_limit)
-    end
-
-    lending_limits[key]
-  end
-
-  def clone_lending_limit(existing)
-    new_lender.lending_limits.create! do |lending_limit|
-      lending_limit.modified_by = system_user
-
-      lending_limit_attributes.each do |attr|
-        lending_limit.send("#{attr}=", existing.send(attr))
-      end
-    end
-  end
-
-  def lending_limit_attributes
-    @lending_limit_attributes ||= [
-      :allocation_type_id, :active, :allocation, :starts_on,
-      :ends_on, :name, :premium_rate, :guarantee_rate, :phase_id
-    ]
+    new_lender.lending_limits.where(name: loan.lending_limit.name).first
   end
 
   def loans
-    @loans ||= old_lender.loans.where(reference: loan_references)
+    @loans ||= loan_references.map { |reference|
+      old_lender.loans.where(reference: reference).first!
+    }
   end
 
   def system_user
@@ -68,5 +46,5 @@ class VerdeTransfer
     loan.save!
   end
 
-  attr_reader :old_lender, :new_lender, :loan_references, :lending_limits
+  attr_reader :old_lender, :new_lender, :loan_references
 end
