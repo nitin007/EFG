@@ -349,6 +349,7 @@ class Extractor
           whitelist "seq"
           whitelist "ar_timestamp"
           whitelist "ar_insert_timestamp"
+          whitelist 'post_claim_limit'
         end
 
         table 'loan_securities' do
