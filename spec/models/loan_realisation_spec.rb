@@ -1,10 +1,8 @@
 require 'spec_helper'
 
 describe LoanRealisation do
-
-  let(:loan_realisation) { FactoryGirl.build(:loan_realisation) }
-
   describe 'validations' do
+    let(:loan_realisation) { FactoryGirl.build(:loan_realisation) }
 
     it 'should have a valid factory' do
       loan_realisation.should be_valid
@@ -30,6 +28,11 @@ describe LoanRealisation do
       loan_realisation.should_not be_valid
     end
 
+    it 'strictly requires a realised_on' do
+      expect {
+        loan_realisation.realised_on = nil
+        loan_realisation.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
+    end
   end
-
 end

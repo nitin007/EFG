@@ -5,7 +5,11 @@ class LoanRealisation < ActiveRecord::Base
   belongs_to :realised_loan, class_name: 'Loan'
   belongs_to :created_by, class_name: 'User'
 
-  validates_presence_of :realisation_statement_id, :realised_loan_id, :created_by, :realised_amount
+  validates_presence_of :created_by
+  validates_presence_of :realisation_statement_id
+  validates_presence_of :realised_amount
+  validates_presence_of :realised_loan_id
+  validates_presence_of :realised_on, strict: true
 
   attr_accessible :realised_loan, :created_by, :realised_amount
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130527182739) do
+ActiveRecord::Schema.define(:version => 20131205120606) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -216,7 +216,7 @@ ActiveRecord::Schema.define(:version => 20130527182739) do
     t.datetime "updated_at",                                               :null => false
     t.integer  "legacy_loan_id"
     t.string   "legacy_created_by"
-    t.date     "realised_on"
+    t.date     "realised_on",                                              :null => false
     t.string   "seq"
     t.string   "ar_timestamp"
     t.string   "ar_insert_timestamp"
