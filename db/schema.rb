@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131205120606) do
+ActiveRecord::Schema.define(:version => 20131206134913) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -208,10 +208,10 @@ ActiveRecord::Schema.define(:version => 20131205120606) do
   add_index "loan_modifications", ["loan_id", "seq"], :name => "index_loan_changes_on_loan_id_and_seq", :unique => true
 
   create_table "loan_realisations", :force => true do |t|
-    t.integer  "realised_loan_id"
+    t.integer  "realised_loan_id",                                         :null => false
     t.integer  "realisation_statement_id"
-    t.integer  "created_by_id"
-    t.integer  "realised_amount",          :limit => 8
+    t.integer  "created_by_id",                                            :null => false
+    t.integer  "realised_amount",          :limit => 8,                    :null => false
     t.datetime "created_at",                                               :null => false
     t.datetime "updated_at",                                               :null => false
     t.integer  "legacy_loan_id"
@@ -220,7 +220,7 @@ ActiveRecord::Schema.define(:version => 20131205120606) do
     t.string   "seq"
     t.string   "ar_timestamp"
     t.string   "ar_insert_timestamp"
-    t.boolean  "post_claim_limit",                      :default => false
+    t.boolean  "post_claim_limit",                      :default => false, :null => false
   end
 
   add_index "loan_realisations", ["created_by_id"], :name => "index_loan_realisations_on_created_by_id"
