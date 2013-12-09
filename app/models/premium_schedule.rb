@@ -106,7 +106,7 @@ class PremiumSchedule < ActiveRecord::Base
   end
 
   def total_premiums
-    premiums.sum
+    premiums.reduce(Money.new(0), :+)
   end
 
   def initial_draw_date

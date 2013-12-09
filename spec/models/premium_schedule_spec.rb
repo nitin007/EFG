@@ -329,15 +329,39 @@ describe PremiumSchedule do
   end
 
   describe '#total_premiums' do
-    let(:premium_schedule) {
-      FactoryGirl.build(:premium_schedule,
-        initial_draw_amount: Money.new(100_000_00),
-        repayment_duration: 120)
-    }
+    context "legacy calculation" do
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
+          initial_draw_amount: Money.new(100_000_00),
+          repayment_duration: 120)
+      }
 
-    it 'calculates total premiums' do
-      premium_schedule.loan.premium_rate = 2.0
-      premium_schedule.total_premiums.should == Money.new(10_250_00)
+      it 'calculates total premiums for legacy premium schedules' do
+        premium_schedule.loan.premium_rate = 2.0
+        premium_schedule.total_premiums.should == Money.new(10_250_00)
+      end
+    end
+
+    context "non-legacy calculation" do
+      let(:premium_schedule) {
+        FactoryGirl.build(:premium_schedule,
+          initial_draw_amount: Money.new(100_000_00),
+          repayment_duration: 120,
+          legacy_premium_calculation: false)
+      }
+
+      before do
+        premium_schedule.loan.premium_rate = 2.0
+      end
+
+      it 'calculates total premiums for non-legacy premium schedules' do
+        premium_schedule.total_premiums.should == Money.new(10_250_00)
+      end
+
+      it 'returns a Money when repayment duration is 0' do
+        premium_schedule.repayment_duration = 0
+        premium_schedule.total_premiums.should == Money.new(0)
+      end
     end
   end
 
