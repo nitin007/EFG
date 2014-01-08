@@ -110,6 +110,14 @@ class Extractor
           whitelist 'updated_at'
         end
 
+        table 'data_migration_records' do
+          primary_key 'id'
+
+          whitelist 'version'
+          whitelist 'created_at'
+          whitelist 'updated_at'
+        end
+
         table 'ded_codes' do
           primary_key "id"
 
