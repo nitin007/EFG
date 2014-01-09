@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131206134913) do
+ActiveRecord::Schema.define(:version => 20140109110133) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -80,24 +80,26 @@ ActiveRecord::Schema.define(:version => 20131206134913) do
   add_index "experts", ["user_id"], :name => "index_experts_on_user_id", :unique => true
 
   create_table "invoices", :force => true do |t|
-    t.integer  "lender_id"
-    t.string   "reference"
-    t.string   "period_covered_quarter"
-    t.string   "period_covered_year"
-    t.date     "received_on"
-    t.integer  "created_by_id"
+    t.integer  "lender_id",                             :null => false
+    t.string   "reference",                             :null => false
+    t.string   "period_covered_quarter",                :null => false
+    t.string   "period_covered_year",                   :null => false
+    t.date     "received_on",                           :null => false
+    t.integer  "created_by_id",                         :null => false
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
     t.integer  "legacy_id"
     t.integer  "version",                :default => 0, :null => false
     t.integer  "legacy_lender_oid"
-    t.string   "xref"
+    t.string   "xref",                                  :null => false
     t.string   "period_covered_to_date"
     t.string   "created_by_legacy_id"
     t.string   "creation_time"
     t.string   "ar_timestamp"
     t.string   "ar_insert_timestamp"
   end
+
+  add_index "invoices", ["xref"], :name => "index_invoices_on_xref", :unique => true
 
   create_table "lenders", :force => true do |t|
     t.string   "name"
