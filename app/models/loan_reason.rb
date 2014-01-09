@@ -237,7 +237,7 @@ class LoanReason < StaticAssociation
   ].sort_by {|data| data[:name] }
 
   def self.active
-    find_all_by_active(true)
+    all.select(&:active)
   end
 
   def eligible?
