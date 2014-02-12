@@ -58,9 +58,10 @@ describe DataCorrectionsController do
       end
 
       context 'with an invalid type parameter' do
-        it 'redirects to index' do
-          dispatch type: 'foo'
-          response.should redirect_to(loan_data_corrections_url)
+        it 'raises an error' do
+          expect {
+            dispatch type: 'foo'
+          }.to raise_error(KeyError)
         end
       end
     end
