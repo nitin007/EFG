@@ -10,7 +10,13 @@ FactoryGirl.define do
     factory :rescheduled_premium_schedule do
       calc_type 'R'
       initial_draw_year nil
-      premium_cheque_month { Date.today.next_month.strftime('%m/%Y') }
+      premium_cheque_month { Date.current.next_month.strftime('%m/%Y') }
+    end
+
+    trait :with_drawdowns do
+      initial_draw_amount { |o| o.loan.amount / 2 }
+      second_draw_amount { |o| o.initial_draw_amount / 2 }
+      second_draw_months 6
     end
   end
 end

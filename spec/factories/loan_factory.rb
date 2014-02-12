@@ -16,7 +16,7 @@ FactoryGirl.define do
     would_you_lend true
     collateral_exhausted true
     amount 12345
-    repayment_duration({ months: 24 })
+    repayment_duration 24
     turnover 12345
     trading_date 2.years.ago
     sic_code '12345'
@@ -32,6 +32,7 @@ FactoryGirl.define do
     updated_at { Time.now }
     loan_source Loan::SFLG_SOURCE
     loan_scheme Loan::EFG_SCHEME
+    last_modified_at { 1.day.ago }
 
     after :build do |loan|
       loan.lending_limit ||= FactoryGirl.create(:lending_limit, lender: loan.lender)
@@ -53,7 +54,7 @@ FactoryGirl.define do
       state Loan::Cancelled
       cancelled_reason_id 1
       cancelled_comment 'Comment'
-      cancelled_on { Date.today }
+      cancelled_on { Date.current }
     end
 
     trait :completed do
@@ -72,7 +73,7 @@ FactoryGirl.define do
     trait :offered do
       state Loan::Offered
       facility_letter_sent true
-      facility_letter_date { Date.today }
+      facility_letter_date { Date.current }
     end
 
     trait :guaranteed do
@@ -84,7 +85,7 @@ FactoryGirl.define do
 
       after :create do |loan|
         FactoryGirl.create(:initial_draw_change,
-          amount_drawn: loan.amount,
+          amount_drawn: Money.new(10_000_00),
           loan: loan
         )
       end
@@ -93,27 +94,27 @@ FactoryGirl.define do
     trait :removed do
       state Loan::Removed
       remove_guarantee_outstanding_amount Money.new(10_000_00)
-      remove_guarantee_on { Date.today }
+      remove_guarantee_on { Date.current }
       remove_guarantee_reason 'reason'
     end
 
     trait :repaid do
       state Loan::Repaid
-      repaid_on { Date.today }
+      repaid_on { Date.current }
     end
 
     trait :demanded do
       state Loan::Demanded
       dti_demand_outstanding Money.new(10_000_00)
       dti_amount_claimed { |loan| loan.dti_demand_outstanding * 0.75 }
-      dti_demanded_on { Date.today }
+      dti_demanded_on { Date.current }
       dti_reason 'reason'
       ded_code
     end
 
     trait :not_demanded do
       state Loan::NotDemanded
-      no_claim_on { Date.today }
+      no_claim_on { Date.current }
     end
 
     trait :lender_demand do
@@ -126,7 +127,7 @@ FactoryGirl.define do
       state Loan::Settled
       dti_demand_outstanding { |loan| loan.amount * 0.5 }
       dti_amount_claimed { |loan| loan.dti_demand_outstanding * 0.75 }
-      settled_on { Date.today }
+      settled_on { Date.current }
 
       after(:create) do |loan|
         loan.invoice = FactoryGirl.create(:invoice)
@@ -135,12 +136,12 @@ FactoryGirl.define do
 
     trait :recovered do
       state Loan::Recovered
-      recovery_on { Date.today }
+      recovery_on { Date.current }
     end
 
     trait :realised do
       state Loan::Realised
-      realised_money_date { Date.today }
+      realised_money_date { Date.current }
     end
 
     trait :repaid_from_transfer do
@@ -161,7 +162,7 @@ FactoryGirl.define do
 
       after :create do |loan|
         FactoryGirl.create(:initial_draw_change,
-          amount_drawn: loan.amount,
+          amount_drawn: Money.new(10_000_00),
           loan: loan
         )
       end

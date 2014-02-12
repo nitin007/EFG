@@ -6,6 +6,7 @@ module LenderUserPermissions
       expert?
     else
       [
+        AgreedDraw,
         DataCorrection,
         LoanCancel,
         LoanChange,
@@ -18,6 +19,7 @@ module LenderUserPermissions
         LoanOffer,
         LoanRepay,
         LoanReport,
+        LoanSatisfyLenderDemand,
         LoanTransfer::LegacySflg,
         LoanTransfer::Sflg,
         Recovery,

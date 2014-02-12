@@ -62,12 +62,12 @@ describe LoanAuditReport do
       end
 
       it "should return loans with an initial draw date after a specified date" do
-        loan_audit_report = LoanAuditReport.new(facility_letter_start_date: Date.today.strftime('%d/%m/%Y'))
+        loan_audit_report = LoanAuditReport.new(facility_letter_start_date: Date.current.strftime('%d/%m/%Y'))
         loan_audit_report.loans.should == [ loan2 ]
       end
 
       it "should return loans with an initial draw date before a specified date" do
-        loan_audit_report = LoanAuditReport.new(facility_letter_end_date: Date.today.strftime('%d/%m/%Y'))
+        loan_audit_report = LoanAuditReport.new(facility_letter_end_date: Date.current.strftime('%d/%m/%Y'))
         loan_audit_report.loans.should == [ loan1 ]
       end
     end
@@ -76,7 +76,7 @@ describe LoanAuditReport do
       loan1.update_attribute(:created_at, 1.day.ago)
       loan2.update_attribute(:created_at, 1.day.from_now)
 
-      loan_audit_report = LoanAuditReport.new(created_at_start_date: Date.today.strftime('%d/%m/%Y'))
+      loan_audit_report = LoanAuditReport.new(created_at_start_date: Date.current.strftime('%d/%m/%Y'))
 
       loan_audit_report.loans.should == [ loan2 ]
     end
@@ -85,7 +85,7 @@ describe LoanAuditReport do
       loan1.update_attribute(:created_at, 1.day.ago)
       loan2.update_attribute(:created_at, 1.day.from_now)
 
-      loan_audit_report = LoanAuditReport.new(created_at_end_date: Date.today.strftime('%d/%m/%Y'))
+      loan_audit_report = LoanAuditReport.new(created_at_end_date: Date.current.strftime('%d/%m/%Y'))
 
       loan_audit_report.loans.should == [ loan1 ]
     end
@@ -112,7 +112,7 @@ describe LoanAuditReport do
       loan_state_change1.update_attribute(:modified_at, 1.day.ago)
       loan_state_change2.update_attribute(:modified_at, 1.day.from_now)
 
-      loan_audit_report = LoanAuditReport.new(audit_records_start_date: Date.today.strftime('%d/%m/%Y'))
+      loan_audit_report = LoanAuditReport.new(audit_records_start_date: Date.current.strftime('%d/%m/%Y'))
 
       loan_audit_report.loans.should == [ loan2 ]
     end
@@ -121,7 +121,7 @@ describe LoanAuditReport do
       loan_state_change1.update_attribute(:modified_at, 1.day.ago)
       loan_state_change2.update_attribute(:modified_at, 1.day.from_now)
 
-      loan_audit_report = LoanAuditReport.new(audit_records_end_date: Date.today.strftime('%d/%m/%Y'))
+      loan_audit_report = LoanAuditReport.new(audit_records_end_date: Date.current.strftime('%d/%m/%Y'))
 
       loan_audit_report.loans.should == [ loan1 ]
     end

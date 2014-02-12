@@ -3,103 +3,130 @@
 require 'spec_helper'
 
 describe 'loan change' do
-  let(:loan) {
-    FactoryGirl.create(:loan, :guaranteed,
-      business_name: 'ACME',
-      amount: Money.new(30_000_00)
-    )
-  }
-
   let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
   before { login_as(current_user, scope: :user) }
 
-  before(:each) do
-    visit loan_path(loan)
-    click_link 'Change Amount or Terms'
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(100_000_00), maturity_date: Date.new(2014, 12, 25), repayment_duration: 60) }
+
+  before do
+    loan.initial_draw_change.update_column(:date_of_change, Date.new(2009, 12, 25))
   end
 
-  it 'works' do
-    fill_in_valid_details
+  context 'lump_sum_repayment' do
+    before do
+      visit_loan_changes
+      click_link 'Lump Sum Repayment'
+    end
 
-    expect {
-      click_button 'Submit'
-    }.to change(LoanChange, :count).by(1)
+    it 'works' do
+      fill_in :date_of_change, '1/12/11'
+      fill_in :lump_sum_repayment, '1234.56'
+      fill_in :initial_draw_amount, '65,432.10'
 
-    verify
+      Timecop.freeze(2011, 12, 1) do
+        click_button 'Submit'
+      end
 
-    current_path.should == loan_path(loan)
+      loan_change = loan.loan_changes.last!
+      loan_change.change_type.should == ChangeType::LumpSumRepayment
+      loan_change.date_of_change.should == Date.new(2011, 12, 1)
+      loan_change.lump_sum_repayment.should == Money.new(1_234_56)
+
+      premium_schedule = loan.premium_schedules.last!
+      premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
+      premium_schedule.premium_cheque_month.should == '03/2012'
+      premium_schedule.repayment_duration.should == 33
+
+      loan.reload
+      loan.maturity_date.should == Date.new(2014, 12, 25)
+      loan.modified_by.should == current_user
+    end
   end
 
-  it 'does not continue with invalid values' do
-    click_button 'Submit'
-    current_path.should == loan_loan_changes_path(loan)
+  context 'repayment_duration' do
+    before do
+      visit_loan_changes
+      click_link 'Extend or Reduce Loan Term'
+    end
+
+    it 'works' do
+      fill_in :date_of_change, '11/9/10'
+      fill_in :added_months, '3'
+      fill_in :initial_draw_amount, '65,432.10'
+
+      Timecop.freeze(2010, 9, 1) do
+        click_button 'Submit'
+      end
+
+      loan_change = loan.loan_changes.last!
+      loan_change.change_type.should == ChangeType::ExtendTerm
+      loan_change.date_of_change.should == Date.new(2010, 9, 11)
+      loan_change.old_repayment_duration.should == 60
+      loan_change.repayment_duration.should == 63
+
+      premium_schedule = loan.premium_schedules.last!
+      premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
+      premium_schedule.premium_cheque_month.should == '12/2010'
+      premium_schedule.repayment_duration.should == 51
+
+      loan.reload
+      loan.modified_by.should == current_user
+      loan.repayment_duration.total_months.should == 63
+      loan.maturity_date.should == Date.new(2015, 3, 25)
+    end
   end
 
-  it 'requires recalculation of state aid' do
-    fill_in_valid_details
-    # choose change type that requires state aid recalculation
-    select ChangeType.find('2').name, from: 'loan_change_change_type_id'
-    click_button 'Submit'
+  context 'reprofile_draws' do
+    before do
+      visit_loan_changes
+      click_link 'Reprofile Draws'
+    end
 
-    # confirm reschedule validation error is shown
-    page.should have_content('please reschedule')
+    it 'works' do
+      fill_in :date_of_change, '11/9/10'
+      fill_in :initial_draw_amount, '65,432.10'
+      fill_in :initial_capital_repayment_holiday, '3'
+      fill_in :second_draw_amount, '5,000.00'
+      fill_in :second_draw_months, '6'
+      fill_in :third_draw_amount, '5,000.00'
+      fill_in :third_draw_months, '12'
+      fill_in :fourth_draw_amount, '5,000.00'
+      fill_in :fourth_draw_months, '18'
 
-    click_button "Reschedule"
+      Timecop.freeze(2010, 9, 1) do
+        click_button 'Submit'
+      end
 
-    premium_cheque_date = Date.today.advance(months: 1).strftime('%m/%Y')
+      loan_change = loan.loan_changes.last!
+      loan_change.change_type.should == ChangeType::ReprofileDraws
+      loan_change.date_of_change.should == Date.new(2010, 9, 11)
 
-    fill_in "premium_schedule_premium_cheque_month", with: premium_cheque_date
-    fill_in "premium_schedule_initial_draw_amount", with: "30000"
-    fill_in "premium_schedule_repayment_duration", with: "18"
+      premium_schedule = loan.premium_schedules.last!
+      premium_schedule.initial_draw_amount.should == Money.new(65_432_10)
+      premium_schedule.premium_cheque_month.should == '12/2010'
+      premium_schedule.repayment_duration.should == 48
+      premium_schedule.initial_capital_repayment_holiday.should == 3
+      premium_schedule.second_draw_amount.should == Money.new(5_000_00)
+      premium_schedule.second_draw_months.should == 6
+      premium_schedule.third_draw_amount.should == Money.new(5_000_00)
+      premium_schedule.third_draw_months.should == 12
+      premium_schedule.fourth_draw_amount.should == Money.new(5_000_00)
+      premium_schedule.fourth_draw_months.should == 18
 
-    click_button "Submit"
-
-    current_path.should == new_loan_loan_change_path(loan)
-
-    # verify state aid calculation is created
-    expect {
-      click_button 'Submit'
-    }.to change(PremiumSchedule, :count).by(1)
-
-    calculation = PremiumSchedule.last
-    calculation.premium_cheque_month.should == premium_cheque_date
-    calculation.initial_draw_amount.should == Money.new(30_000_00)
-    calculation.repayment_duration.should == 18
-    calculation.should be_reschedule
-  end
-
-  it 'remembers loan change values when rescheduling is cancelled' do
-    fill_in_valid_details
-    click_button "Reschedule"
-
-    click_button "Cancel"
-
-    # verify previous values are remembered when returning to loan change form
-    page.find('#loan_change_date_of_change').value.should == '01/06/2012'
-    page.find('#loan_change_change_type_id').value.should == '1'
-    page.find('#loan_change_amount_drawn').value.should == '15000.00'
-    page.find('#loan_change_business_name').value.should == 'updated'
+      loan.reload
+      loan.modified_by.should == current_user
+      loan.repayment_duration.total_months.should == 60
+      loan.maturity_date.should == Date.new(2014, 12, 25)
+    end
   end
 
   private
-
-    def fill_in_valid_details
-      fill_in 'loan_change_date_of_change', with: '1/6/12'
-      select ChangeType.find('1').name, from: 'loan_change_change_type_id'
-      fill_in 'loan_change_amount_drawn', with: '£15,000'
-      fill_in 'loan_change_business_name', with: 'updated'
+    def fill_in(attribute, value)
+      page.fill_in "loan_change_#{attribute}", with: value
     end
 
-    def verify
-      loan_change = loan.loan_changes.last
-      loan_change.date_of_change.should == Date.new(2012, 6, 1)
-      loan_change.change_type.should == ChangeType.find('1')
-      loan_change.amount_drawn.should == Money.new(15_000_00)
-      loan_change.old_business_name.should == 'ACME'
-      loan_change.business_name.should == 'updated'
-
-      loan.reload
-      loan.business_name.should == 'updated'
-      loan.modified_by.should == current_user
+    def visit_loan_changes
+      visit loan_path(loan)
+      click_link 'Change Amount or Terms'
     end
 end

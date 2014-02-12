@@ -66,7 +66,6 @@ class Loan < ActiveRecord::Base
   scope :guaranteed,      where(state: Loan::Guaranteed)
   scope :recovered,       where(state: Loan::Recovered)
 
-  scope :changeable,  where(state: [Loan::Guaranteed, Loan::LenderDemand])
   scope :correctable, where(state: [Loan::Guaranteed, Loan::LenderDemand, Loan::Demanded])
   scope :recoverable, where(state: [Loan::Settled, Loan::Recovered, Loan::Realised])
 
@@ -187,6 +186,10 @@ class Loan < ActiveRecord::Base
 
   def premium_schedule
     premium_schedules.last
+  end
+
+  def has_drawdowns?
+    premium_schedule && premium_schedule.has_drawdowns?
   end
 
   def loan_category

@@ -52,7 +52,7 @@ describe 'Loan lifecycle' do
       current_url.should == loan_url(loan)
 
       # Loan Change
-      change_loan_business_name(loan)
+      reprofile_draws(loan)
 
       # Loan Data Correction - loan amount
       make_loan_data_correction(loan)
@@ -106,7 +106,7 @@ describe 'Loan lifecycle' do
 
   %w(sflg legacy_sflg).each do |loan_type|
     context "for guaranteed #{loan_type.humanize} loan" do
-      let!(:loan) { FactoryGirl.create(:loan, loan_type.to_sym, :offered, :guaranteed, lender: lender) }
+      let!(:loan) { FactoryGirl.create(:loan, loan_type.to_sym, :offered, :guaranteed, lender: lender, sortcode: '03-12-45') }
 
       it do
         visit root_path
@@ -121,7 +121,7 @@ describe 'Loan lifecycle' do
         click_link loan.reference
 
         # Loan Change
-        change_loan_business_name(loan)
+        reprofile_draws(loan)
 
         # Loan Data Correction - loan amount
         make_loan_data_correction(loan)
@@ -188,26 +188,41 @@ describe 'Loan lifecycle' do
     submit_sign_in_form(cfe_user.username, cfe_user.password)
   end
 
-  def change_loan_business_name(loan)
+  def reprofile_draws(loan)
     click_link "Change Amount or Terms"
-    fill_in 'loan_change_date_of_change', with: Date.today.to_s(:screen)
-    select ChangeType.find('1').name, from: 'loan_change_change_type_id' # change business name
-    fill_in 'loan_change_business_name', with: 'New Business Name'
+    click_link 'Reprofile Draws'
+    fill_in 'loan_change_date_of_change', with: Date.current.to_s(:screen)
+    fill_in 'loan_change_initial_draw_amount', with: '9,876.54'
     click_button 'Submit'
 
     current_url.should == loan_url(loan)
-    page.should have_content('New Business Name')
+
+    click_link 'Generate Premium Schedule'
+    page.should have_content('£9,876.54')
+    click_link "Loan #{loan.reference}"
+  end
+
+  def fill_in_valid_loan_demand_against_government_guarantee_details(loan, ded_code)
+    fill_in 'loan_demand_against_government_dti_demand_outstanding', with: loan.cumulative_drawn_amount
+    fill_in 'loan_demand_against_government_dti_reason', with: 'Something'
+    select_option_value ded_code.code, from: 'loan_demand_against_government_dti_ded_code'
   end
 
   def make_loan_data_correction(loan)
-    new_amount = loan.amount + Money.new(5_000_00)
-
     click_link "Data Correction"
-    fill_in "data_correction_amount", with: new_amount.to_s
+    click_link 'Sortcode'
+    fill_in "data_correction_sortcode", with: '654321'
     click_button "Submit"
 
     current_url.should == loan_url(loan)
-    page.should have_content(new_amount.format)
+
+    click_link 'Loan Changes'
+    click_link 'Data correction'
+
+    page.should have_content('03-12-45')
+    page.should have_content('654321')
+
+    click_link 'Loan Summary'
   end
 
   def make_demand_to_borrower(loan)
@@ -219,10 +234,8 @@ describe 'Loan lifecycle' do
   end
 
   def satisfy_lender_demand(loan)
-    click_link "Change Amount or Terms"
-    fill_in 'loan_change_date_of_change', with: Date.today.to_s(:screen)
-    select ChangeType.find('5').name, from: 'loan_change_change_type_id' # lender demand satisfied
-    fill_in 'loan_change_lump_sum_repayment', with: '10000'
+    click_link 'Lender Demand Satisfied'
+    fill_in 'loan_satisfy_lender_demand_date_of_change', with: Date.current.to_s(:screen)
     click_button 'Submit'
 
     current_url.should == loan_url(loan)
@@ -232,9 +245,9 @@ describe 'Loan lifecycle' do
     click_link "Invoice Received"
     select lender.name, from: 'invoice_lender_id'
     fill_in 'invoice_reference', with: '2006-SADHJ'
-    select next_quarter_month_name(Date.today), from: 'invoice_period_covered_quarter'
-    fill_in 'invoice_period_covered_year', with: Date.today.year
-    fill_in 'invoice_received_on', with: Date.today.to_s(:screen)
+    select next_quarter_month_name(Date.current), from: 'invoice_period_covered_quarter'
+    fill_in 'invoice_period_covered_year', with: Date.current.year
+    fill_in 'invoice_received_on', with: Date.current.to_s(:screen)
     click_button "Select Loans"
 
     within("#settle_loan_#{loan.id}") do
@@ -248,9 +261,9 @@ describe 'Loan lifecycle' do
     click_link "Recoveries Statement Received"
     select lender.name, from: 'realisation_statement_lender_id'
     fill_in 'realisation_statement_reference', with: "ABC123"
-    select next_quarter_month_name(Date.today), from: 'realisation_statement_period_covered_quarter'
-    fill_in 'realisation_statement_period_covered_year', with: Date.today.year
-    fill_in 'realisation_statement_received_on', with: Date.today.to_s(:screen)
+    select next_quarter_month_name(Date.current), from: 'realisation_statement_period_covered_quarter'
+    fill_in 'realisation_statement_period_covered_year', with: Date.current.year
+    fill_in 'realisation_statement_received_on', with: Date.current.to_s(:screen)
     click_button 'Select Loans'
 
     within "#realise_recovery_#{loan.recoveries.last.id}" do

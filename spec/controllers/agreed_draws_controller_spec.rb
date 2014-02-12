@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RegenerateSchedulesController do
+describe AgreedDrawsController do
   let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
   describe '#new' do
@@ -18,7 +18,7 @@ describe RegenerateSchedulesController do
 
   describe '#create' do
     def dispatch(params = {})
-      post :create, { loan_id: loan.id, premium_schedule: {} }.merge(params)
+      post :create, { loan_id: loan.id, loan_cancel: {} }.merge(params)
     end
 
     it_behaves_like 'AuditorUser-restricted controller'

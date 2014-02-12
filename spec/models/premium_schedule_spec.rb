@@ -98,13 +98,11 @@ describe PremiumSchedule do
       end
     end
 
-    it 'requires initial draw amount to be 0 or more' do
-      loan.amount = 0
-
-      premium_schedule.initial_draw_amount = -1
+    it 'requires initial draw amount to be more than zero' do
+      premium_schedule.initial_draw_amount = 0
       premium_schedule.should_not be_valid
 
-      premium_schedule.initial_draw_amount = 0
+      premium_schedule.initial_draw_amount = 1
       premium_schedule.should be_valid
     end
 
@@ -203,12 +201,12 @@ describe PremiumSchedule do
       end
 
       it "is not valid when premium cheque month is current month" do
-        rescheduled_premium_schedule.premium_cheque_month = Date.today.strftime('%m/%Y')
+        rescheduled_premium_schedule.premium_cheque_month = Date.current.strftime('%m/%Y')
         rescheduled_premium_schedule.should_not be_valid
       end
 
       it "is valid when premium cheque month is next month" do
-        rescheduled_premium_schedule.premium_cheque_month = Date.today.next_month.strftime('%m/%Y')
+        rescheduled_premium_schedule.premium_cheque_month = Date.current.next_month.strftime('%m/%Y')
         rescheduled_premium_schedule.should be_valid
       end
 

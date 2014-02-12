@@ -73,6 +73,10 @@ class PremiumSchedule < ActiveRecord::Base
     self.euro_conversion_rate = self.class.current_euro_conversion_rate
   end
 
+  def has_drawdowns?
+    drawdowns.length > 1
+  end
+
   def drawdowns
     [TrancheDrawdown.new(initial_draw_amount, 0)].tap do |drawdowns|
       if second_draw_amount.present? && second_draw_amount.nonzero? && second_draw_months.present?
@@ -160,7 +164,11 @@ class PremiumSchedule < ActiveRecord::Base
     end
 
     def initial_draw_amount_is_within_limit
-      if initial_draw_amount.blank? || initial_draw_amount < 0 || initial_draw_amount > MAX_INITIAL_DRAW
+      if initial_draw_amount.blank?
+        errors.add(:initial_draw_amount, :required)
+      elsif initial_draw_amount <= 0
+        errors.add(:initial_draw_amount, :must_be_positive)
+      elsif initial_draw_amount > MAX_INITIAL_DRAW
         errors.add(:initial_draw_amount, :invalid)
       end
     end
@@ -173,7 +181,7 @@ class PremiumSchedule < ActiveRecord::Base
         return
       end
 
-      errors.add(:premium_cheque_month, :invalid) unless date > Date.today.end_of_month
+      errors.add(:premium_cheque_month, :invalid) unless date > Date.current.end_of_month
     end
 
     def total_draw_amount

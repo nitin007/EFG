@@ -71,6 +71,7 @@ EFG::Application.routes.draw do
     resource :entry, only: [:new, :create], controller: 'loan_entries'
     resource :transferred_entry, only: [:new, :create], controller: 'transferred_loan_entries'
     resource :demand_to_borrower, only: [:new, :create], controller: 'loan_demand_to_borrowers'
+    resource :satisfy_lender_demand, only: [:new, :create], controller: 'loan_satisfy_lender_demand'
     resource :repay, only: [:new, :create], controller: 'loan_repays'
     resource :no_claim, only: [:new, :create], controller: 'loan_no_claims'
     resource :demand_against_government, only: [:new, :create], controller: 'loan_demand_against_government'
@@ -78,12 +79,11 @@ EFG::Application.routes.draw do
     resource :remove_guarantee, only: [:new, :create], controller: 'loan_remove_guarantees'
     resource :update_lending_limit, only: [:new, :create], controller: 'update_loan_lending_limits'
 
-    resources :data_corrections, only: [:new, :create]
-    resources :loan_changes, only: [:new, :create]
+    resources :agreed_draws, only: [:new, :create]
+    resources :data_corrections, only: [:index, :new, :create]
+    resources :loan_changes, only: [:index, :new, :create]
     resources :loan_modifications, only: [:index, :show]
     resources :recoveries, only: [:new, :create]
-
-    resource :regenerate_schedule, only: [:new, :create]
   end
 
   resources :documents, only: [] do

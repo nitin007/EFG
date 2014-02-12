@@ -29,14 +29,14 @@ describe 'loan guarantee' do
     loan.received_declaration.should == true
     loan.signed_direct_debit_received.should == true
     loan.first_pp_received.should == true
-    loan.maturity_date.should == Date.new(2015, 12, 1)
+    loan.maturity_date.should == Date.new(2015, 11, 30)
     loan.modified_by.should == current_user
 
     should_log_loan_state_change(loan, Loan::Guaranteed, 7, current_user)
 
     loan_change = loan.initial_draw_change
     loan_change.amount_drawn.should == loan.amount
-    loan_change.change_type_id.should == nil
+    loan_change.change_type.should == nil
     loan_change.created_by.should == current_user
     loan_change.date_of_change.should == Date.new(2012, 11, 30)
     loan_change.modified_date.should == Date.current

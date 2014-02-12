@@ -25,7 +25,7 @@ class EligibilityCheck
     add_error(:previous_borrowing) unless loan.previous_borrowing?
     add_error(:private_residence_charge_required) if loan.private_residence_charge_required?
     add_error(:sic_code) unless loan.sic_eligible?
-    add_error(:trading_date) if loan.trading_date > Date.today.advance(months: 6)
+    add_error(:trading_date) if loan.trading_date > Date.current.advance(months: 6)
     add_error(:reason_id) unless loan.reason.eligible?
     check_repayment_duration
   end
@@ -35,8 +35,8 @@ class EligibilityCheck
   end
 
   def check_repayment_duration
-    loan_term = LoanTerm.new(loan)
-    unless loan.repayment_duration.total_months.between?(loan_term.min_months, loan_term.max_months)
+    repayment_duration = RepaymentDuration.new(loan)
+    unless loan.repayment_duration.total_months.between?(repayment_duration.min_months, repayment_duration.max_months)
       add_error(:repayment_duration)
     end
   end

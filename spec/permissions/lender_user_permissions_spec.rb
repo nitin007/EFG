@@ -257,4 +257,16 @@ describe LenderUserPermissions do
     it { refute user.can_update?(Phase) }
     it { refute user.can_view?(Phase) }
   end
+
+  context 'LoanSatisfyLenderDemand' do
+    it { assert user.can_create?(LoanSatisfyLenderDemand) }
+    it { refute user.can_update?(LoanSatisfyLenderDemand) }
+    it { refute user.can_view?(LoanSatisfyLenderDemand) }
+  end
+
+  context 'AgreedDraw' do
+    it { assert user.can_create?(AgreedDraw) }
+    it { refute user.can_update?(AgreedDraw) }
+    it { refute user.can_view?(AgreedDraw) }
+  end
 end

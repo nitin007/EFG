@@ -61,7 +61,7 @@ describe LoanGuarantee do
 
       initial_draw_change = loan.initial_draw_change
       initial_draw_change.amount_drawn.should == Money.new(5_000_00)
-      initial_draw_change.change_type_id.should == nil
+      initial_draw_change.change_type.should == nil
       initial_draw_change.created_by.should == lender_user
       initial_draw_change.date_of_change.should == Date.current
       initial_draw_change.modified_date.should == Date.current
@@ -78,7 +78,7 @@ describe LoanGuarantee do
       state_change.state.should == Loan::Guaranteed
     end
 
-    it "updates the maturity date to the initial draw date + loan term + 1 day" do
+    it "updates the maturity date to the initial draw date + loan term" do
       loan.repayment_duration = {years: 3}
       loan.facility_letter_date = Date.new(2012, 10, 20)
       loan_guarantee.initial_draw_date = Date.new(2012, 11, 30)
@@ -86,7 +86,7 @@ describe LoanGuarantee do
       loan_guarantee.save
 
       loan.reload
-      loan.maturity_date.should == Date.new(2015, 12, 1)
+      loan.maturity_date.should == Date.new(2015, 11, 30)
     end
   end
 end

@@ -11,6 +11,9 @@ en:
     error_notification:
       default_message: "Please review the problems below:"
     labels:
+      agreed_draw:
+        date_of_change: Date of tranche drawdown
+
       loan: &loan
         reference: "System generated identification reference"
         viable_proposition: "Other than in respect of the availability of security, are the Applicant's plans viable and serviceable, as assessed according to your Normal Commercial Lending Criteria?"
@@ -40,21 +43,21 @@ en:
 
       loan_change:
         date_of_change: 'What is the date when the change to be recorded occurred?'
-        change_type_id: 'What is the change you wish to make?'
+        added_months: Number of Months to extend or reduce the loan term (please note that if reducing the term, the figure must be entered as a negative value)
         amount_drawn: 'What is the amount now being drawn that is to be recorded? (This should include any further draws it is known will take place before the next Premium Payment is due)'
         lump_sum_repayment: 'What is the amount of the lump sum repayment?'
-        business_name: 'What is the new business name?'
-        maturity_date: 'What is the new maturity date?'
+        initial_draw_amount: 'What is the outstanding balance at the next quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'
+        initial_capital_repayment_holiday: What is the length of the initial capital repayment holiday? (Months)
+        second_draw_amount: What is the amount of the additional draw? (Second tranche)
+        second_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to second tranche drawdown?
+        third_draw_amount: What is the amount of the additional draw? (Third tranche)
+        third_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to third tranche drawdown?
+        fourth_draw_amount: What is the amount of the additional draw? (Fourth tranche)
+        fourth_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to fourth tranche drawdown?
 
       data_correction:
-        amount: 'Corrected Loan Amount'
-        lending_limit_id: 'Correct Lending Limit'
-        facility_letter_date: 'Correct Facility Letter Date'
-        initial_draw_date: 'Correct Date of Guarantee and Initial Draw of Funds'
-        initial_draw_amount: 'Correct Value of Initial Draw'
+        business_name: 'What is the new business name?'
         sortcode: 'Correct Branch Sort Code'
-        dti_demand_out_amount: 'Change to the Original Outstanding Scheme Facility Principal'
-        dti_demand_interest: 'Change to interest'
 
       loan_eligibility_check:
         <<: *loan
@@ -128,18 +131,6 @@ en:
         third_draw_months: 'What is the number of months (from the initial draw) to third tranche drawdown?'
         fourth_draw_amount: 'What is the amount of additional draw? (Fourth tranche)'
         fourth_draw_months: 'What is the number of months (from the initial draw) to fourth tranche drawdown?'
-
-      regenerate_schedule:
-        premium_cheque_month: 'When is the next quarterly Premium due?'
-        initial_draw_amount: 'What is the outstanding balance at the next (or subsequent) quarterly Premium collection point, taking account of any draws or repayments which may be made between now and the relevant quarter date?'
-        repayment_duration: 'What will the outstanding loan term be at the next (or subsequent) quarterly Premium collection point? (Months - must be a multiple of 3, i.e. rounded up to the next whole quarter)'
-        initial_capital_repayment_holiday: What is the length of the initial capital repayment holiday? (Months) (Note that if the facility is being provided on interest-only terms then the value entered here should be equal to the full term of the facility)
-        second_draw_amount: What is the amount of the additional draw? (Second tranche)
-        second_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to second tranche drawdown?
-        third_draw_amount: What is the amount of the additional draw? (Third tranche)
-        third_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to third tranche drawdown?
-        fourth_draw_amount: What is the amount of the additional draw? (Fourth tranche)
-        fourth_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to fourth tranche drawdown?
 
       loan_demand_to_borrower:
         amount_demanded: 'What was the amount for which demand was made on the borrower (as recorded on the demand letter)?'
