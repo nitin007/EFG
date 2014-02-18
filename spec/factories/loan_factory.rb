@@ -15,6 +15,7 @@ FactoryGirl.define do
     viable_proposition true
     would_you_lend true
     collateral_exhausted true
+    not_insolvent true
     amount 12345
     repayment_duration 24
     turnover 12345

@@ -29,6 +29,7 @@ describe LoanEligibilityCheck do
       viable_proposition
       would_you_lend
       collateral_exhausted
+      not_insolvent
       previous_borrowing
       private_residence_charge_required
       personal_guarantee_required
