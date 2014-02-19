@@ -351,7 +351,7 @@ describe PremiumSchedule do
 
   describe '#second_premium_collection_month' do
     let(:premium_schedule) { FactoryGirl.build(:premium_schedule, loan: loan) }
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
+    let!(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
     it 'returns a formatted date string 3 months from the initial draw date ' do
       loan.initial_draw_change.update_attribute :date_of_change, Date.new(2012, 2, 24)
@@ -366,7 +366,7 @@ describe PremiumSchedule do
     end
 
     it 'returns nil if there is no initial draw date' do
-      loan.loan_modifications.delete_all
+      LoanModification.delete_all
 
       premium_schedule.second_premium_collection_month.should be_nil
     end

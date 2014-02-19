@@ -13,7 +13,7 @@ describe TransferredLoanEntry do
   end
 
   describe "validations" do
-    let(:transferred_loan_entry) { FactoryGirl.build(:transferred_loan_entry) }
+    let!(:transferred_loan_entry) { FactoryGirl.build(:transferred_loan_entry) }
 
     it "should have a valid factory" do
       transferred_loan_entry.should be_valid
@@ -40,7 +40,9 @@ describe TransferredLoanEntry do
     end
 
     it "should be invalid without a state aid calculation" do
-      transferred_loan_entry.loan.premium_schedules.delete_all
+      PremiumSchedule.delete_all
+      transferred_loan_entry.loan.reload
+
       transferred_loan_entry.should_not be_valid
       transferred_loan_entry.errors[:state_aid].should == ['must be calculated']
     end
