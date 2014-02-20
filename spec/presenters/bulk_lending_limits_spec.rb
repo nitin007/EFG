@@ -160,7 +160,7 @@ describe BulkLendingLimits do
     let(:lender1) { FactoryGirl.create(:lender) }
     let(:lender2) { FactoryGirl.create(:lender) }
     let(:lender3) { FactoryGirl.create(:lender) }
-    let(:phase) { FactoryGirl.create(:phase) }
+    let(:phase) { Phase.find(5) }
     let(:user) { FactoryGirl.create(:cfe_admin) }
 
     before { AdminAudit.stub!(:log) }

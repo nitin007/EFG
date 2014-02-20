@@ -151,7 +151,5 @@ EFG::Application.routes.draw do
 
   resource :usernames_reminder, only: [:new, :create], controller: 'usernames_reminder'
 
-  resources :phases, except: [:show, :destroy]
-
   resources :bulk_lending_limits, only: [:new, :create]
 end

@@ -53,7 +53,7 @@ class LoanTypeGroupSet
       groups << group_type.new('Legacy SFLG Loans') {|loan| loan.legacy_loan? }
       groups << group_type.new('SFLG Loans') {|loan| loan.sflg? }
 
-      Phase.order('name ASC').each do |phase|
+      Phase.all.each do |phase|
         # Compare ids here to avoid doing an extra join.
         groups << group_type.new("EFG Loans – #{phase.name}") {|loan| loan.efg_loan? && loan.lending_limit.phase_id == phase.id }
       end
