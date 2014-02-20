@@ -282,6 +282,7 @@ class Extractor
           whitelist "created_at"
           whitelist "updated_at"
           whitelist "modified_by_id"
+          whitelist 'phase_id'
         end
 
         table 'loan_ineligibility_reasons' do
