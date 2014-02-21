@@ -252,18 +252,6 @@ describe PremiumSchedule do
         premium_schedule.state_aid_eur.should == Money.new(24_962_50, 'EUR')
       end
     end
-
-    describe "saving a state aid calculation" do
-      it "should store the state aid on the loan" do
-        PremiumSchedule.stub!(:current_euro_conversion_rate).and_return(1.1974)
-
-        loan.save!
-        premium_schedule.save!
-
-        loan.reload
-        loan.state_aid.should == Money.new(24_962_50, 'EUR')
-      end
-    end
   end
 
   describe "sequence" do

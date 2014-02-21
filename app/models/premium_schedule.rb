@@ -25,10 +25,6 @@ class PremiumSchedule < ActiveRecord::Base
     write_attribute(:euro_conversion_rate, euro_conversion_rate)
   end
 
-  after_save do |calculation|
-    calculation.loan.update_attribute :state_aid, state_aid_eur
-  end
-
   validates_presence_of :loan_id, strict: true
   validates_presence_of :repayment_duration
   validates_inclusion_of :calc_type, in: [ SCHEDULE_TYPE, RESCHEDULE_TYPE, NOTIFIED_AID_TYPE ]

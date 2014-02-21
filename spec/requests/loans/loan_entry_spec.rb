@@ -36,6 +36,7 @@ describe 'loan entry' do
     loan.interest_rate.should == 2.25
     loan.fees.should == Money.new(12345)
     loan.modified_by.should == current_user
+    loan.state_aid.should == Money.new(3_222_75, 'EUR')
 
     should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
   end

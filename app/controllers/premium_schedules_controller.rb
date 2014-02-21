@@ -21,10 +21,15 @@ class PremiumSchedulesController < ApplicationController
     @premium_schedule.calc_type = PremiumSchedule::SCHEDULE_TYPE
     @premium_schedule.reset_euro_conversion_rate
 
-    if @premium_schedule.save
-      redirect_to leave_premium_schedule_path(@loan)
-    else
-      render :edit
+    @premium_schedule.transaction do
+      if @premium_schedule.save
+        @loan.recalculate_state_aid
+        @loan.save!
+
+        redirect_to leave_premium_schedule_path(@loan)
+      else
+        render :edit
+      end
     end
   end
 
