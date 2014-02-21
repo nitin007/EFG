@@ -12,7 +12,7 @@ class PremiumSchedule < ActiveRecord::Base
   belongs_to :loan, inverse_of: :premium_schedules
 
   attr_accessible :initial_draw_year, :initial_draw_amount,
-    :repayment_duration, :initial_capital_repayment_holiday,
+    :initial_capital_repayment_holiday,
     :second_draw_amount, :second_draw_months, :third_draw_amount,
     :third_draw_months, :fourth_draw_amount, :fourth_draw_months,
     :loan_id, :premium_cheque_month

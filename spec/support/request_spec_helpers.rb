@@ -73,7 +73,6 @@ module RequestSpecHelpers
     click_button 'State Aid Calculation'
     page.fill_in 'premium_schedule_initial_draw_year', with: Date.current.year
     page.fill_in 'premium_schedule_initial_draw_amount', with: loan.amount.to_s
-    page.fill_in 'premium_schedule_repayment_duration', with: '12'
     click_button 'Submit'
   end
 

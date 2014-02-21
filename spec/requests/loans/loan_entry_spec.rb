@@ -36,7 +36,7 @@ describe 'loan entry' do
     loan.interest_rate.should == 2.25
     loan.fees.should == Money.new(12345)
     loan.modified_by.should == current_user
-    loan.state_aid.should == Money.new(3_222_75, 'EUR')
+    loan.state_aid.should == Money.new(3_071_08, 'EUR')
 
     should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
   end
@@ -153,6 +153,10 @@ describe 'loan entry' do
     visit new_loan_entry_path(loan)
 
     fill_in_valid_loan_entry_details(loan)
+
+    loan.reload
+    loan.state_aid.should == Money.new(3_071_08, 'EUR')
+
     fill_in "loan_entry_repayment_duration_months", with: loan.repayment_duration.total_months + 12
     click_button 'Submit'
 
@@ -161,6 +165,9 @@ describe 'loan entry' do
     calculate_state_aid(loan)
 
     click_button 'Submit'
+
+    loan.reload
+    loan.state_aid.should == Money.new(2_616_10, 'EUR')
 
     current_path.should == complete_loan_entry_path(loan)
   end
