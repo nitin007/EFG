@@ -144,6 +144,10 @@ class Loan < ActiveRecord::Base
     where(state: state)
   end
 
+  def calculate_state_aid
+    self.state_aid = Phase5StateAidCalculator.new(self).state_aid_eur
+  end
+
   def cancelled_reason
     CancelReason.find(cancelled_reason_id)
   end
@@ -287,10 +291,6 @@ class Loan < ActiveRecord::Base
     else
       self.dti_amount_claimed = (demand_outstanding + interest + break_costs) * self.guarantee_rate / 100
     end
-  end
-
-  def recalculate_state_aid
-    self.state_aid = self.premium_schedule.state_aid_eur
   end
 
   private

@@ -12,7 +12,7 @@ describe 'loan entry' do
     visit loan_path(loan)
     click_link 'Loan Entry'
 
-    fill_in_valid_loan_entry_details(loan)
+    fill_in_valid_loan_entry_details_phase_5(loan)
     click_button 'Submit'
 
     loan = Loan.last
@@ -69,7 +69,7 @@ describe 'loan entry' do
     visit loan_path(loan)
     click_link 'Loan Entry'
 
-    fill_in_valid_loan_entry_details(loan)
+    fill_in_valid_loan_entry_details_phase_5(loan)
 
     click_button 'Submit'
 
@@ -152,7 +152,7 @@ describe 'loan entry' do
   it "should require recalculation of state aid when the loan repayment duration is changed" do
     visit new_loan_entry_path(loan)
 
-    fill_in_valid_loan_entry_details(loan)
+    fill_in_valid_loan_entry_details_phase_5(loan)
 
     loan.reload
     loan.state_aid.should == Money.new(3_071_08, 'EUR')
@@ -175,7 +175,7 @@ describe 'loan entry' do
   private
 
     def fill_in_ineligible_details(loan)
-      fill_in_valid_loan_entry_details(loan)
+      fill_in_valid_loan_entry_details_phase_5(loan)
       choose 'loan_entry_viable_proposition_false'
     end
 

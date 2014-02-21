@@ -7,7 +7,6 @@ class PremiumSchedule < ActiveRecord::Base
 
   EURO_CONVERSION_RATE = BigDecimal.new('1.2285')
   MAX_INITIAL_DRAW = Money.new(9_999_999_99)
-  RISK_FACTOR = 0.3
 
   belongs_to :loan, inverse_of: :premium_schedules
 
@@ -46,15 +45,6 @@ class PremiumSchedule < ActiveRecord::Base
 
   def self.current_euro_conversion_rate
     EURO_CONVERSION_RATE
-  end
-
-  def state_aid_gbp
-    (loan.amount * (loan.guarantee_rate / 100) * RISK_FACTOR) - total_premiums
-  end
-
-  def state_aid_eur
-    euro = state_aid_gbp * euro_conversion_rate
-    Money.new(euro.cents, 'EUR')
   end
 
   def reschedule?

@@ -119,18 +119,23 @@ describe 'state aid calculations' do
 
     context "updating a state aid calculation after the exchange rate has changed" do
       # We've created a state aid calculation at an old exchange rate, and
-      # then its been updated. The subsequent calculation should be with the
+      # then it's been updated. The subsequent calculation should be with the
       # new exchange rate.
-      let(:premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan, euro_conversion_rate: 0.80) }
+      let(:old_state_aid) { Money.new(1_234_56) }
+      let(:premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan, euro_conversion_rate: 0.8) }
+
+      before do
+        loan.update_attribute(:state_aid, old_state_aid)
+      end
 
       it "updates the euro conversion rate" do
         click_button 'Submit'
 
-        expect {
-          premium_schedule.reload
-        }.to change(premium_schedule, :state_aid_eur)
-
+        premium_schedule.reload
         premium_schedule.euro_conversion_rate.should == PremiumSchedule.current_euro_conversion_rate
+
+        loan.reload
+        loan.state_aid.should_not == old_state_aid
       end
     end
   end

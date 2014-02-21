@@ -225,35 +225,6 @@ describe PremiumSchedule do
     end
   end
 
-  context do
-
-    let(:loan) { FactoryGirl.build(:loan, amount: Money.new(100_000_00)) }
-
-    let(:premium_schedule) {
-      FactoryGirl.build(:premium_schedule,
-        loan: loan,
-        initial_draw_amount: Money.new(50_000_00),
-        repayment_duration: 24,
-        initial_capital_repayment_holiday: 4,
-        second_draw_amount: Money.new(25_000_00),
-        second_draw_months: 13,
-        third_draw_amount: Money.new(25_000_00),
-        third_draw_months: 17
-      )
-    }
-
-    describe "calculations" do
-      it "calculates state aid in GBP" do
-        premium_schedule.state_aid_gbp.should == Money.new(20_847_25, 'GBP')
-      end
-
-      it "calculates state aid in EUR" do
-        PremiumSchedule.stub!(:current_euro_conversion_rate).and_return(1.1974)
-        premium_schedule.state_aid_eur.should == Money.new(24_962_50, 'EUR')
-      end
-    end
-  end
-
   describe "sequence" do
     let(:premium_schedule) { FactoryGirl.build(:premium_schedule) }
 

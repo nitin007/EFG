@@ -23,7 +23,7 @@ class PremiumSchedulesController < ApplicationController
 
     @premium_schedule.transaction do
       if @premium_schedule.save
-        @loan.recalculate_state_aid
+        @loan.calculate_state_aid
         @loan.save!
 
         redirect_to leave_premium_schedule_path(@loan)

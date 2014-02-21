@@ -34,7 +34,7 @@ describe 'Loan lifecycle' do
       # Loan Entry
       click_link "View Loan Summary"
       click_link "Loan Entry"
-      fill_in_valid_loan_entry_details(loan)
+      fill_in_valid_loan_entry_details_phase_5(loan)
       click_button "Submit"
       current_url.should == complete_loan_entry_url(loan)
 
