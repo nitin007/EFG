@@ -616,7 +616,7 @@ class Extractor
           whitelist "guarantee_rate"
           whitelist "npv"
           whitelist "prem_rate"
-          whitelist "euro_conv_rate"
+          whitelist "euro_conversion_rate"
           whitelist "elsewhere_perc"
           whitelist "obj1_perc"
           whitelist "ar_timestamp"
