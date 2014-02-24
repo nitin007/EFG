@@ -12,6 +12,7 @@ class LoanEntry
   attribute :viable_proposition
   attribute :would_you_lend
   attribute :collateral_exhausted
+  attribute :not_insolvent
   attribute :sic_code
   attribute :loan_category_id
   attribute :reason_id
