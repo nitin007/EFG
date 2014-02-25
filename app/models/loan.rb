@@ -125,6 +125,8 @@ class Loan < ActiveRecord::Base
 
   before_create :set_reference
 
+  delegate :euro_conversion_rate, to: :lending_limit
+
   def self.with_scheme(scheme)
     case scheme
     when 'efg'

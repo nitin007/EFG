@@ -39,6 +39,8 @@ class LendingLimit < ActiveRecord::Base
 
   default_scope order('ends_on DESC, allocation_type_id DESC')
 
+  delegate :euro_conversion_rate, to: :phase
+
   scope :active, where(active: true)
 
   def self.current
