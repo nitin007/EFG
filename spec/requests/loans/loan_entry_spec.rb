@@ -5,40 +5,60 @@ require 'spec_helper'
 describe 'loan entry' do
   let(:lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
-  let(:loan) { FactoryGirl.create(:loan, lender: lender, loan_category_id: 2) }
+  let(:lending_limit) { FactoryGirl.create(:lending_limit, phase_id: 5, lender: lender) }
+  let(:loan) { FactoryGirl.create(:loan, lender: lender, loan_category_id: 2, lending_limit: lending_limit) }
   before { login_as(current_user, scope: :user) }
 
-  it 'entering further loan information' do
-    visit loan_path(loan)
-    click_link 'Loan Entry'
+  context 'Phase 6' do
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, phase_id: 6, lender: lender) }
 
-    fill_in_valid_loan_entry_details_phase_5(loan)
-    click_button 'Submit'
+    it 'can transition the loan to Complete' do
+      visit loan_path(loan)
+      click_link 'Loan Entry'
 
-    loan = Loan.last
+      fill_in_valid_loan_entry_details_phase_6(loan)
+      click_button 'Submit'
 
-    current_path.should == complete_loan_entry_path(loan)
+      loan = Loan.last
 
-    loan.state.should == Loan::Completed
-    loan.declaration_signed.should be_true
-    loan.business_name.should == 'Widgets Ltd.'
-    loan.trading_name.should == 'Brilliant Widgets'
-    loan.company_registration.should == '0123456789'
-    loan.postcode.should == 'N8 4HF'
-    loan.sortcode.should == '03-12-45'
-    loan.lender_reference.should == 'lenderref1'
-    loan.generic1.should == 'Generic 1'
-    loan.generic2.should == 'Generic 2'
-    loan.generic3.should == 'Generic 3'
-    loan.generic4.should == 'Generic 4'
-    loan.generic5.should == 'Generic 5'
-    loan.interest_rate_type.should == InterestRateType.find(1)
-    loan.interest_rate.should == 2.25
-    loan.fees.should == Money.new(12345)
-    loan.modified_by.should == current_user
-    loan.state_aid.should == Money.new(3_071_08, 'EUR')
+      current_path.should == complete_loan_entry_path(loan)
 
-    should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
+      loan.state.should == Loan::Completed
+      loan.declaration_signed.should be_true
+      loan.business_name.should == 'Widgets Ltd.'
+      loan.trading_name.should == 'Brilliant Widgets'
+      loan.company_registration.should == '0123456789'
+      loan.postcode.should == 'N8 4HF'
+      loan.sortcode.should == '03-12-45'
+      loan.lender_reference.should == 'lenderref1'
+      loan.generic1.should == 'Generic 1'
+      loan.generic2.should == 'Generic 2'
+      loan.generic3.should == 'Generic 3'
+      loan.generic4.should == 'Generic 4'
+      loan.generic5.should == 'Generic 5'
+      loan.interest_rate_type.should == InterestRateType.find(1)
+      loan.interest_rate.should == 2.25
+      loan.fees.should == Money.new(12345)
+      loan.modified_by.should == current_user
+      loan.state_aid.should == Money.new(794_98, 'EUR')
+
+      should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
+    end
+  end
+
+  context 'Phase 5' do
+    it 'can transition the loan to Complete' do
+      visit loan_path(loan)
+      click_link 'Loan Entry'
+
+      fill_in_valid_loan_entry_details_phase_5(loan)
+      click_button 'Submit'
+
+      loan = Loan.last
+
+      current_path.should == complete_loan_entry_path(loan)
+      loan.state_aid.should == Money.new(3_071_08, 'EUR')
+    end
   end
 
   it 'does not continue with invalid values' do

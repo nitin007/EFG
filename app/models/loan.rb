@@ -127,6 +127,8 @@ class Loan < ActiveRecord::Base
 
   delegate :euro_conversion_rate, to: :lending_limit
 
+  delegate :phase, to: :lending_limit
+
   def self.with_scheme(scheme)
     case scheme
     when 'efg'
@@ -147,7 +149,8 @@ class Loan < ActiveRecord::Base
   end
 
   def calculate_state_aid
-    self.state_aid = Phase5StateAidCalculator.new(self).state_aid_eur
+    klass = phase6? ? Phase6StateAidCalculator : Phase5StateAidCalculator
+    self.state_aid = klass.new(self).state_aid_eur
   end
 
   def cancelled_reason
@@ -293,6 +296,10 @@ class Loan < ActiveRecord::Base
     else
       self.dti_amount_claimed = (demand_outstanding + interest + break_costs) * self.guarantee_rate / 100
     end
+  end
+
+  def phase6?
+    phase.id == 6
   end
 
   private
