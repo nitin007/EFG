@@ -5,6 +5,7 @@ FactoryGirl.define do
     eligible true
     public_sector_restricted false
     active true
+    state_aid_threshold 200000
 
     trait :ineligible do
       eligible false

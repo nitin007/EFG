@@ -40,7 +40,7 @@
     <%= f.input :fees, as: :currency %>
     <%= f.input :previous_borrowing, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :state_aid, as: :state_aid %>
-    <%= f.input :state_aid_is_valid, as: :boolean %>
+    <%= f.input :state_aid_is_valid, as: :boolean, label: t('simple_form.labels.loan_entry.state_aid_is_valid', threshold: @loan_entry.state_aid_threshold.format(no_cents: true)) %>
     <%= f.input :private_residence_charge_required, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :personal_guarantee_required, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
   <% end %>

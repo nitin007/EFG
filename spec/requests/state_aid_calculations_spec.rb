@@ -7,12 +7,12 @@ describe 'state aid calculations' do
   let(:current_user) { FactoryGirl.create(:lender_user, lender: current_lender) }
 
   describe 'creating' do
+    let!(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456', repayment_duration: { months: 3 }) }
+
     before do
       login_as(current_user, scope: :user)
       navigate_to_premium_schedule_page
     end
-
-    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: '123456', repayment_duration: { months: 3 }) }
 
     it 'pre-fills some fields' do
       page.find('#premium_schedule_initial_draw_amount').value.should == '123456.00'
@@ -87,7 +87,7 @@ describe 'state aid calculations' do
   end
 
   describe 'updating an existing premium_schedule' do
-    let(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: Money.new(100_000_00)) }
+    let!(:loan) { FactoryGirl.create(:loan, :eligible, lender: current_lender, amount: Money.new(100_000_00)) }
     let!(:premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan) }
 
     before do

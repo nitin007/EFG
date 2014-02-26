@@ -93,6 +93,10 @@ class LoanEntry
     loan.state == Loan::Completed
   end
 
+  def state_aid_threshold
+    SicCode.find_by_code(sic_code).state_aid_threshold
+  end
+
   def total_prepayment
     (debtor_book_coverage || 0) + (debtor_book_topup || 0)
   end

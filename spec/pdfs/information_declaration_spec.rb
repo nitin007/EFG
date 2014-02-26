@@ -4,6 +4,7 @@ require 'spec_helper'
 
 describe InformationDeclaration do
   let(:lender) { FactoryGirl.create(:lender, name: 'Lender') }
+  let!(:sic) { FactoryGirl.create(:sic_code, code: 'A10.1.2', description: 'Foo', state_aid_threshold: 15000) }
   let(:loan) {
     FactoryGirl.create(:loan, :completed, lender: lender,
       amount: Money.new(12_345_67),
