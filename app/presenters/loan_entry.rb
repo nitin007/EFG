@@ -60,6 +60,7 @@ class LoanEntry
   validates_presence_of :business_name, :fees, :interest_rate,
     :interest_rate_type_id, :legal_form_id, :repayment_duration,
     :repayment_frequency_id
+  validates_presence_of :state_aid
   validates_presence_of :company_registration, if: :company_registration_required?
   validate :postcode_allowed
   validate :state_aid_calculated
@@ -145,7 +146,6 @@ class LoanEntry
 
   # Note: state aid must be recalculated if the loan term has changed
   def state_aid_calculated
-    errors.add(:state_aid, :calculated) unless self.loan.state_aid
     errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
   end
 

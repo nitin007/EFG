@@ -79,7 +79,7 @@ en:
             declaration_signed:
               accepted: A customer declaration must have been received before a loan can be entered.
             state_aid:
-              calculated: must be calculated
+              blank: must be calculated
               recalculate: must be re-calculated when you change the loan term
             loan_security_types:
               present: choose at least one security
