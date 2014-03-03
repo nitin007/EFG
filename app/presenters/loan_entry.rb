@@ -55,6 +55,8 @@ class LoanEntry
   attribute :debtor_book_coverage
   attribute :debtor_book_topup
 
+  delegate :calculate_state_aid, to: :loan
+
   after_save :save_as_ineligible, unless: :is_eligible?
 
   validates_presence_of :business_name, :fees, :interest_rate,
@@ -127,6 +129,10 @@ class LoanEntry
   def postcode=(str)
     normalised = UKPostcode.new(str).norm
     loan.postcode = normalised.empty? ? str : normalised
+  end
+
+  def premium_schedule_required_for_state_aid_calculation?
+    loan.rules.premium_schedule_required_for_state_aid_calculation?
   end
 
   def save_as_incomplete

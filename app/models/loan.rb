@@ -149,8 +149,7 @@ class Loan < ActiveRecord::Base
   end
 
   def calculate_state_aid
-    klass = phase6? ? Phase6StateAidCalculator : Phase5StateAidCalculator
-    self.state_aid = klass.new(self).state_aid_eur
+    self.state_aid = rules.state_aid_calculator.new(self).state_aid_eur
   end
 
   def cancelled_reason
@@ -298,8 +297,12 @@ class Loan < ActiveRecord::Base
     end
   end
 
-  def phase6?
-    phase.id == 6
+  def rules
+    if lending_limit.try(:phase_id) == 6
+      Phase6Rules
+    else
+      Phase5Rules
+    end
   end
 
   private

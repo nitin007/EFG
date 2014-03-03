@@ -597,4 +597,37 @@ describe Loan do
     end
   end
 
+  describe '#rules' do
+    subject { loan.rules }
+
+    context 'SFLG' do
+      let(:loan) { FactoryGirl.build(:loan, :sflg) }
+
+      it do
+        should == Phase5Rules
+      end
+    end
+
+    context 'EFG' do
+      let(:lender) { FactoryGirl.build(:lender) }
+      let(:lending_limit) { FactoryGirl.build(:lending_limit, lender: lender, phase_id: phase_id) }
+      let(:loan) { FactoryGirl.build(:loan, :efg, lender: lender, lending_limit: lending_limit) }
+
+      context 'phase < 6' do
+        let(:phase_id) { 5 }
+
+        it do
+          should == Phase5Rules
+        end
+      end
+
+      context 'phase 6' do
+        let(:phase_id) { 6 }
+
+        it do
+          should == Phase6Rules
+        end
+      end
+    end
+  end
 end
