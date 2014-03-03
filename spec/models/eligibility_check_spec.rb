@@ -67,12 +67,54 @@ describe EligibilityCheck do
       eligibility_check.errors[:repayment_duration].should_not be_empty
     end
 
-    it "should be ineligible if the loan is a Type E facility and repayment duration is longer than 2 years" do
-      loan.loan_category_id = 5 # Type E facility
-      loan.repayment_duration = {years: 2, months: 1}
+    context 'Type E' do
+      before do
+        loan.lending_limit = lending_limit
+        loan.loan_category_id = 5
+        loan.repayment_duration = repayment_duration
+      end
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:repayment_duration].should_not be_empty
+      context 'phase 5' do
+        let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_5) }
+
+        context 'when the repayment duration is 2 years or shorter' do
+          let(:repayment_duration) { {years: 2, months: 0} }
+
+          it 'is eligible' do
+            eligibility_check.should be_eligible
+          end
+        end
+
+        context 'when the repayment duration is longer than 2 years' do
+          let(:repayment_duration) { {years: 2, months: 1} }
+
+          it 'is ineligible' do
+            eligibility_check.should_not be_eligible
+            eligibility_check.errors[:repayment_duration].should_not be_empty
+          end
+        end
+      end
+
+      context 'phase 6' do
+        let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_6) }
+
+        context 'when the repayment duration is 3 years or shorter' do
+          let(:repayment_duration) { {years: 3, months: 0} }
+
+          it 'is eligible' do
+            eligibility_check.should be_eligible
+          end
+        end
+
+        context 'when the repayment duration is longer than 3 years' do
+          let(:repayment_duration) { {years: 3, months: 1} }
+
+          it 'is ineligible' do
+            eligibility_check.should_not be_eligible
+            eligibility_check.errors[:repayment_duration].should_not be_empty
+          end
+        end
+      end
     end
 
     it "should be ineligible if the loan is a Type F facility and repayment duration is longer than 3 years" do

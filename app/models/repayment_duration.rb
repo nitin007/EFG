@@ -1,7 +1,6 @@
 class RepaymentDuration
-  DEFAULT_MIN_LOAN_TERM_MONTHS = 3
+  CREATED_FROM_TRANSFER_MIN_MONTHS = 0
   DEFAULT_MIN_LOAN_TERM_MONTHS_SFLG = 24
-  DEFAULT_MAX_LOAN_TERM_MONTHS = 120
 
   attr_reader :loan, :loan_category
 
@@ -14,18 +13,16 @@ class RepaymentDuration
 
   def min_months
     if loan.created_from_transfer?
-      0
-    elsif loan_category
-      loan_category.min_repayment_duration
+      CREATED_FROM_TRANSFER_MIN_MONTHS
     elsif loan.sflg? || loan.legacy_loan?
       DEFAULT_MIN_LOAN_TERM_MONTHS_SFLG
     else
-      DEFAULT_MIN_LOAN_TERM_MONTHS
+      repayment_duration_constraints.min
     end
   end
 
   def max_months
-    loan_category ? loan_category.max_repayment_duration : DEFAULT_MAX_LOAN_TERM_MONTHS
+    repayment_duration_constraints.max
   end
 
   def months_between_draw_date_and_maturity_date
@@ -48,4 +45,8 @@ class RepaymentDuration
     month_count
   end
 
+  private
+    def repayment_duration_constraints
+      loan.rules.loan_category_repayment_duration(loan.loan_category_id)
+    end
 end
