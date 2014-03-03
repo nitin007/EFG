@@ -2,3 +2,13 @@
 <%= simple_form_row 'Original loan term', @loan.repayment_duration.total_months %>
 
 <%= f.input :added_months, input_html: { class: 'input-mini' } %>
+
+<% if f.object.errors.include?(:repayment_duration) %>
+  <div class="control-group error">
+    <div class="controls">
+      <div class="help-inline">
+        <%= f.object.errors[:repayment_duration].join(', ') %>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -19,6 +19,13 @@ module Phase6Rules
     false
   end
 
+  def repayment_duration_loan_change_validations
+    [
+      RepaymentDurationValidator,
+      LoanAmountRepaymentDurationValidator
+    ]
+  end
+
   def state_aid_calculator
     Phase6StateAidCalculator
   end
