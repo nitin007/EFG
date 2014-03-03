@@ -1,0 +1,8 @@
+en:
+  validators:
+    loan_amount_repayment_duration:
+      maximum_amount: maximum loan amount is £1.2m
+      maximum_five_year_amount: cannot be longer than 5 years for a facility greater than £600k
+    repayment_duration:
+      too_long: "can't be more than %{count} months"
+      too_short: "can't be less than %{count} months"
