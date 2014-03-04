@@ -144,16 +144,6 @@ describe Loan do
     end
   end
 
-  describe "#eligibility_check" do
-    it "should instantiate and return an EligibiltyCheck" do
-      loan = FactoryGirl.build(:loan)
-      result = double(EligibilityCheck)
-      EligibilityCheck.should_receive(:new).with(loan).and_return(result)
-
-      loan.eligibility_check.should == result
-    end
-  end
-
   describe "#state_aid" do
     it "should return a EUR money object" do
       loan = FactoryGirl.build(:loan, state_aid: '100.00')

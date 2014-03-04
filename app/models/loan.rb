@@ -216,10 +216,6 @@ class Loan < ActiveRecord::Base
     LegalForm.find(legal_form_id)
   end
 
-  def eligibility_check
-    EligibilityCheck.new(self)
-  end
-
   def repayment_frequency
     RepaymentFrequency.find(repayment_frequency_id)
   end
