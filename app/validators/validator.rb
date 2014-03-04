@@ -3,17 +3,16 @@ class Validator
     name.sub(/Validator$/, '').underscore
   end
 
-  def initialize(object)
+  def initialize(object, options = {})
     @object = object
+    @errors = options.fetch(:errors, object.errors)
   end
 
   private
-    attr_reader :object
+    attr_reader :errors, :object
 
-    delegate :errors, to: :object
-
-    def add_error(attribute, message, options = {})
-      options[:message] = I18n.translate("validators.#{self.class.locale_key}.#{message}")
+    def add_error(attribute, message = :invalid, options = {})
+      options[:message] = I18n.translate("validators.#{self.class.locale_key}.#{attribute}.#{message}")
 
       errors.add(attribute, :invalid, options)
     end

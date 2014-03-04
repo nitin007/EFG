@@ -249,25 +249,26 @@ describe LoanEntry do
     it_behaves_like 'loan presenter that validates loan repayment frequency' do
       let(:loan_presenter) { loan_entry }
     end
-  end
 
-  describe "#save" do
-    context "when loan is no longer eligible" do
-      before do
-        loan_entry.viable_proposition = false
-      end
+    it 'should require viable_proposition to be true' do
+      loan_entry.viable_proposition = false
 
-      it "should set state to 'incomplete'" do
-        expect {
-          loan_entry.save
-        }.to change(loan_entry.loan, :state).to(Loan::Incomplete)
-      end
+      loan_entry.should_not be_valid
+      loan_entry.should have(1).error_on(:viable_proposition)
+    end
 
-      it "should save ineligibility reasons" do
-        expect {
-          loan_entry.save
-        }.to change(loan_entry.loan.ineligibility_reasons, :count).by(1)
-      end
+    it 'should require would_you_lend to be true' do
+      loan_entry.would_you_lend = false
+
+      loan_entry.should_not be_valid
+      loan_entry.should have(1).error_on(:would_you_lend)
+    end
+
+    it 'should require collateral_exhausted to be true' do
+      loan_entry.collateral_exhausted = false
+
+      loan_entry.should_not be_valid
+      loan_entry.should have(1).error_on(:collateral_exhausted)
     end
   end
 

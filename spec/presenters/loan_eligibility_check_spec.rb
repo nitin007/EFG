@@ -124,51 +124,56 @@ describe LoanEligibilityCheck do
   end
 
   describe '#save' do
-    it "should set the state to Eligible if its eligible" do
-      EligibilityCheck.any_instance.stub(:eligible?).and_return(true)
+    let(:validator) { double(validate: nil) }
 
-      loan_eligibility_check.save
-      loan_eligibility_check.loan.state.should == Loan::Eligible
+    before do
+      loan_eligibility_check.stub(:eligibility_validator).and_return(validator)
     end
 
-    it "should set the state to Rejected if its not eligible" do
-      EligibilityCheck.any_instance.stub(:eligible?).and_return(false)
-      EligibilityCheck.any_instance.stub(:reasons).and_return([ "Reason 1", "Reason 2" ])
+    context 'when there are *no* eligibility errors' do
+      before do
+        loan_eligibility_check.stub(:ineligibility_reasons).and_return([])
+      end
 
-      loan_eligibility_check.save
-      loan_eligibility_check.loan.state.should == Loan::Rejected
-    end
-
-    it "should create rejected loan state change if its not eligible" do
-      EligibilityCheck.any_instance.stub(:eligible?).and_return(false)
-      EligibilityCheck.any_instance.stub(:reasons).and_return([ "Reason 1", "Reason 2" ])
-
-      expect {
+      it 'sets the state to Eligible' do
         loan_eligibility_check.save
-      }.to change(LoanStateChange, :count).by(1)
+        loan_eligibility_check.loan.state.should == Loan::Eligible
+      end
 
-      LoanStateChange.last.event.should == LoanEvent::Reject
+      it 'creates an accepted loan state change' do
+        expect {
+          loan_eligibility_check.save
+        }.to change(LoanStateChange, :count).by(1)
+
+        LoanStateChange.last!.event.should == LoanEvent::Accept
+      end
     end
 
-    it "should create accepted loan state change if its eligible" do
-      EligibilityCheck.any_instance.stub(:eligible?).and_return(true)
+    context 'when there *are* eligibility errors' do
+      before do
+        loan_eligibility_check.stub(:ineligibility_reasons).and_return(['Reason 1', 'Reason 2'])
+      end
 
-      expect {
+      it "should set the state to Rejected if its not eligible" do
         loan_eligibility_check.save
-      }.to change(LoanStateChange, :count).by(1)
+        loan_eligibility_check.loan.state.should == Loan::Rejected
+      end
 
-      LoanStateChange.last.event.should == LoanEvent::Accept
-    end
+      it "should create rejected loan state change if its not eligible" do
+        expect {
+          loan_eligibility_check.save
+        }.to change(LoanStateChange, :count).by(1)
 
-    it "should create loan ineligibility record if its not eligible" do
-      EligibilityCheck.any_instance.stub(:eligible?).and_return(false)
-      EligibilityCheck.any_instance.stub(:reasons).and_return([ "Reason 1", "Reason 2" ])
+        LoanStateChange.last!.event.should == LoanEvent::Reject
+      end
 
-      expect {
-        loan_eligibility_check.save
-      }.to change(LoanIneligibilityReason, :count).by(1)
+      it "should create loan ineligibility record if its not eligible" do
+        expect {
+          loan_eligibility_check.save
+        }.to change(LoanIneligibilityReason, :count).by(1)
 
-      LoanIneligibilityReason.last.reason.should == "Reason 1\nReason 2"
+        LoanIneligibilityReason.last!.reason.should == "Reason 1\nReason 2"
+      end
     end
   end
 

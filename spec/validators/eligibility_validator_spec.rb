@@ -1,70 +1,71 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe EligibilityCheck do
+describe EligibilityValidator do
   describe "eligibility checks" do
     let(:loan) { FactoryGirl.build(:loan) }
-    let(:eligibility_check) { EligibilityCheck.new(loan) }
+    let(:errors) { ActiveModel::Errors.new(loan) }
+    let(:validator) { EligibilityValidator.new(loan, errors: errors) }
 
-    it "should have a loan that is eligible by default" do
-      eligibility_check.eligible?
-      eligibility_check.should be_eligible
+    it 'should start with a valid (eligible) loan' do
+      validator.validate
+      errors.should be_empty
     end
 
     it "should be ineligible when it's not a viable proposition" do
       loan.viable_proposition = false
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:viable_proposition].should_not be_empty
+      validator.validate
+      errors[:viable_proposition].should_not be_empty
     end
 
     it "should be ineligible when the lender doesn't wish to lend" do
       loan.would_you_lend = false
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:would_you_lend].should_not be_empty
+      validator.validate
+      errors[:would_you_lend].should_not be_empty
     end
 
     it "should be ineligible if collateral isn't exhausted" do
       loan.collateral_exhausted = false
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:collateral_exhausted].should_not be_empty
+      validator.validate
+      errors[:collateral_exhausted].should_not be_empty
     end
 
     it "should be ineligible if a private residence charge is required" do
       loan.private_residence_charge_required = true
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:private_residence_charge_required].should_not be_empty
+      validator.validate
+      errors[:private_residence_charge_required].should_not be_empty
     end
 
     it "should be ineligible if the amount is less than £1000" do
       loan.amount = Money.new(99999) # £999.99
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:amount].should_not be_empty
+      validator.validate
+      errors[:amount].should_not be_empty
     end
 
     it "should be ineligible if the amount is greater than £1,000,000" do
       loan.amount = Money.new(100000001) # £1,000,000.01
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:amount].should_not be_empty
+      validator.validate
+      errors[:amount].should_not be_empty
     end
 
     it "should be ineligible if the repayment duration is less than 3 months" do
       loan.repayment_duration = {months: 2}
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:repayment_duration].should_not be_empty
+      validator.validate
+      errors[:repayment_duration].should_not be_empty
     end
 
     it "should be ineligible if the repayment duration is longer than 10 years" do
       loan.repayment_duration = {years: 10, months: 1}
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:repayment_duration].should_not be_empty
+      validator.validate
+      errors[:repayment_duration].should_not be_empty
     end
 
     context 'Type E' do
@@ -81,7 +82,8 @@ describe EligibilityCheck do
           let(:repayment_duration) { {years: 2, months: 0} }
 
           it 'is eligible' do
-            eligibility_check.should be_eligible
+            validator.validate
+            errors.should be_empty
           end
         end
 
@@ -89,8 +91,8 @@ describe EligibilityCheck do
           let(:repayment_duration) { {years: 2, months: 1} }
 
           it 'is ineligible' do
-            eligibility_check.should_not be_eligible
-            eligibility_check.errors[:repayment_duration].should_not be_empty
+            validator.validate
+            errors[:repayment_duration].should_not be_empty
           end
         end
       end
@@ -102,7 +104,8 @@ describe EligibilityCheck do
           let(:repayment_duration) { {years: 3, months: 0} }
 
           it 'is eligible' do
-            eligibility_check.should be_eligible
+            validator.validate
+            errors.should be_empty
           end
         end
 
@@ -110,8 +113,8 @@ describe EligibilityCheck do
           let(:repayment_duration) { {years: 3, months: 1} }
 
           it 'is ineligible' do
-            eligibility_check.should_not be_eligible
-            eligibility_check.errors[:repayment_duration].should_not be_empty
+            validator.validate
+            errors[:repayment_duration].should_not be_empty
           end
         end
       end
@@ -121,36 +124,36 @@ describe EligibilityCheck do
       loan.loan_category_id = 6 # Type F facility
       loan.repayment_duration = {years: 3, months: 1}
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:repayment_duration].should_not be_empty
+      validator.validate
+      errors[:repayment_duration].should_not be_empty
     end
 
     it "should be ineligible if the loan trading date is more than 6 months in the future" do
       loan.trading_date = 6.months.from_now.advance(days: 1)
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:trading_date].should_not be_empty
+      validator.validate
+      errors[:trading_date].should_not be_empty
     end
 
     it "should be ineligible if previous borrowing + this amount is not greater than £1,000,000" do
       loan.previous_borrowing = false
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:previous_borrowing].should_not be_empty
+      validator.validate
+      errors[:previous_borrowing].should_not be_empty
     end
 
     it "should be ineligible when SIC code is ineligible" do
       loan.sic_eligible = false
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:sic_code].should_not be_empty
+      validator.validate
+      errors[:sic_code].should_not be_empty
     end
 
     it "should be ineligible with an ineligible loan reason" do
       loan.reason_id = LoanReason.all.detect {|reason| !reason.eligible? }.id
 
-      eligibility_check.should_not be_eligible
-      eligibility_check.errors[:reason_id].should_not be_empty
+      validator.validate
+      errors[:reason_id].should_not be_empty
     end
   end
 end

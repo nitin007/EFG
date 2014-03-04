@@ -1,7 +1,6 @@
 class LoanEntry
   include LoanPresenter
   include LoanStateTransition
-  include LoanEligibility
   include SharedLoanValidations
 
   attr_accessible :postcode
@@ -57,11 +56,8 @@ class LoanEntry
 
   delegate :calculate_state_aid, to: :loan
 
-  after_save :save_as_ineligible, unless: :is_eligible?
-
   validates_presence_of :business_name, :fees, :interest_rate,
-    :interest_rate_type_id, :legal_form_id, :repayment_duration,
-    :repayment_frequency_id
+    :interest_rate_type_id, :legal_form_id, :repayment_frequency_id
   validates_presence_of :state_aid
   validates_presence_of :company_registration, if: :company_registration_required?
   validate :postcode_allowed
@@ -126,6 +122,8 @@ class LoanEntry
                             less_than_or_equal_to: 30,
                             if: lambda { loan_category_id == 6 }
 
+  validate :validate_eligibility
+
   def postcode=(str)
     normalised = UKPostcode.new(str).norm
     loan.postcode = normalised.empty? ? str : normalised
@@ -164,11 +162,7 @@ class LoanEntry
     legal_form_id && LegalForm.find(legal_form_id).requires_company_registration == true
   end
 
-  def save_as_ineligible
-    loan.transaction do
-      save_as_incomplete
-      save_ineligibility_reasons
-    end
+  def validate_eligibility
+    EligibilityValidator.new(loan, errors: errors).validate
   end
-
 end

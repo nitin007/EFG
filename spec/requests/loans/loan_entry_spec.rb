@@ -101,34 +101,6 @@ describe 'loan entry' do
     loan.modified_by.should == current_user
   end
 
-  it 'saves the loan as incomplete when it is no longer eligible' do
-    loan.ineligibility_reasons.should be_empty
-
-    visit loan_path(loan)
-
-    click_link 'Loan Entry'
-    fill_in_ineligible_details(loan)
-    click_button 'Submit'
-
-    loan.reload
-    loan.state.should == Loan::Incomplete
-    loan.ineligibility_reasons.count.should == 1
-
-    current_path.should == loan_path(loan)
-
-    loan.ineligibility_reasons.count.should == 1
-    page.should have_content(loan.ineligibility_reasons.first.reason)
-
-    # verify existing ineligibility reasons are cleared when resubmitting ineligible loan entry
-
-    click_link 'Loan Entry'
-    fill_in_ineligible_details(loan)
-    click_button 'Submit'
-
-    loan.ineligibility_reasons.count.should == 1
-    page.should have_content(loan.ineligibility_reasons.first.reason)
-  end
-
   it 'should show specific questions for loan category B' do
     loan.update_attribute(:loan_category_id, 2)
 
@@ -193,11 +165,6 @@ describe 'loan entry' do
   end
 
   private
-
-    def fill_in_ineligible_details(loan)
-      fill_in_valid_loan_entry_details_phase_5(loan)
-      choose 'loan_entry_viable_proposition_false'
-    end
 
     def should_show_only_loan_category_fields(*field_names)
       loan_category_fields = [
