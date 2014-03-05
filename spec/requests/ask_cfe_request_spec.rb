@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe 'ask CfE' do
+describe 'ask British Business Bank' do
   before do
     ActionMailer::Base.deliveries.clear
     login_as(current_user, scope: :user)
     visit root_path
-    click_link 'Ask CfE'
+    click_link 'Ask British Business Bank'
   end
 
   [
