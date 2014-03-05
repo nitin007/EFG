@@ -10,7 +10,7 @@
 
 <hr>
 
-<%= simple_form_for(@loan_entry, url: loan_entry_path(@loan), html: {class: 'form-horizontal form-loan-entry'}) do |f| %>
+<%= simple_form_for(@loan_entry, url: loan_entry_path(@loan, anchor: nil), html: {class: 'form-horizontal form-loan-entry'}) do |f| %>
   <%= field_set_tag do %>
     <%= f.input :declaration_signed, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
   <% end %>
