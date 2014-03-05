@@ -8,9 +8,9 @@ class RepaymentDurationValidator < Validator
     rd = RepaymentDuration.new(loan)
 
     if repayment_duration.total_months < rd.min_months
-      add_error(:repayment_duration, :too_short, count: rd.min_months)
+      add_error(:repayment_duration, :invalid)
     elsif repayment_duration.total_months > rd.max_months
-      add_error(:repayment_duration, :too_long,  count: rd.max_months)
+      add_error(:repayment_duration, :invalid)
     end
   end
 
