@@ -21,7 +21,7 @@ class LoanEligibilityCheck
   attribute :loan_scheme
   attribute :loan_source
 
-  delegate :created_by, :created_by=, to: :loan
+  delegate :created_by, :created_by=, :loan_category, :reason, :sic, to: :loan
 
   validates_presence_of :amount, :lending_limit_id, :repayment_duration,
     :turnover, :trading_date, :sic_code, :loan_category_id, :reason_id
@@ -62,26 +62,23 @@ class LoanEligibilityCheck
   # cache sic code data on loan, as per legacy system
   def sic_code=(code)
     loan.sic_code = loan.sic_desc = loan.sic_eligible = nil
-    if code.present? && sic_code = SicCode.active.find_by_code!(code)
-      loan.sic_code = sic_code.code
-      loan.sic_desc = sic_code.description
-      loan.sic_eligible = sic_code.eligible
+
+    if code.present? && sic = SicCode.active.find_by_code!(code)
+      loan.sic_code = sic.code
+      loan.sic_desc = sic.description
+      loan.sic_eligible = sic.eligible
     end
   end
 
   private
     def eligible?
       return @eligible if defined?(@eligible)
-      eligibility_validator.validate
+      validate_eligibility
       @eligible = ineligibility_reasons.empty?
     end
 
     def eligibility_errors
       @eligibility_errors ||= ActiveModel::Errors.new(self)
-    end
-
-    def eligibility_validator
-      @eligibility_validator ||= EligibilityValidator.new(loan, errors: eligibility_errors)
     end
 
     def ineligibility_reasons
@@ -90,5 +87,11 @@ class LoanEligibilityCheck
 
     def save_ineligibility_reasons
       loan.ineligibility_reasons.create!(reason: ineligibility_reasons.join("\n"))
+    end
+
+    def validate_eligibility
+      loan.rules.eligibility_check_validations.each do |validator|
+        validator.new(self, eligibility_errors).validate
+      end
     end
 end

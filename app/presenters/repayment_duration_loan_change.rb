@@ -12,7 +12,7 @@ class RepaymentDurationLoanChange < LoanChangePresenter
     @added_months = value.present? ? value.to_i : nil
 
     if added_months
-      @repayment_duration = loan.repayment_duration.total_months + added_months
+      @repayment_duration = MonthDuration.new(loan.repayment_duration.total_months + added_months)
     end
   end
 
@@ -25,23 +25,23 @@ class RepaymentDurationLoanChange < LoanChangePresenter
 
     def maturity_date
       initial_draw_date = loan.initial_draw_change.date_of_change
-      initial_draw_date.advance(months: repayment_duration)
+      initial_draw_date.advance(months: repayment_duration.total_months)
     end
 
     def phase_validations
       loan.rules.repayment_duration_loan_change_validations.each do |validator|
-        validator.new(self).validate
+        validator.new(self, errors).validate
       end
     end
 
     def update_loan
-      loan.repayment_duration = repayment_duration
+      loan.repayment_duration = repayment_duration.total_months
       loan.maturity_date = maturity_date
     end
 
     def update_loan_change
       loan_change.change_type = added_months > 0 ? ChangeType::ExtendTerm : ChangeType::DecreaseTerm
-      loan_change.repayment_duration = repayment_duration
+      loan_change.repayment_duration = repayment_duration.total_months
       loan_change.old_repayment_duration = loan.repayment_duration.total_months
       loan_change.maturity_date = maturity_date
       loan_change.old_maturity_date = loan.maturity_date

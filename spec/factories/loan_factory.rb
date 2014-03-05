@@ -19,7 +19,7 @@ FactoryGirl.define do
     repayment_duration 24
     turnover 12345
     trading_date 2.years.ago
-    sic_code '12345'
+    sic_code { |loan| loan.sic_code = FactoryGirl.create(:sic_code).code }
     sic_desc 'Growing of rice'
     sic_eligible true
     previous_borrowing true

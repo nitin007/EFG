@@ -301,6 +301,10 @@ class Loan < ActiveRecord::Base
     end
   end
 
+  def sic
+    SicCode.where(code: sic_code).first
+  end
+
   private
 
   def set_reference

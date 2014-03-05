@@ -11,8 +11,19 @@ module Phase5Rules
     6   => 3..36
   }
 
+  def eligibility_check_validations
+    [
+      EligibilityValidator,
+      RepaymentDurationValidator
+    ]
+  end
+
   def loan_category_repayment_duration(type)
     LOAN_CATEGORY_REPAYMENT_DURATIONS.fetch(type)
+  end
+
+  def loan_entry_validations
+    eligibility_check_validations
   end
 
   def premium_schedule_required_for_state_aid_calculation?

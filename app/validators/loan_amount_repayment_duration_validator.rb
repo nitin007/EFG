@@ -6,7 +6,7 @@ class LoanAmountRepaymentDurationValidator < Validator
   def validate
     if amount > ONE_POINT_TWO_MILLION
       add_error(:amount, :maximum_amount)
-    elsif amount > SIX_HUNDRED_THOUSAND && repayment_duration > FIVE_YEARS
+    elsif amount > SIX_HUNDRED_THOUSAND && repayment_duration.total_months > FIVE_YEARS
       add_error(:repayment_duration, :maximum_five_year_amount)
     end
   end

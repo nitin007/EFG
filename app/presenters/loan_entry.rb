@@ -54,7 +54,7 @@ class LoanEntry
   attribute :debtor_book_coverage
   attribute :debtor_book_topup
 
-  delegate :calculate_state_aid, to: :loan
+  delegate :calculate_state_aid, :reason, :sic, to: :loan
 
   validates_presence_of :business_name, :fees, :interest_rate,
     :interest_rate_type_id, :legal_form_id, :repayment_frequency_id
@@ -163,6 +163,8 @@ class LoanEntry
   end
 
   def validate_eligibility
-    EligibilityValidator.new(loan, errors: errors).validate
+    loan.rules.loan_entry_validations.each do |validator|
+      validator.new(self, errors).validate
+    end
   end
 end

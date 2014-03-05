@@ -3,9 +3,9 @@ class Validator
     name.sub(/Validator$/, '').underscore
   end
 
-  def initialize(object, options = {})
+  def initialize(object, errors)
     @object = object
-    @errors = options.fetch(:errors, object.errors)
+    @errors = errors
   end
 
   private
