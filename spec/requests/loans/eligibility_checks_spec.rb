@@ -95,9 +95,7 @@ describe 'eligibility checks' do
     current_url.should == loan_eligibility_decision_url(loan.id)
 
     loan.state.should == Loan::Rejected
-    loan.ineligibility_reasons.count.should == 1
-    loan.ineligibility_reasons.last.reason.should == I18n.t('validators.eligibility.amount.invalid')
-    page.should have_content(I18n.t('validators.eligibility.amount.invalid'))
+    page.should have_content(I18n.t('validators.phase5_amount.amount.allowed_amount'))
 
     # email eligibility decision
 

@@ -100,7 +100,6 @@ describe LoanEligibilityCheck do
         loan_eligibility_check.should_not be_valid
       end
     end
-
   end
 
   describe '#lending_limit_id=' do
@@ -173,6 +172,49 @@ describe LoanEligibilityCheck do
         }.to change(LoanIneligibilityReason, :count).by(1)
 
         LoanIneligibilityReason.last!.reason.should == "Reason 1\nReason 2"
+      end
+    end
+
+    context 'phase 5' do
+      let(:lender) { FactoryGirl.create(:lender) }
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_5, lender: lender) }
+
+      before do
+        loan_eligibility_check.loan.lending_limit = lending_limit
+      end
+
+      context 'when amount is greater than £1M' do
+        it "is rejected" do
+          loan_eligibility_check.amount = Money.new(1_000_000_01)
+          loan_eligibility_check.save
+          loan_eligibility_check.loan.state.should == Loan::Rejected
+        end
+      end
+    end
+
+    context 'phase 6' do
+      let(:lender) { FactoryGirl.create(:lender) }
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_6, lender: lender) }
+
+      before do
+        loan_eligibility_check.loan.lending_limit = lending_limit
+      end
+
+      context 'when amount is greater than £600k and loan term is longer than 5 years' do
+        it "is rejected" do
+          loan_eligibility_check.amount = Money.new(600_000_01)
+          loan_eligibility_check.repayment_duration = 61
+          loan_eligibility_check.save
+          loan_eligibility_check.loan.state.should == Loan::Rejected
+        end
+      end
+
+      context 'when amount is greater £1.2M' do
+        it "is rejected" do
+          loan_eligibility_check.amount = Money.new(1_200_000_01)
+          loan_eligibility_check.save
+          loan_eligibility_check.loan.state.should == Loan::Rejected
+        end
       end
     end
   end

@@ -41,20 +41,6 @@ describe EligibilityValidator do
       errors[:private_residence_charge_required].should_not be_empty
     end
 
-    it "should be ineligible if the amount is less than £1000" do
-      presenter.amount = Money.new(99999) # £999.99
-
-      validator.validate
-      errors[:amount].should_not be_empty
-    end
-
-    it "should be ineligible if the amount is greater than £1,000,000" do
-      presenter.amount = Money.new(100000001) # £1,000,000.01
-
-      validator.validate
-      errors[:amount].should_not be_empty
-    end
-
     it "should be ineligible if the loan trading date is more than 6 months in the future" do
       presenter.trading_date = 6.months.from_now.advance(days: 1)
 

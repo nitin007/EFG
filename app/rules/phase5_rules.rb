@@ -14,6 +14,7 @@ module Phase5Rules
   def eligibility_check_validations
     [
       EligibilityValidator,
+      Phase5AmountValidator,
       RepaymentDurationValidator
     ]
   end

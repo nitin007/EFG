@@ -40,6 +40,11 @@ describe LoanEntry do
       loan_entry.should_not be_valid
     end
 
+    it "should be invalid without an amount" do
+      loan_entry.amount = nil
+      loan_entry.should_not be_valid
+    end
+
     context '#postcode' do
       it 'is required' do
         loan_entry.postcode = ''
@@ -269,6 +274,46 @@ describe LoanEntry do
 
       loan_entry.should_not be_valid
       loan_entry.should have(1).error_on(:collateral_exhausted)
+    end
+
+    context 'phase 5' do
+      let(:lender) { FactoryGirl.create(:lender) }
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_5, lender: lender) }
+
+      before do
+        loan_entry.loan.lending_limit = lending_limit
+      end
+
+      context 'when amount is greater than £1M' do
+        it "is invalid" do
+          loan_entry.amount = Money.new(1_000_000_01)
+          loan_entry.should_not be_valid
+        end
+      end
+    end
+
+    context 'phase 6' do
+      let(:lender) { FactoryGirl.create(:lender) }
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_6, lender: lender) }
+
+      before do
+        loan_entry.loan.lending_limit = lending_limit
+      end
+
+      context 'when amount is greater than £600k and loan term is longer than 5 years' do
+        it "is invalid" do
+          loan_entry.amount = Money.new(600_000_01)
+          loan_entry.repayment_duration = 61
+          loan_entry.should_not be_valid
+        end
+      end
+
+      context 'when amount is greater £1.2M' do
+        it "is invalid" do
+          loan_entry.amount = Money.new(1_200_000_01)
+          loan_entry.should_not be_valid
+        end
+      end
     end
   end
 

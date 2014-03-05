@@ -14,7 +14,8 @@ module Phase6Rules
   def eligibility_check_validations
     [
       EligibilityValidator,
-      RepaymentDurationValidator
+      RepaymentDurationValidator,
+      Phase6AmountValidator
     ]
   end
 
@@ -33,7 +34,7 @@ module Phase6Rules
   def repayment_duration_loan_change_validations
     [
       RepaymentDurationValidator,
-      LoanAmountRepaymentDurationValidator
+      Phase6AmountValidator
     ]
   end
 

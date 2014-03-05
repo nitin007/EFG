@@ -3,7 +3,6 @@ class EligibilityValidator < Validator
     add_error(:viable_proposition) unless object.viable_proposition
     add_error(:would_you_lend) unless object.would_you_lend
     add_error(:collateral_exhausted) unless object.collateral_exhausted
-    add_error(:amount) unless object.amount.between?(Money.new(1_000_00), Money.new(1_000_000_00))
     add_error(:previous_borrowing) unless object.previous_borrowing
     add_error(:private_residence_charge_required) if object.private_residence_charge_required
     add_error(:sic_code) unless object.sic.try(:eligible?)
