@@ -1,7 +1,7 @@
 test:
   adapter: mysql2
   host: localhost
-  database: efg_test
+  database: efg_test<%= ENV['TEST_ENV_NUMBER'] %>
   username: root
   password:
   encoding: utf8
