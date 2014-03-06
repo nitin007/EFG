@@ -30,7 +30,7 @@ class RepaymentDurationLoanChange < LoanChangePresenter
 
     def phase_validations
       loan.rules.repayment_duration_loan_change_validations.each do |validator|
-        validator.new(self, errors).validate
+        validator.validate(self)
       end
     end
 

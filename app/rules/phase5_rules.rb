@@ -13,9 +13,9 @@ module Phase5Rules
 
   def eligibility_check_validations
     [
-      EligibilityValidator,
-      Phase5AmountValidator,
-      RepaymentDurationValidator
+      EligibilityValidator.new({}),
+      Phase5AmountValidator.new({}),
+      RepaymentDurationValidator.new({})
     ]
   end
 
@@ -33,7 +33,7 @@ module Phase5Rules
 
   def repayment_duration_loan_change_validations
     [
-      RepaymentDurationValidator
+      RepaymentDurationValidator.new({})
     ]
   end
 

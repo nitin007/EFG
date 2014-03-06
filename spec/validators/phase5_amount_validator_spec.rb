@@ -3,13 +3,13 @@ require 'spec_helper'
 
 describe Phase5AmountValidator do
   let(:loan) { FactoryGirl.build(:loan) }
-  let(:object) { double(amount: amount) }
-  let(:validator) { Phase5AmountValidator.new(object, errors) }
+  let(:object) { double(amount: amount, errors: errors) }
+  let(:validator) { Phase5AmountValidator.new({}) }
 
   subject(:errors) { ActiveModel::Errors.new(loan) }
 
   before do
-    validator.validate
+    validator.validate(object)
   end
 
   context 'when amount is blank' do
@@ -29,5 +29,4 @@ describe Phase5AmountValidator do
 
     it { should_not be_empty }
   end
-
 end

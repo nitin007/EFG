@@ -77,12 +77,10 @@ class LoanEligibilityCheck
       @eligible = ineligibility_reasons.empty?
     end
 
-    def eligibility_errors
-      @eligibility_errors ||= ActiveModel::Errors.new(self)
-    end
-
     def ineligibility_reasons
-      eligibility_errors.messages.values.flatten
+      # Re-use errors object which will be empty (no validations failures) when
+      # we get here.
+      errors.messages.values.flatten
     end
 
     def save_ineligibility_reasons
@@ -91,7 +89,7 @@ class LoanEligibilityCheck
 
     def validate_eligibility
       loan.rules.eligibility_check_validations.each do |validator|
-        validator.new(self, eligibility_errors).validate
+        validator.validate(self)
       end
     end
 end

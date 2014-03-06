@@ -164,7 +164,7 @@ class LoanEntry
 
   def validate_eligibility
     loan.rules.loan_entry_validations.each do |validator|
-      validator.new(self, errors).validate
+      validator.validate(self)
     end
   end
 end

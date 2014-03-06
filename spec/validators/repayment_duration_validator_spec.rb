@@ -4,14 +4,14 @@ describe RepaymentDurationValidator do
   let(:lending_limit) { FactoryGirl.build(:lending_limit) }
   let(:loan) { FactoryGirl.build(:loan, lending_limit: lending_limit, loan_category_id: loan_category_id) }
   let(:loan_category_id) { 1 }
-  let(:object) { double(repayment_duration: repayment_duration, loan: loan) }
+  let(:object) { double(errors: errors, repayment_duration: repayment_duration, loan: loan) }
   let(:repayment_duration) { MonthDuration.new(total_months) }
-  let(:validator) { RepaymentDurationValidator.new(object, errors) }
+  let(:validator) { RepaymentDurationValidator.new({}) }
 
   subject(:errors) { ActiveModel::Errors.new(loan) }
 
   before do
-    validator.validate
+    validator.validate(object)
   end
 
   context 'when there is no repayment_duration' do
