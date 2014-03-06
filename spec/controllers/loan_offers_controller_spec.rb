@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe LoanOffersController do
-  let(:loan) { FactoryGirl.create(:loan, :completed) }
+  let(:loan) { FactoryGirl.create(:loan, :completed, :with_premium_schedule) }
 
   describe '#new' do
     def dispatch(params = {})

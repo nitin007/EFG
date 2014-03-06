@@ -5,8 +5,8 @@ require 'spec_helper'
 describe 'loan offer' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
   let(:lending_limit) { FactoryGirl.create(:lending_limit) }
-  let(:loan) { FactoryGirl.create(:loan, :completed, lender: current_user.lender, lending_limit: lending_limit) }
-  let!(:premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan) }
+  let(:loan) { FactoryGirl.create(:loan, :completed, :with_premium_schedule, lender: current_user.lender, lending_limit: lending_limit) }
+
   before { login_as(current_user, scope: :user) }
 
   def dispatch
@@ -61,6 +61,23 @@ describe 'loan offer' do
       loan.reload
       loan.lending_limit.should == new_lending_limit
       loan.modified_by.should == current_user
+    end
+  end
+
+  context "when a premium schedule has not yet been generated" do
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_6) }
+    let(:loan) { FactoryGirl.create(:loan, :completed, lender: current_user.lender, lending_limit: lending_limit) }
+
+    it "redirects to the generate premium schedule form before progressing to loan offer form" do
+      dispatch
+
+      expected_text = I18n.t('premium_schedule.not_yet_generated')
+      page.should have_content(expected_text)
+
+      page.fill_in :premium_schedule_initial_draw_year, with: '2014'
+      click_button 'Submit'
+
+      page.current_url.should == new_loan_offer_url(loan)
     end
   end
 end

@@ -46,6 +46,8 @@ class PremiumSchedulesController < ApplicationController
       new_loan_transferred_entry_path(loan)
     elsif params[:redirect] == 'loan_guarantee'
       new_loan_guarantee_path(loan)
+    elsif params[:redirect] == 'loan_offer'
+      new_loan_offer_path(loan)
     else
       loan_path(loan)
     end
