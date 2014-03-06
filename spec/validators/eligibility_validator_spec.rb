@@ -2,71 +2,89 @@
 require 'spec_helper'
 
 describe EligibilityValidator do
-  describe "eligibility checks" do
-    let(:presenter) { FactoryGirl.build(:loan_eligibility_check) }
-    let(:validator) { EligibilityValidator.new({}) }
-
-    let(:errors) { presenter.errors }
-
-    it 'should start in a valid state' do
-      validator.validate(presenter)
-      errors.should be_empty
+  let(:klass) {
+    Class.new do
+      def self.name; 'Klass'; end
+      include ActiveModel::Validations
+      validates_with EligibilityValidator
     end
+  }
 
-    it "should be ineligible when it's not a viable proposition" do
-      presenter.viable_proposition = false
+  let(:collateral_exhausted) { true }
+  let(:previous_borrowing) { true }
+  let(:private_residence_charge_required) { false }
+  let(:reason) { double(eligible?: true) }
+  let(:sic) { double(eligible?: true) }
+  let(:trading_date) { Date.current }
+  let(:viable_proposition) { true }
+  let(:would_you_lend) { true }
 
-      validator.validate(presenter)
-      errors[:viable_proposition].should_not be_empty
-    end
+  subject(:record) { klass.new }
 
-    it "should be ineligible when the lender doesn't wish to lend" do
-      presenter.would_you_lend = false
+  before do
+    record.stub(
+      collateral_exhausted: collateral_exhausted,
+      previous_borrowing: previous_borrowing,
+      private_residence_charge_required: private_residence_charge_required,
+      reason: reason,
+      reason_id: nil,
+      sic: sic,
+      sic_code: nil,
+      trading_date: trading_date,
+      viable_proposition: viable_proposition,
+      would_you_lend: would_you_lend
+    )
+  end
 
-      validator.validate(presenter)
-      errors[:would_you_lend].should_not be_empty
-    end
+  context 'when everything is hunky dory' do
+    it { should be_valid }
+  end
 
-    it "should be ineligible if collateral isn't exhausted" do
-      presenter.collateral_exhausted = false
+  context 'when collateral_exhausted is false' do
+    let(:collateral_exhausted) { false }
 
-      validator.validate(presenter)
-      errors[:collateral_exhausted].should_not be_empty
-    end
+    it { should_not be_valid }
+  end
 
-    it "should be ineligible if a private residence charge is required" do
-      presenter.private_residence_charge_required = true
+  context 'when previous borrowing + the amount is not greater than £1,000,000' do
+    let(:previous_borrowing) { false }
 
-      validator.validate(presenter)
-      errors[:private_residence_charge_required].should_not be_empty
-    end
+    it { should_not be_valid }
+  end
 
-    it "should be ineligible if the loan trading date is more than 6 months in the future" do
-      presenter.trading_date = 6.months.from_now.advance(days: 1)
+  context 'when private_residence_charge_required is true' do
+    let(:private_residence_charge_required) { true }
 
-      validator.validate(presenter)
-      errors[:trading_date].should_not be_empty
-    end
+    it { should_not be_valid }
+  end
 
-    it "should be ineligible if previous borrowing + this amount is not greater than £1,000,000" do
-      presenter.previous_borrowing = false
+  context 'when the reason is ineligible' do
+    let(:reason) { double(eligible?: false) }
 
-      validator.validate(presenter)
-      errors[:previous_borrowing].should_not be_empty
-    end
+    it { should_not be_valid }
+  end
 
-    it "should be ineligible when SIC code is ineligible" do
-      presenter.sic_code = FactoryGirl.create(:sic_code, :ineligible).code
+  context 'when the SIC code is ineligible' do
+    let(:sic) { double(eligible?: false) }
 
-      validator.validate(presenter)
-      errors[:sic_code].should_not be_empty
-    end
+    it { should_not be_valid }
+  end
 
-    it "should be ineligible with an ineligible loan reason" do
-      presenter.reason_id = LoanReason.all.detect {|reason| !reason.eligible? }.id
+  context 'when the trading_date is more than 6 months in the future' do
+    let(:trading_date) { 6.months.from_now.advance(days: 1) }
 
-      validator.validate(presenter)
-      errors[:reason_id].should_not be_empty
-    end
+    it { should_not be_valid }
+  end
+
+  context 'when would_you_lend is false' do
+    let(:would_you_lend) { false }
+
+    it { should_not be_valid }
+  end
+
+  context 'when viable_proposition is false' do
+    let(:viable_proposition) { false }
+
+    it { should_not be_valid }
   end
 end

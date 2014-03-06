@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe 'eligibility checks' do
@@ -95,7 +97,7 @@ describe 'eligibility checks' do
     current_url.should == loan_eligibility_decision_url(loan.id)
 
     loan.state.should == Loan::Rejected
-    page.should have_content(I18n.t('validators.phase5_amount.amount.allowed_amount'))
+    page.should have_content(I18n.t('validators.amount.amount.invalid', maximum: '£1,000,000.00', minimum: '£1,000.00'))
 
     # email eligibility decision
 

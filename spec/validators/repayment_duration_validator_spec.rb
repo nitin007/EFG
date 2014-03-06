@@ -1,35 +1,44 @@
 require 'spec_helper'
 
 describe RepaymentDurationValidator do
+  let(:klass) {
+    Class.new do
+      def self.name; 'Klass'; end
+      include ActiveModel::Validations
+      validates_with RepaymentDurationValidator
+    end
+  }
+
   let(:lending_limit) { FactoryGirl.build(:lending_limit) }
   let(:loan) { FactoryGirl.build(:loan, lending_limit: lending_limit, loan_category_id: loan_category_id) }
   let(:loan_category_id) { 1 }
-  let(:object) { double(errors: errors, repayment_duration: repayment_duration, loan: loan) }
   let(:repayment_duration) { MonthDuration.new(total_months) }
-  let(:validator) { RepaymentDurationValidator.new({}) }
 
-  subject(:errors) { ActiveModel::Errors.new(loan) }
+  subject(:record) { klass.new }
 
   before do
-    validator.validate(object)
+    record.stub(
+      loan: loan,
+      repayment_duration: repayment_duration
+    )
   end
 
   context 'when there is no repayment_duration' do
-    let(:repayment_duration) { '' }
+    let(:repayment_duration) { nil }
 
-    it { should_not be_empty }
+    it { should_not be_valid }
   end
 
   context 'when the repayment duration is less than 3 months' do
     let(:total_months) { 2 }
 
-    it { should_not be_empty }
+    it { should_not be_valid }
   end
 
   context 'when the repayment duration is longer than 10 years' do
     let(:total_months) { 121 }
 
-    it { should_not be_empty }
+    it { should_not be_valid }
   end
 
   context 'for a Type F loan' do
@@ -38,7 +47,7 @@ describe RepaymentDurationValidator do
     context 'when the repayment duration is longer than 3 years' do
       let(:total_months) { 37 }
 
-      it { should_not be_empty }
+      it { should_not be_valid }
     end
   end
 
@@ -51,13 +60,13 @@ describe RepaymentDurationValidator do
       context 'when the repayment duration is 2 years or shorter' do
         let(:total_months) { 24 }
 
-        it { should be_empty }
+        it { should be_valid }
       end
 
       context 'when the repayment duration is >= 2 years' do
         let(:total_months) { 25 }
 
-        it { should_not be_empty }
+        it { should_not be_valid }
       end
     end
   end
@@ -71,13 +80,13 @@ describe RepaymentDurationValidator do
       context 'when the repayment duration is 3 years or shorter' do
         let(:total_months) { 36 }
 
-        it { should be_empty }
+        it { should be_valid }
       end
 
       context 'when the repayment duration is >= 3 years' do
         let(:total_months) { 37 }
 
-        it { should_not be_empty }
+        it { should_not be_valid }
       end
     end
   end

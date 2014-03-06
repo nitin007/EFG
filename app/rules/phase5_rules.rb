@@ -14,7 +14,7 @@ module Phase5Rules
   def eligibility_check_validations
     [
       EligibilityValidator.new({}),
-      Phase5AmountValidator.new({}),
+      AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_000_000_00)),
       RepaymentDurationValidator.new({})
     ]
   end

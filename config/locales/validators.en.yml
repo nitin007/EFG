@@ -1,5 +1,8 @@
 en:
   validators:
+    amount:
+      amount:
+        invalid: "A business may only borrow between %{minimum} and %{maximum} (inclusive) under the Enterprise Finance Guarantee (EFG)."
     eligibility:
       viable_proposition:
         invalid: This is not a viable lending proposition. Lenders' normal commercial lending practices provide the mechanism for determining whether the proposition under consideration is viable and thus that the business will be able to repay any facility offered.
@@ -15,13 +18,9 @@ en:
         invalid: "SIC code is ineligible. The SIC code is used to classify business activities. While businesses in the majority of sectors are eligible there are a small number of exclusions, usually due to either UK or EU regulations."
       reason_id:
         invalid: The loan purpose is not eligible for funds. The Enterprise Finance Guarantee is governed by the Industrial Development Act (IDA) of 1982 and is also subject to European Union State Aid regulations. While most business purposes are eligible there are certain exclusions.
-    phase5_amount:
-      amount:
-        allowed_amount: "A business may only borrow between £1,000 and £1,000,000 (inclusive) under the Enterprise Finance Guarantee (EFG)."
     phase6_amount:
       amount:
-        allowed_amount: "A business may only borrow between £1,000 and £1,200,000 (inclusive) under the Enterprise Finance Guarantee (EFG)."
-        maximum_five_year_amount: "A business cannot borrow greater than £600,000 for more than 5 years"
+        invalid: "A business cannot borrow more than £600,000 for longer than 5 years"
     repayment_duration:
       repayment_duration:
         invalid: "Repayment duration should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years."

@@ -1,7 +1,7 @@
 class BaseValidator < ActiveModel::Validator
   private
-    def add_error(record, attribute, message = :invalid, options = {})
-      options[:message] = I18n.translate("validators.#{kind}.#{attribute}.#{message}")
+    def add_error(record, attribute, options = {})
+      options[:message] = I18n.translate("validators.#{kind}.#{attribute}.invalid")
 
       record.errors.add(attribute, :invalid, options)
     end
