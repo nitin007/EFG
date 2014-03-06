@@ -333,7 +333,7 @@ DEPENDENCIES
   devise (= 2.2.5)
   devise-encryptable (= 0.1.2)
   devise_security_extension (= 0.8.0)
-  devise_zxcbvn (= 1.1.0)
+  devise_zxcvbn (= 1.1.0)
   exception_notification (= 4.0.1)
   factory_girl_rails (= 4.2.0)
   guard-rspec (= 0.7.2)
