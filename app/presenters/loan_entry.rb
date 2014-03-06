@@ -44,6 +44,7 @@ class LoanEntry
   attribute :fees
   attribute :state_aid_is_valid
   attribute :state_aid
+  attribute :state_aid_threshold
   attribute :loan_security_types
   attribute :security_proportion
   attribute :original_overdraft_proportion

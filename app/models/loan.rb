@@ -306,6 +306,10 @@ class Loan < ActiveRecord::Base
     end
   end
 
+  def state_aid_threshold
+    SicCode.find_by_code(sic_code).state_aid_threshold
+  end
+
   private
 
   def set_reference

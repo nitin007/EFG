@@ -5,6 +5,8 @@ class UpdateLoanLendingLimit
 
   attr_reader :new_lending_limit_id, :previous_state_aid, :new_state_aid
 
+  attribute :state_aid_threshold, read_only: true
+
   validates_presence_of :new_lending_limit_id
 
   before_save :update_lending_limit
