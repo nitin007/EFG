@@ -23,7 +23,7 @@ module RequestSpecHelpers
 
   # Eligibility Check
 
-  def fill_in_valid_eligibility_check_details(lender)
+  def fill_in_valid_eligibility_check_details(lender, sic_code)
     choose 'loan_eligibility_check_viable_proposition_true'
     choose 'loan_eligibility_check_would_you_lend_true'
     choose 'loan_eligibility_check_collateral_exhausted_true'

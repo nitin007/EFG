@@ -6,7 +6,7 @@ describe LoanCsvExport do
     let(:user) { FactoryGirl.create(:cfe_user, first_name: 'Joe', last_name: 'Bloggs') }
     let(:lender) { FactoryGirl.create(:lender, name: 'Little Tinkers') }
     let(:lending_limit) { FactoryGirl.create(:lending_limit, name: 'Lending Limit') }
-    let(:sic_code) { FactoryGirl.create(:sic_code, code: 'qwerty').code }
+    let(:sic) { loan.sic }
     let(:loan) {
       FactoryGirl.create(:loan, :completed, :guaranteed,
         created_by: user,
@@ -17,8 +17,7 @@ describe LoanCsvExport do
         trading_date: Date.new(1999, 9, 9),
         lender_reference: 'lenderref1',
         dti_amount_claimed: Money.new(123_45),
-        settled_amount: Money.new(100_00),
-        sic_code: sic_code
+        settled_amount: Money.new(100_00)
       )
     }
     let(:csv) {
@@ -160,8 +159,8 @@ describe LoanCsvExport do
       row['repayment_frequency'].should == 'Monthly'
       row['security_proportion'].should == ''
       row['settled_on'].should == ''
-      row['sic_code'].should == 'qwerty'
-      row['sic_desc'].should == 'Growing of rice'
+      row['sic_code'].should == sic.code
+      row['sic_desc'].should == sic.description
       row['sic_eligible'].should == 'Yes'
       row['sic_notified_aid'].should == ''
       row['sic_parent_desc'].should == ''

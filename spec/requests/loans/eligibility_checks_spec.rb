@@ -14,7 +14,7 @@ describe 'eligibility checks' do
     visit root_path
     click_link 'New Loan Application'
 
-    fill_in_valid_eligibility_check_details(lender)
+    fill_in_valid_eligibility_check_details(lender, sic_code)
 
     expect {
       click_button 'Check'
@@ -82,7 +82,7 @@ describe 'eligibility checks' do
     visit root_path
     click_link 'New Loan Application'
 
-    fill_in_valid_eligibility_check_details(lender)
+    fill_in_valid_eligibility_check_details(lender, sic_code)
     # make loan fail eligibility check
     fill_in :loan_eligibility_check_amount, with: '6000000'
 

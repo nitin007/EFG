@@ -10,7 +10,7 @@ describe 'Loan lifecycle' do
 
   let(:cfe_user) { FactoryGirl.create(:cfe_user) }
 
-  let!(:sic_code) { FactoryGirl.create(:sic_code, code: '01490') }
+  let!(:sic_code) { FactoryGirl.create(:sic_code) }
 
   let!(:ded_code) { FactoryGirl.create(:ded_code) }
 
@@ -227,7 +227,7 @@ describe 'Loan lifecycle' do
       click_link "New Loan"
     end
 
-    fill_in_valid_eligibility_check_details(lender)
+    fill_in_valid_eligibility_check_details(lender, sic_code)
     click_button 'Check'
 
     loan = Loan.last

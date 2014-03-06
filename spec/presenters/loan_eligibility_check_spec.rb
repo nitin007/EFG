@@ -220,7 +220,7 @@ describe LoanEligibilityCheck do
   end
 
   describe "#sic_code=" do
-    let(:sic_code) { FactoryGirl.create(:sic_code, code: '86900', description: 'My SIC description', eligible: false) }
+    let(:sic_code) { FactoryGirl.create(:sic_code, description: 'My SIC description', eligible: false) }
 
     it "should cache SIC code, description and eligibility on the loan" do
       loan_eligibility_check.loan.sic_desc = nil
