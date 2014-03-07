@@ -61,4 +61,12 @@ module Phase6Rules
   def state_aid_calculator
     Phase6StateAidCalculator
   end
+
+  def update_loan_lending_limit_validations
+    [
+      AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_200_000_00)),
+      RepaymentDurationValidator.new({}),
+      Phase6AmountValidator.new({})
+    ]
+  end
 end
