@@ -32,6 +32,25 @@ describe 'password policy' do
         submit_sign_in_form(current_user.username, current_user.password)
         page.should have_content('Logout')
       end
+
+      it "should be possible to reset an expired password as a #{user_type.humanize}" do
+        current_user = FactoryGirl.create(user_type)
+        current_user.password_changed_at = current_user.password_changed_at - current_user.class.expire_password_after
+        current_user.save!
+
+        visit root_path
+        submit_sign_in_form(current_user.username, current_user.password)
+        page.should have_content(I18n.t('devise.password_expired.change_required'))
+
+        # this test also captures that we have no password history policy at the moment.
+        # if that changes, then this spec will start failing :)
+        fill_in 'user_current_password', with: current_user.password
+        fill_in 'user_password', with: current_user.password
+        fill_in 'user_password_confirmation', with: current_user.password
+        click_button 'Change Password'
+
+        page.should have_content(I18n.t('devise.password_expired.updated'))
+      end
     end
   end
 end
