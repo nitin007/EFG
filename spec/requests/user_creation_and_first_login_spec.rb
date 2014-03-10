@@ -63,7 +63,7 @@ describe 'User creation and first login' do
     fill_in 'user[password_confirmation]', with: new_password
     click_button 'Change Password'
 
-    page.should have_content('Your password was set successfully. You are now signed in.'), page.text
+    page.should have_content('Your password was set successfully. You are now signed in.')
 
     admin_audit = AdminAudit.last!
     admin_audit.action.should == AdminAudit::UserInitialLogin
