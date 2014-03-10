@@ -23,6 +23,8 @@ class TransferredLoanEntry
   attribute :postcode, read_only: true
   attribute :legacy_loan?, read_only: true
   attribute :state_aid_is_valid, read_only: true
+  attribute :premium_rate, read_only: true
+  attribute :guarantee_rate, read_only: true
 
   attribute :declaration_signed
   attribute :sortcode

@@ -25,13 +25,12 @@ class LendingLimit < ActiveRecord::Base
            conditions: ["loans.state IN (?)", USAGE_LOAN_STATES]
 
   validates_presence_of :lender_id, strict: true
-  validates_presence_of :allocation, :name, :ends_on, :guarantee_rate,
-    :premium_rate, :starts_on
+  validates_presence_of :allocation, :name, :ends_on, :starts_on
   validates_inclusion_of :allocation_type_id, in: [LendingLimitType::Annual, LendingLimitType::Specific].map(&:id)
   validate :ends_on_is_after_starts_on
 
   attr_accessible :allocation, :allocation_type_id, :name, :ends_on,
-    :guarantee_rate, :premium_rate, :starts_on, :phase_id
+    :starts_on, :phase_id
 
   format :allocation, with: MoneyFormatter.new
   format :ends_on, with: QuickDateFormatter

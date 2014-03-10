@@ -446,7 +446,6 @@ describe Loan do
     end
 
     it "falls back to the loan's phase premium rate" do
-      loan.lending_limit.premium_rate = 2
       loan.premium_rate = nil
       loan.premium_rate.should == 2
     end
