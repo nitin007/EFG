@@ -8,13 +8,13 @@ gem 'canable', '0.3.0'
 gem 'devise', '2.2.5'
 gem "devise-encryptable", "0.1.2"
 gem "devise_security_extension", "0.8.0"
-gem 'devise_zxcvbn', '1.1.0'
 gem 'exception_notification', '4.0.1'
 gem 'jquery-rails', "2.2.1"
 gem 'less-rails', '2.2.6'
 gem 'lograge', '0.1.2'
 gem 'money', '5.1.1'
 gem 'mysql2', '0.3.11'
+gem 'passphrase_entropy', git: 'https://github.com/alphagov/passphrase_entropy.git'
 gem 'plek', '0.3.0'
 gem 'prawn', '0.12.0'
 gem 'progressbar', '0.11.0'

@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :recoverable, :trackable,
          :timeoutable, :authenticatable, :encryptable,        # devise core model extensions
-         :zxcvbnable, #devise_zxcvbn
+         :strengthened, # in EFG/lib/devise/models/strengthened.rb
          :password_expirable # devise_security_extension
 
   after_create :update_stats

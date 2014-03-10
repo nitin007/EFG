@@ -56,7 +56,7 @@ describe 'Change password' do
       fill_in "#{user_type}_password_confirmation", with: 'password'
       click_button 'Update Password'
 
-      page.should have_content(I18n.t('errors.messages.weak_password', score: 5, min_password_score: 3))
+      page.should have_content(I18n.t('errors.messages.insufficient_entropy', entropy: 5, minimum_entropy: Devise::Models::Strengthened::MINIMUM_ENTROPY))
     end
 
   end
