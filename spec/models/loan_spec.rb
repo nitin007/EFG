@@ -418,25 +418,25 @@ describe Loan do
   end
 
   describe "#guarantee_rate" do
-    before do
-      loan.guarantee_rate = 75
-      loan.lending_limit.guarantee_rate = 85
-    end
-
     it "returns the loan's guarantee rate when present" do
-      loan.guarantee_rate.should == 75
-    end
-
-    it "falls back to the loan's LendingLimit guarantee rate" do
-      loan.guarantee_rate = nil
+      loan.guarantee_rate = 85
       loan.guarantee_rate.should == 85
     end
 
-    it "returns nil if the loan has no guarantee rate or lending limit" do
-      loan.lending_limit = nil
+    it "falls back to the loan's phase guarantee rate" do
       loan.guarantee_rate = nil
-      loan.guarantee_rate.should be_nil
+      loan.guarantee_rate.should == 75
     end
+
+    context 'phase 6' do
+      let(:lending_limit) { FactoryGirl.build(:lending_limit, :phase_6) }
+
+      let(:loan) { FactoryGirl.build(:loan, guarantee_rate: nil, lending_limit: lending_limit) }
+
+      it "returns the loan's category specific guarantee rate" do
+        loan.guarantee_rate.should == 75
+      end
+    end  
   end
 
   describe "#premium_rate" do

@@ -19,6 +19,10 @@ module Phase5Rules
     ]
   end
 
+  def loan_category_guarantee_rate
+    BigDecimal.new('75.0')
+  end
+
   def loan_category_premium_rate(category_id = nil)
     BigDecimal.new('2.0')
   end

@@ -256,7 +256,7 @@ class Loan < ActiveRecord::Base
   end
 
   def guarantee_rate
-    read_attribute(:guarantee_rate) || lending_limit && lending_limit.guarantee_rate
+    read_attribute(:guarantee_rate) || rules.loan_category_guarantee_rate
   end
 
   def premium_rate
