@@ -260,7 +260,7 @@ class Loan < ActiveRecord::Base
   end
 
   def premium_rate
-    read_attribute(:premium_rate) || lending_limit && lending_limit.premium_rate
+    read_attribute(:premium_rate) || rules.loan_category_premium_rate(loan_category_id)
   end
 
   def sflg?

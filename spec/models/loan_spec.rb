@@ -440,24 +440,25 @@ describe Loan do
   end
 
   describe "#premium_rate" do
-    before do
-      loan.premium_rate = 1.5
-      loan.lending_limit.premium_rate = 2
-    end
-
     it "returns the loan's premium rate when present" do
+      loan.premium_rate = 1.5
       loan.premium_rate.should == 1.5
     end
 
-    it "falls back to the loan's LendingLimit premium rate" do
+    it "falls back to the loan's phase premium rate" do
+      loan.lending_limit.premium_rate = 2
       loan.premium_rate = nil
       loan.premium_rate.should == 2
     end
 
-    it "returns nil if the loan has no premium rate or lending limit" do
-      loan.lending_limit = nil
-      loan.premium_rate = nil
-      loan.premium_rate.should be_nil
+    context 'phase 6' do
+      let(:lending_limit) { FactoryGirl.build(:lending_limit, :phase_6) }
+
+      let(:loan) { FactoryGirl.build(:loan, premium_rate: nil, lending_limit: lending_limit, loan_category_id: 6) }
+
+      it "returns the loan's category specific premium rate" do
+        loan.premium_rate.should == 1.2
+      end
     end
   end
 
