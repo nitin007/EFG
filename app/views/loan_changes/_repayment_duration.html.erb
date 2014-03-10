@@ -3,12 +3,4 @@
 
 <%= f.input :added_months, input_html: { class: 'input-mini' } %>
 
-<% if f.object.errors.include?(:repayment_duration) %>
-  <div class="control-group error">
-    <div class="controls">
-      <div class="help-inline">
-        <%= f.object.errors[:repayment_duration].join(', ') %>
-      </div>
-    </div>
-  </div>
-<% end %>
+<%= render_attribute_errors(f, :repayment_duration, :amount).html_safe %>
