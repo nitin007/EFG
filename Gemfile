@@ -7,7 +7,7 @@ gem 'bootstrap-will_paginate', '0.0.10'
 gem 'canable', '0.3.0'
 gem 'devise', '2.2.5'
 gem "devise-encryptable", "0.1.2"
-gem "devise_security_extension", "0.8.0"
+gem "devise_security_extension", "0.7.2"
 gem 'exception_notification', '4.0.1'
 gem 'jquery-rails', "2.2.1"
 gem 'less-rails', '2.2.6'
