@@ -95,6 +95,17 @@ class PremiumSchedule < ActiveRecord::Base
     end
   end
 
+  def save_and_update_loan_state_aid
+    transaction do
+      save.tap { |saved|
+        if saved
+          loan.calculate_state_aid
+          loan.save!
+        end
+      }
+    end
+  end
+
   def total_premiums
     premiums.reduce(Money.new(0), :+)
   end
