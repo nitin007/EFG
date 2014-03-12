@@ -134,6 +134,7 @@ describe LoanReportCsvExport do
         settled_on: Date.new(2012, 7, 17),
         settled_amount: 1_000.00,
         loan_category_id: 1,
+        loan_sub_category_id: 4,
         interest_rate_type_id: 1,
         interest_rate: 2.0,
         fees: 5000,
@@ -219,6 +220,7 @@ describe LoanReportCsvExport do
           :settled_date,
           :invoice_reference,
           :loan_category,
+          :loan_sub_category,
           :interest_type,
           :interest_rate,
           :fees,
@@ -303,6 +305,7 @@ describe LoanReportCsvExport do
       row[t(:settled_date)].should == '17-07-2012'
       row[t(:invoice_reference)].should == '123-INV'
       row[t(:loan_category)].should == LoanCategory.find(1).name
+      row[t(:loan_sub_category)].should == LoanSubCategory.find(4).name
       row[t(:interest_type)].should == InterestRateType.find(1).name
       row[t(:interest_rate)].should == '2.0'
       row[t(:fees)].should == '5000.00'

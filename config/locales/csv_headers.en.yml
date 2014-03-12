@@ -61,6 +61,7 @@ en:
       settled_date: Settled date
       invoice_reference: Invoice reference
       loan_category: Loan category
+      loan_sub_category: Loan sub-category
       interest_type: EFG Interest Type
       interest_rate: EFG Interest Rate
       fees: EFG Fees
@@ -103,6 +104,7 @@ en:
       generic5: Generic lender field 5
       loan_reason: Reason for loan
       loan_category: Loan category
+      loan_sub_category: Loan sub-category
       loan_state: Loan state for report
       created_at: Date and time created
       created_by: Record created by

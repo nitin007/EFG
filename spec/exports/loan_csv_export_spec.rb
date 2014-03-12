@@ -17,7 +17,8 @@ describe LoanCsvExport do
         trading_date: Date.new(1999, 9, 9),
         lender_reference: 'lenderref1',
         dti_amount_claimed: Money.new(123_45),
-        settled_amount: Money.new(100_00)
+        settled_amount: Money.new(100_00),
+        loan_sub_category_id: 4
       )
     }
     let(:csv) {
@@ -60,7 +61,7 @@ describe LoanCsvExport do
         guarantee_rate guaranteed_on initial_draw_date initial_draw_amount
         interest_rate interest_rate_type invoice_discount_limit
         legacy_small_loan legal_form lender lending_limit loan_category
-        loan_scheme loan_source maturity_date next_borrower_demand_seq
+        loan_sub_category loan_scheme loan_source maturity_date next_borrower_demand_seq
         next_change_history_seq next_in_calc_seq next_in_realise_seq
         next_in_recover_seq no_claim_on non_val_postcode
         notified_aid original_overdraft_proportion
@@ -126,6 +127,7 @@ describe LoanCsvExport do
       row['lender'].should == 'Little Tinkers'
       row['lending_limit'].should == 'Lending Limit'
       row['loan_category'].should == 'Type A - New Term Loan with No Security'
+      row['loan_sub_category'].should == 'Bonds & Guarantees (Performance Bonds, VAT Deferment etc.)'
       row['loan_scheme'].should == 'E'
       row['loan_source'].should == 'S'
       row['maturity_date'].should == '22/02/2022'
