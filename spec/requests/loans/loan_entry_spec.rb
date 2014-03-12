@@ -171,7 +171,7 @@ describe 'loan entry' do
       fill_in_valid_loan_entry_details_phase_5(loan)
       
       # switch to Category E
-      select "Type E - Overdraft Guarantee Facility", from: "loan_entry_loan_category_id"
+      select "Type E - Revolving Credit Guarantee", from: "loan_entry_loan_category_id"
       click_button 'Submit'
 
       select "Business Credit (or Charge) Cards", from: "loan_entry_loan_sub_category_id"

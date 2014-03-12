@@ -18,7 +18,7 @@ class LoanCategory < StaticAssociation
     },
     {
       id: 5,
-      name: 'Type E - Overdraft Guarantee Facility'
+      name: 'Type E - Revolving Credit Guarantee'
     },
     {
       id: 6,
