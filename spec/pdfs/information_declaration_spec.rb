@@ -11,6 +11,7 @@ describe InformationDeclaration do
       company_registration: 'B1234567890',
       legal_form_id: 2,
       loan_category_id: 5,
+      loan_sub_category_id: 1,
       maturity_date: Date.new(2020, 3, 2),
       postcode: 'ABC 123',
       previous_borrowing: false,
@@ -71,6 +72,7 @@ describe InformationDeclaration do
       pdf_content.should include('A10.1.2')
       pdf_content.should include('Foo')
       pdf_content.should include("Category Name")
+      pdf_content.should include("Overdrafts")
       pdf_content.should include('Equipment purchase')
       pdf_content.should include('No')
       pdf_content.should include('€1,234.56')
