@@ -23,6 +23,14 @@ class LoanCategory < StaticAssociation
     {
       id: 6,
       name: 'Type F - Invoice Finance Guarantee Facility'
+    },
+    {
+      id: 7,
+      name: 'Type G - Revolving Credit Refinance Guarantee'
+    },
+    {
+      id: 8,
+      name: 'Type H - Invoice Finance Refinance Guarantee'
     }
   ]
 end
