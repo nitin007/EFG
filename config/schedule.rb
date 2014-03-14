@@ -19,6 +19,9 @@
 
 # Learn more: http://github.com/javan/whenever
 
+# We need Rake to use our own environment
+job_type :rake, "cd :path && /usr/local/bin/govuk_setenv efg bundle exec rake :task --silent :output"
+
 job_type :runner_with_file, "cd :path && script/rails runner -e :environment :task :output"
 
 # Since this is a back-office system, we have quite a big window to do maintenance tasks.
