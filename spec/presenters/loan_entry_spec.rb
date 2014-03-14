@@ -109,6 +109,19 @@ describe LoanEntry do
       end
     end
 
+    context "when state aid exceeds SIC state aid threshold" do
+      let!(:sic) { FactoryGirl.create(:sic_code, state_aid_threshold: Money.new(15_000_00)) }
+
+      before do
+        loan_entry.sic_code = sic.code
+        loan_entry.state_aid = Money.new(15_000_01)
+      end
+
+      it "should be invalid" do
+        loan_entry.should_not be_valid
+      end
+    end
+
     context 'when a type B loan' do
       let(:loan_entry) { FactoryGirl.build(:loan_entry_type_b) }
 

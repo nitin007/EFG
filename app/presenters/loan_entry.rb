@@ -65,6 +65,7 @@ class LoanEntry
   validates_presence_of :company_registration, if: :company_registration_required?
   validate :postcode_allowed
   validate :state_aid_calculated
+  validate :state_aid_within_sic_threshold, if: :state_aid
   validate :repayment_frequency_allowed
   validate :company_turnover_is_allowed, if: :turnover
   validates_acceptance_of :state_aid_is_valid, allow_nil: false, accept: true
@@ -127,6 +128,14 @@ class LoanEntry
   def validate_eligibility
     loan.rules.loan_entry_validations.each do |validator|
       validator.validate(self)
+    end
+  end
+
+  def state_aid_within_sic_threshold
+    sic = SicCode.find_by_code!(sic_code)
+    if state_aid > sic.state_aid_threshold
+      errors.add(:state_aid, :exceeds_sic_threshold, threshold: sic.state_aid_threshold.format(no_cents: true))
+      return false
     end
   end
 end

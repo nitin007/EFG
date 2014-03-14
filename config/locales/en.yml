@@ -59,6 +59,7 @@ en:
             state_aid:
               blank: must be calculated
               recalculate: must be re-calculated when you change the loan term
+              exceeds_sic_threshold: 'calculated state aid exceeds the allowed amount of %{threshold}'
             loan_security_types:
               present: choose at least one security
             repayment_frequency_id:
