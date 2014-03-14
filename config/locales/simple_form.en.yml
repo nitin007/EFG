@@ -95,7 +95,7 @@ en:
         refinance_security_proportion: 'Based on your normal security valuation policy, what proportion of the total value of the refinanced package will be covered by any security held?'
         current_refinanced_amount: What is the current outstanding value of the existing facility or facilities intended to be refinanced?
         final_refinanced_amount: 'On completion of the refinancing exercise what will be the total outstanding value, including any new funds provided, of the entire refinanced package?'
-        overdraft_limit: What is the limit of the Applicant's current overdraft facility (prior to the granting of the EFG facility)?
+        overdraft_limit: What is the limit of the Applicant's current facility (prior to the granting of the EFG facility)?
         overdraft_maintained: "Are you able to confirm that the Applicant's current overdraft facility has not been cancelled or reduced in the preceding three months and, subject to normal account behaviour being maintained, will be maintained while the EFG facility remains in place?"
         invoice_discount_limit: What is the current limit of the Applicant's Invoice Finance facility?
         debtor_book_coverage: What is the Applicant's Current Approved Pre-Payment Percentage?
