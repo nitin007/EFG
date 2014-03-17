@@ -44,6 +44,7 @@ class Loan < ActiveRecord::Base
   belongs_to :modified_by, class_name: 'User'
   belongs_to :invoice
   belongs_to :ded_code, foreign_key: 'dti_ded_code', primary_key: 'code'
+  belongs_to :sic, class_name: 'SicCode', foreign_key: 'sic_code', primary_key: 'code'
   has_many :premium_schedules, inverse_of: :loan, order: :seq
   has_one :initial_draw_change
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
@@ -299,10 +300,6 @@ class Loan < ActiveRecord::Base
     else
       Phase5Rules
     end
-  end
-
-  def sic
-    SicCode.where(code: sic_code).first
   end
 
   private
