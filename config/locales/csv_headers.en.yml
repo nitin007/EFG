@@ -74,8 +74,8 @@ en:
       security_type: Security type
       type_c_d1: "(For Types C & D) Based on your normal security valuation policy, what proportion of the total value of the refinanced package will be covered by any security held?"
       type_e1: "(For Type E & G only) What is the limit of the Applicant's current overdraft facility (prior to the granting of the EFG facility)?"
-      type_e2: "(For Type E & G only) Are you able to confirm that the Applicant's current overdraft facility has not been cancelled or reduced in the preceding three months and, subject to normal account behaviour being maintained, will be maintained while the EFG facility remains in place?"
-      type_f1: "(For Type F & H only) What is the current limit of the Applicant's Invoice Finance facility?"
+      type_e2: "(For Type E & G only) Are you able to confirm that if the Applicant’s current, or previous, facility has been cancelled or reduced in the preceding three months that you have re-assessed the facts, circumstances and matters contributing to the decision and concluded that the facility satisfies the eligibility criteria for EFG?"
+      type_f1: "(For Type F & H only) What limit can be supported under Normal Commercial Lending Policy without EFG?"
       type_f2: "(For Type F & H only) What percentage of the Applicant's approved debtor book value is covered by their existing invoice discounting facility?"
       type_f3: "(For Type F & H only) What additional percentage (not exceeding either 100% less the existing approved percentage or 30%) of the Applicant's approved debtor book value will the enhancement represent?"
       loan_lender_reference: Lender's loan reference
