@@ -9,7 +9,7 @@ module ErrorHelper
   end
 
   def render_attribute_errors(form, *attribute_names)
-    html = [:amount, :repayment_duration].collect do |attribute|
+    html = attribute_names.collect do |attribute|
       if form.object.errors.include?(attribute)
         content_tag :div, class: "control-group error" do
           content_tag :div, class: "controls" do
