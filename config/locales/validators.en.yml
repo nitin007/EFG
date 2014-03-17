@@ -40,3 +40,5 @@ en:
         invalid: 'must be greater than 0% and less than 100%'
       debtor_book_topup:
         invalid: 'must be between 1% and 30%'
+      total_prepayment:
+        invalid: 'sum of debtor book coverage and debtor book topup must be greater than 0% and no more than 100%'

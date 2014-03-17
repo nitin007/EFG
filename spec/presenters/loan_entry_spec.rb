@@ -260,6 +260,18 @@ describe LoanEntry do
         loan_entry.debtor_book_topup = 30.1
         loan_entry.should_not be_valid
       end
+
+      it "should require a total prepayment no greater than 100" do
+        loan_entry.debtor_book_topup = 30
+        loan_entry.debtor_book_coverage = 80
+        loan_entry.should_not be_valid
+      end
+
+      it "should require a total prepayment greater than or equal to 0" do
+        loan_entry.debtor_book_topup = 0
+        loan_entry.debtor_book_coverage = -1
+        loan_entry.should_not be_valid
+      end
     end
 
     context 'when a type H loan' do

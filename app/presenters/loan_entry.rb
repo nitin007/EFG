@@ -93,6 +93,10 @@ class LoanEntry
     loan.state == Loan::Completed
   end
 
+  def total_prepayment
+    (debtor_book_coverage || 0) + (debtor_book_topup || 0)
+  end
+
   private
 
   def category_validations

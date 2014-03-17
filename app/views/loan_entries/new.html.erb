@@ -82,6 +82,8 @@
       <%= f.input :invoice_discount_limit, as: :currency %>
       <%= f.input :debtor_book_coverage, as: :percentage %>
       <%= f.input :debtor_book_topup, as: :percentage %>
+
+      <%= render_attribute_errors(f, :total_prepayment).html_safe %>
     <% end %>
 
   <% end %>
