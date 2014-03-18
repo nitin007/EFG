@@ -69,5 +69,19 @@ FactoryGirl.define do
       }
     end
 
+    factory :loan_entry_type_g, parent: :loan_entry_type_e do
+      initialize_with {
+        loan = FactoryGirl.create(:loan, :eligible, loan_category_id: 7)
+        new(loan)
+      }
+    end
+
+    factory :loan_entry_type_h, parent: :loan_entry_type_f do
+      initialize_with {
+        loan = FactoryGirl.create(:loan, :eligible, loan_category_id: 8)
+        new(loan)
+      }
+    end
+
   end
 end
