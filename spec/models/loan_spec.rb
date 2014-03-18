@@ -456,7 +456,7 @@ describe Loan do
       let(:loan) { FactoryGirl.build(:loan, premium_rate: nil, lending_limit: lending_limit, loan_category_id: 6) }
 
       it "returns the loan's category specific premium rate" do
-        loan.premium_rate.should == 1.2
+        loan.premium_rate.should == 1.3
       end
     end
   end

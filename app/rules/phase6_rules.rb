@@ -17,7 +17,7 @@ module Phase6Rules
     3 => BigDecimal.new('2.0'),
     4 => BigDecimal.new('2.0'),
     5 => BigDecimal.new('2.0'),
-    6 => BigDecimal.new('1.2')
+    6 => BigDecimal.new('1.3')
   }
 
   def eligibility_check_validations
