@@ -17,6 +17,10 @@ FactoryGirl.define do
       active false
     end
 
+    trait :phase_1 do
+      phase_id 1
+    end
+
     trait :phase_5 do
       phase_id 5
     end

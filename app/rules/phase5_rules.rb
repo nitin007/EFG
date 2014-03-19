@@ -13,6 +13,14 @@ module Phase5Rules
     8   => 3..36
   }
 
+  def claim_limit_calculator
+    Phase4ClaimLimitCalculator
+  end
+
+  def claim_limit_calculator
+    Phase5ClaimLimitCalculator
+  end
+
   def eligibility_check_validations
     [
       EligibilityValidator.new({}),

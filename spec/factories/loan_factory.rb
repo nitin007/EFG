@@ -126,8 +126,9 @@ FactoryGirl.define do
 
     trait :settled do
       state Loan::Settled
-      dti_demand_outstanding { |loan| loan.amount * 0.5 }
+      dti_demand_outstanding { |loan| loan.amount * 0.25 }
       dti_amount_claimed { |loan| loan.dti_demand_outstanding * 0.75 }
+      settled_amount { |loan| loan.dti_amount_claimed }
       settled_on { Date.current }
 
       after(:create) do |loan|
