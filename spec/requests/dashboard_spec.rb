@@ -405,16 +405,35 @@ describe 'lender dashboard' do
       it "should display LendingLimit summary" do
         visit root_path
 
-        within '#utilisation_dashboard' do
+        within '.dashboard-widgets.primary' do
           page.should have_content(lending_limit1.name)
-          page.should have_content('Allocation: £1,000,000.00')
-          page.should have_content('Usage: £250,000.00')
+          page.should have_content('Allocation: £1,000,000')
+          page.should have_content('Usage: £250,000')
           page.should have_content('Utilisation: 25.00%')
 
           page.should have_content(lending_limit2.name)
-          page.should have_content('Allocation: £3,000,000.00')
-          page.should have_content('Usage: £800,000.00')
+          page.should have_content('Allocation: £3,000,000')
+          page.should have_content('Usage: £800,000')
           page.should have_content('Utilisation: 26.67%')
+        end
+      end
+    end
+
+    context "with Claim Limits" do
+      before do
+        Phase1ClaimLimitCalculator.any_instance.stub(:total_amount).and_return(Money.new(1_000_000_00))
+        Phase1ClaimLimitCalculator.any_instance.stub(:amount_remaining).and_return(Money.new(500_000_00))
+        Phase1ClaimLimitCalculator.any_instance.stub(:percentage_remaining).and_return(50)
+      end
+
+      it "should display Claim Limit summary" do
+        visit root_path
+
+        within '.dashboard-widgets.secondary' do
+          page.should have_content('Phase 1')
+          page.should have_content('Claim Limit: £1,000,000')
+          page.should have_content('Amount Remaining: £500,000')
+          page.should have_content('Percentage Remaining: 50%')
         end
       end
     end
