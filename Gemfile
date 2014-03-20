@@ -47,7 +47,7 @@ group :development, :test do
   gem 'brakeman', '2.0.0'
   gem 'ci_reporter', '1.8.4'
   gem 'parallel_tests', '0.16.10'
-  gem 'rspec-rails', '2.12.2'
+  gem 'rspec-rails', '2.14.1'
   gem 'simplecov-rcov', '0.2.3'
 end
 
