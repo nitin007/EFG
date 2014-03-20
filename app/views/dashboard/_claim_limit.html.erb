@@ -1,6 +1,10 @@
-<div class="utilisation-year">
+<div class="widget-block">
   <div class="content">
     <h3><%= claim_limit.phase.name %></h3>
+
+    <div class="chart">
+      <span class="pie" data-diameter="75" data-fill='["#ccc", "#799800"]'><%= 100 - claim_limit.percentage_remaining %>/100</span>
+    </div>
 
     <ul>
       <li><strong>Claim Limit:</strong> <%= claim_limit.total_amount.format(no_cents: true) %></li>

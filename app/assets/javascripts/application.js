@@ -15,6 +15,7 @@
 //= require twitter/bootstrap
 //= require 'jquery-ui.autocomplete'
 //= require 'jquery.placeholder.min'
+//= require 'jquery.peity.min'
 //= require 'chosen.jquery'
 //= require 'date'
 //= require_tree .
