@@ -33,6 +33,7 @@
     background-color: $beige;
     border-radius: 10px;
     @include box-shadow(1px 1px 1px #ccc);
+    @include linear-gradient($beige,#fff);
     margin: 0 0 1em;
 
     h3 {
@@ -72,12 +73,21 @@
     }
   }
 
+  &.primary .widget-block ul {
+    margin-top: 12px;
+  }
+
   &.secondary .widget-block {
     background-color: $light_green;
+    @include linear-gradient($light_green,#fff);
 
     h3 {
       color: #fff;
       background-color: $dark_green;
+    }
+
+    .chart {
+      margin-top: 10px;
     }
   }
 }
