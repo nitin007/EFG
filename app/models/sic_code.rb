@@ -6,7 +6,7 @@ class SicCode < ActiveRecord::Base
   validates_inclusion_of :eligible, in: [true, false]
   validates_inclusion_of :public_sector_restricted, in: [true, false]
 
-  default_scope order(:code)
+  default_scope { order(:code) }
 
-  scope :active, where(active: true)
+  scope :active, -> { where(active: true) }
 end
