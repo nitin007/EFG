@@ -54,6 +54,7 @@ module LenderUserPermissions
 
   def can_view?(resource)
     [
+      ClaimLimitCalculator,
       DataProtectionDeclaration,
       InformationDeclaration,
       Loan,

@@ -34,6 +34,10 @@ describe AuditorUserPermissions do
     it { refute user.can_view?(PremiumSchedule) }
   end
 
+  context 'claim limit calculator' do
+    it { refute user.can_view?(ClaimLimitCalculator) }
+  end
+
   context 'data protection declaration' do
     it { refute user.can_view?(DataProtectionDeclaration) }
   end

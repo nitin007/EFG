@@ -34,6 +34,10 @@ describe LenderUserPermissions do
     it { assert user.can_view?(PremiumSchedule) }
   end
 
+  context 'claim limit calculator' do
+    it { assert user.can_view?(ClaimLimitCalculator) }
+  end
+
   context 'data protection declaration' do
     it { assert user.can_view?(DataProtectionDeclaration) }
   end

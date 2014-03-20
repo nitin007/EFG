@@ -3,11 +3,14 @@ class DashboardController < ApplicationController
   def show
     if current_user.can_view?(LoanAlerts)
       @lending_limit_utilisations      = setup_lending_limit_utilisations
-      @claim_limit_calculators         = setup_claim_limit_calculators
       @not_progressed_alerts_presenter = LoanAlerts::Presenter.new(not_progressed_loans_groups)
       @not_drawn_alerts_presenter      = LoanAlerts::Presenter.new(not_drawn_loans_groups)
       @not_demanded_alerts_presenter   = LoanAlerts::Presenter.new(not_demanded_loans_groups)
       @not_closed_presenter            = LoanAlerts::Presenter.new(not_closed_loans_groups)
+    end
+
+    if current_user.can_view?(ClaimLimitCalculator)
+      @claim_limit_calculators = setup_claim_limit_calculators
     end
   end
 
