@@ -3,6 +3,7 @@ class DashboardController < ApplicationController
   def show
     if current_user.can_view?(LoanAlerts)
       @lending_limit_utilisations      = setup_lending_limit_utilisations
+      @claim_limit_calculators         = setup_claim_limit_calculators
       @not_progressed_alerts_presenter = LoanAlerts::Presenter.new(not_progressed_loans_groups)
       @not_drawn_alerts_presenter      = LoanAlerts::Presenter.new(not_drawn_loans_groups)
       @not_demanded_alerts_presenter   = LoanAlerts::Presenter.new(not_demanded_loans_groups)
@@ -11,6 +12,13 @@ class DashboardController < ApplicationController
   end
 
   private
+
+  def setup_claim_limit_calculators
+    Phase.all.reverse.each_with_object([]) do |phase, memo|
+      calculator = phase.rules.claim_limit_calculator.new(current_lender)
+      memo << calculator unless calculator.total_amount.zero?
+    end
+  end
 
   def setup_lending_limit_utilisations
     current_lender.lending_limits.active.map do |lending_limit|

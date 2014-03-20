@@ -75,4 +75,11 @@
     </div>
   <% end %>
 
+  <% unless @claim_limit_calculators.empty? %>
+    <div class="dashboard_widgets" id="utilisation_dashboard">
+      <h2>Claim Limits</h2>
+      <%= render partial: "claim_limit", collection: @claim_limit_calculators %>
+    </div>
+  <% end %>
+
 <% end %>

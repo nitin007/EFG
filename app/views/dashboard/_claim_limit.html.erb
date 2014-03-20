@@ -1,0 +1,11 @@
+<div class="utilisation-year">
+  <div class="content">
+    <h3><%= claim_limit.phase.name %></h3>
+
+    <ul>
+      <li><strong>Claim Limit:</strong> <%= claim_limit.total_amount.format(no_cents: true) %></li>
+      <li><strong>Amount Remaining:</strong> <%= claim_limit.amount_remaining.format(no_cents: true) %></li>
+      <li><strong>Percentage Remaining:</strong> <%= claim_limit.percentage_remaining %>%</li>
+    </ul>
+  </div>
+</div>
