@@ -43,28 +43,24 @@
     <div id="not_progressed_loan_alerts">
       <%= render 'loan_alert',
                   presenter: @not_progressed_alerts_presenter,
-                  title: raw(t('loan_alerts.not_progressed_title')),
                   type: :not_progressed %>
     </div>
 
     <div id="not_drawn_loan_alerts">
       <%= render 'loan_alert',
                   presenter: @not_drawn_alerts_presenter,
-                  title: raw(t('loan_alerts.not_drawn_title')),
                   type: :not_drawn %>
     </div>
 
     <div id="not_demanded_loan_alerts">
       <%= render 'loan_alert',
                   presenter: @not_demanded_alerts_presenter,
-                  title: raw(t('loan_alerts.not_demanded_title')),
                   type: :not_demanded %>
     </div>
 
     <div id="not_closed_loan_alerts">
       <%= render 'loan_alert',
                   presenter: @not_closed_presenter,
-                  title: raw(t('loan_alerts.not_closed_title')),
                   type: :not_closed %>
     </div>
   </div>
