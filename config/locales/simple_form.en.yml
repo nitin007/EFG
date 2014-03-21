@@ -20,7 +20,7 @@ en:
         would_you_lend: "Following Due Enquiry are you prepared, subject to the backing of the Enterprise Finance Guarantee, to provide the Applicant with a term loan or other debt facility?"
         collateral_exhausted: "Do you confirm that, even after taking any available Collateral, the inadequacy of the Applicant's security would otherwise prevent a facility from being provided except with the backing of the Enterprise Finance Guarantee?"
         not_insolvent: 'Do you confirm that the Applicant is not a business which is, or likely to become, unable to meet its obligations as they fall due (whether through its own resources or with the funds it is able to obtain from its shareholders or creditors)?'
-        amount: 'What is the value of the facility being applied for?'
+        amount: 'What is the value of the EFG facility being applied for?'
         lending_limit_id: 'What is the Lending Limit against which this facility is to be allocated? (Note that the date of the Scheme Facility Letter must fall within the validity of the Lending Limit)'
         repayment_duration: 'Over what term does the Applicant intend to repay the guaranteed facility?'
         turnover: 'What is the current annual turnover of the Applicant business?'
@@ -99,7 +99,7 @@ en:
         overdraft_maintained: "Are you able to confirm that if the Applicant’s current, or previous, facility has been cancelled or reduced in the preceding three months that you have re-assessed the facts, circumstances and matters contributing to the decision and concluded that the facility satisfies the eligibility criteria for EFG?"
         invoice_discount_limit: What limit can be supported under Normal Commercial Lending Policy without EFG?
         debtor_book_coverage: What pre-payment percentage can be supported for this applicant under Normal Commercial lending Policy without EFG?
-        debtor_book_topup: What Guaranteed Pre-Payment Percentage will be provided to the Applicant? (Not to exceed the lower of 30% or the difference between the Current Approved Pre-Payment Percentage and 100%)
+        debtor_book_topup: What Guaranteed Pre-Payment Percentage will be provided to the Applicant? (Not to exceed the lower of 30% or the difference between the non-EFG Pre-payment Percentage which can be supported for the Applicant under Normal Commercial Lending Policy and 100%)
         notified_aid: Is the intensity of Notified Aid calculated for this project less than 40% for non-Objective 1 loans or less than 60% for Objective 1 loans?
         lender_reference: Lender's loan reference
         loan_sub_category_id: 'What type of debt instrument is the facility to be guaranteed?'
