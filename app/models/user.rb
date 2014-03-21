@@ -58,8 +58,13 @@ class User < ActiveRecord::Base
 
   # Resets reset password token and sends new account notification email
   def send_new_account_notification
-    generate_reset_password_token! if should_generate_reset_token?
-    UserMailer.new_account_notification(self).deliver
+    raw, enc = Devise.token_generator.generate(self.class, :reset_password_token)
+
+    self.reset_password_token   = enc
+    self.reset_password_sent_at = Time.now.utc
+    self.save(validate: false)
+
+    UserMailer.new_account_notification(self, raw).deliver
   end
 
   # Override Devise's default behaviour so that an email with a blank "To" is

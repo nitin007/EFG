@@ -53,16 +53,18 @@ describe "User audit" do
   end
 
   it "should create new audit record when user first sets their password" do
+    raw_reset_password_token, encrypted_reset_password_token = Devise.token_generator.generate(User, :reset_password_token)
+
     current_user = FactoryGirl.create(
       :lender_user,
       encrypted_password: nil,
-      reset_password_token: 'abc123',
+      reset_password_token: encrypted_reset_password_token,
       reset_password_sent_at: 1.minute.ago
     )
 
     strong_password = 'defADSFAEWRE23402398423%'
 
-    visit edit_user_password_path(current_user, :reset_password_token => current_user.reset_password_token)
+    visit edit_user_password_path(current_user, reset_password_token: raw_reset_password_token)
     fill_in "user_password", with: strong_password
     fill_in "user_password_confirmation", with: strong_password
 
@@ -79,11 +81,13 @@ describe "User audit" do
     # resetting password again should not create user audit record
 
     click_link "Logout"
-    current_user.reset_password_token = 'def456'
+
+    raw_reset_password_token, encrypted_reset_password_token = Devise.token_generator.generate(User, :reset_password_token)
+    current_user.reset_password_token = encrypted_reset_password_token
     current_user.reset_password_sent_at = 1.minute.ago
     current_user.save
 
-    visit edit_user_password_path(current_user, :reset_password_token => current_user.reset_password_token)
+    visit edit_user_password_path(current_user, reset_password_token: raw_reset_password_token)
     new_password = 'new-password-W1bbL3'
     fill_in "user_password", with: new_password
     fill_in "user_password_confirmation", with: new_password
