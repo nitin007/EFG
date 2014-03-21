@@ -42,32 +42,6 @@ class ClaimLimitCalculator
     raise NotImplementedError, 'Implement in sub-class'
   end
 
-  def total_amount
-    raise NotImplementedError, 'Implement in sub-class'
-  end
-
-  private
-
-  def cumulative_drawn_amount
-    @cumulative_drawn_amount ||= begin
-      loan = Loan.find_by_sql(
-        [
-          "SELECT SUM(amount_drawn) as amount_drawn
-          FROM loan_modifications
-          INNER JOIN loans ON (loan_modifications.loan_id = loans.id)
-          INNER JOIN lending_limits ON (loans.lending_limit_id = lending_limits.id)
-          WHERE loans.lender_id = ?
-            AND loans.loan_scheme = ?
-            AND (loan_modifications.type = 'InitialDrawChange' OR loan_modifications.change_type_id = ?)
-            AND lending_limits.phase_id = ?
-            AND loans.state IN (?)
-          ", lender.id, Loan::EFG_SCHEME, ChangeType::RecordAgreedDraw.id, phase.id, ClaimLimitStates
-        ]
-      ).first
-      Money.new(loan.amount_drawn.to_i)
-    end
-  end
-
   def pre_claim_realisations_amount
     @pre_claim_realisations_amount ||= begin
       loan = Loan.find_by_sql(
@@ -102,6 +76,32 @@ class ClaimLimitCalculator
         ]
       ).first
       Money.new(loan.total_settled_amount.to_i)
+    end
+  end
+
+  def total_amount
+    raise NotImplementedError, 'Implement in sub-class'
+  end
+
+  private
+
+  def cumulative_drawn_amount
+    @cumulative_drawn_amount ||= begin
+      loan = Loan.find_by_sql(
+        [
+          "SELECT SUM(amount_drawn) as amount_drawn
+          FROM loan_modifications
+          INNER JOIN loans ON (loan_modifications.loan_id = loans.id)
+          INNER JOIN lending_limits ON (loans.lending_limit_id = lending_limits.id)
+          WHERE loans.lender_id = ?
+            AND loans.loan_scheme = ?
+            AND (loan_modifications.type = 'InitialDrawChange' OR loan_modifications.change_type_id = ?)
+            AND lending_limits.phase_id = ?
+            AND loans.state IN (?)
+          ", lender.id, Loan::EFG_SCHEME, ChangeType::RecordAgreedDraw.id, phase.id, ClaimLimitStates
+        ]
+      ).first
+      Money.new(loan.amount_drawn.to_i)
     end
   end
 

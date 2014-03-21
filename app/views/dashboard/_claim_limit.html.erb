@@ -3,11 +3,13 @@
     <h3><%= claim_limit.phase.name %></h3>
 
     <div class="chart">
-      <span class="pie" data-diameter="75" data-fill='["#eee", "#799800"]'><%= 100 - claim_limit.percentage_remaining %>/100</span>
+      <span class="pie" data-diameter="100" data-fill='["#eee", "#799800"]'><%= 100 - claim_limit.percentage_remaining %>/100</span>
     </div>
 
     <ul>
       <li><strong>Claim Limit:</strong> <%= claim_limit.total_amount.format(no_cents: true) %></li>
+      <li><strong>Pre-claimed Realisations:</strong> <%= claim_limit.pre_claim_realisations_amount.format(no_cents: true) %></li>
+      <li><strong>Settled Amount:</strong> <%= claim_limit.settled_amount.format(no_cents: true) %></li>
       <li><strong>Amount Remaining:</strong> <%= claim_limit.amount_remaining.format(no_cents: true) %></li>
       <li><strong>Percentage Remaining:</strong> <%= claim_limit.percentage_remaining %>%</li>
     </ul>
