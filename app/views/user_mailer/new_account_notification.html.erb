@@ -6,7 +6,7 @@
 
 <p>To login to your account, <strong>you must first set-up a password</strong> by following this link:</p>
 
-<p><%= link_to 'Set your password', edit_password_url(@user, reset_password_token: @user.reset_password_token) %></p>
+<p><%= link_to 'Set your password', edit_password_url(@user, reset_password_token: @token) %></p>
 
 <p>For security purposes, this link will expire after 7 days. If the link has expired, just go back to the login page and reset your password and you'll receive a new link.</p>
 

@@ -5,7 +5,7 @@ describe UserMailer do
   describe "#new_account_notification" do
     before do
       @user = FactoryGirl.build(:lender_user, reset_password_token: 'abc123', first_name: 'Joe', username: 'joe123')
-      @email = UserMailer.new_account_notification(@user)
+      @email = UserMailer.new_account_notification(@user, 'jKMpsc7CC_1ABh1rDUBq')
     end
 
     it "should be set to be delivered to the user's email address" do
