@@ -3,6 +3,8 @@
 require "statsd"
 
 Devise.setup do |config|
+  config.secret_key = '806c5d2b0b90591ae631ba67d69357b3c960af9dff04bdf3b8c10b98be7e6014ea41e6740f610a332ec034ae6f3f84a2365e129ef8c53e7290dddaeadd46bd83'
+
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
