@@ -1,7 +1,7 @@
 class Phase6ClaimLimitCalculator < ClaimLimitCalculator
 
   ReducedLoanPercentage = BigDecimal.new('65')
-  ReducedLoanCategoryIds = [ 6 ].freeze
+  ReducedLoanCategoryIds = [ 6, 8 ].freeze
   FirstOneHundredThousandPercentage = BigDecimal.new('75')
   AboveOneHundredThousandPercentage = BigDecimal.new('15')
 

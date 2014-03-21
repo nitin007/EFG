@@ -11,7 +11,7 @@ describe 'Claim Limit Phase 6' do
   let(:loan_amount) { Money.new(50_000_00) }
 
   let!(:guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: lender, lending_limit: lending_limit1, amount: loan_amount, loan_category_id: 6) }
-  let!(:lender_demand_loan) { FactoryGirl.create(:loan, :guaranteed, :lender_demand, lender: lender, lending_limit: lending_limit1, amount: loan_amount, loan_category_id: 6) }
+  let!(:lender_demand_loan) { FactoryGirl.create(:loan, :guaranteed, :lender_demand, lender: lender, lending_limit: lending_limit1, amount: loan_amount, loan_category_id: 8) }
   let!(:demanded_loan) { FactoryGirl.create(:loan, :guaranteed, :demanded, lender: lender, lending_limit: lending_limit1, amount: loan_amount) }
   let!(:settled_loan) { FactoryGirl.create(:loan, :guaranteed, :settled, lender: lender, lending_limit: lending_limit2, amount: loan_amount) }
   let!(:recovered_loan) { FactoryGirl.create(:loan, :guaranteed, :recovered, lender: lender, lending_limit: lending_limit2, amount: loan_amount) }
