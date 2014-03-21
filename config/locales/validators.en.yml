@@ -41,4 +41,4 @@ en:
       debtor_book_topup:
         invalid: 'must be between 1% and 30%'
       total_prepayment:
-        invalid: 'sum of debtor book coverage and debtor book topup must be greater than 0% and no more than 100%'
+        invalid: 'The sum of the Guaranteed Pre-payment Percentage and non-EFG Pre-payment Percentage must be no more than 100%'
