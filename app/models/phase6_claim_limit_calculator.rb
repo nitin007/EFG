@@ -5,6 +5,10 @@ class Phase6ClaimLimitCalculator < ClaimLimitCalculator
   FirstOneHundredThousandPercentage = BigDecimal.new('75')
   AboveOneHundredThousandPercentage = BigDecimal.new('15')
 
+  def cumulative_drawn_amount
+    non_reduced_loans_cumulative_draw_amount + reduced_loans_cumulative_draw_amount
+  end
+
   def phase
     Phase.find(6)
   end
@@ -26,12 +30,6 @@ class Phase6ClaimLimitCalculator < ClaimLimitCalculator
     else
       Money.new(0)
     end
-  end
-
-  private
-
-  def cumulative_drawn_amount
-    non_reduced_loans_cumulative_draw_amount + reduced_loans_cumulative_draw_amount
   end
 
   def non_reduced_loans_cumulative_draw_amount

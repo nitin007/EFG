@@ -116,3 +116,13 @@ en:
       loan_function: Loan function
       audit_record_modified_date: Modified date (audit record)
       audit_record_modified_by: Modified user (audit record)
+
+    claim_limits_report:
+      lender_name: Lender name
+      phase: Phase
+      claim_limit: Claim Limit
+      cumulative_drawn_amount: Cumulative Drawn
+      settled: Settled
+      pre_claim_limit_realisations: Pre-claim Limit Realisation
+      claim_limit_remaining: Claim Remaining
+

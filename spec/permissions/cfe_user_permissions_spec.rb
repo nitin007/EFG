@@ -5,6 +5,12 @@ describe CfeUserPermissions do
 
   let(:user) { FactoryGirl.build(:cfe_user) }
 
+  context 'ClaimLimitsCsvExport' do
+    it { assert user.can_create?(ClaimLimitsCsvExport) }
+    it { refute user.can_update?(ClaimLimitsCsvExport) }
+    it { refute user.can_view?(ClaimLimitsCsvExport) }
+  end
+
   context 'invoices' do
     it { assert user.can_view?(Invoice) }
     it { assert user.can_create?(Invoice) }

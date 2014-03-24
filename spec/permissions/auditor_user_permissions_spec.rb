@@ -5,6 +5,12 @@ describe AuditorUserPermissions do
 
   let(:user) { FactoryGirl.build(:auditor_user) }
 
+  context 'ClaimLimitsCsvExport' do
+    it { refute user.can_create?(ClaimLimitsCsvExport) }
+    it { refute user.can_update?(ClaimLimitsCsvExport) }
+    it { refute user.can_view?(ClaimLimitsCsvExport) }
+  end
+
   context 'invoices' do
     it { refute user.can_view?(Invoice) }
     it { refute user.can_create?(Invoice) }
