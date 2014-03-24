@@ -22,7 +22,6 @@ describe 'state aid calculations' do
     it 'creates a new record with valid data' do
       fill_in :initial_draw_year, '2012'
       fill_in :initial_draw_amount, '£123,456'
-      fill_in :repayment_duration, '12'
       fill_in :initial_capital_repayment_holiday, '0'
       fill_in :second_draw_amount, '£0'
       fill_in :second_draw_months, '0'
@@ -37,7 +36,7 @@ describe 'state aid calculations' do
       premium_schedule.loan.should == loan
       premium_schedule.initial_draw_year.should == 2012
       premium_schedule.initial_draw_amount.should == Money.new(123_456_00)
-      premium_schedule.repayment_duration.should == 12
+      premium_schedule.repayment_duration.should == 3
       premium_schedule.initial_capital_repayment_holiday.should == 0
       premium_schedule.second_draw_amount.should == 0
       premium_schedule.second_draw_months.should == 0
@@ -62,7 +61,6 @@ describe 'state aid calculations' do
         fill_in :initial_draw_year, '2012'
         fill_in :initial_capital_repayment_holiday, '0'
         fill_in :initial_draw_amount, '£100,000'
-        fill_in :repayment_duration, 12
         fill_in :second_draw_amount, '£100,000'
         fill_in :second_draw_months, 3
         fill_in :third_draw_amount, '£100,000'
@@ -121,18 +119,23 @@ describe 'state aid calculations' do
 
     context "updating a state aid calculation after the exchange rate has changed" do
       # We've created a state aid calculation at an old exchange rate, and
-      # then its been updated. The subsequent calculation should be with the
+      # then it's been updated. The subsequent calculation should be with the
       # new exchange rate.
-      let(:premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan, euro_conversion_rate: 0.80) }
+      let(:old_state_aid) { Money.new(1_234_56) }
+      let(:premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan, euro_conversion_rate: 0.8) }
+
+      before do
+        loan.update_attribute(:state_aid, old_state_aid)
+      end
 
       it "updates the euro conversion rate" do
         click_button 'Submit'
 
-        expect {
-          premium_schedule.reload
-        }.to change(premium_schedule, :state_aid_eur)
-
+        premium_schedule.reload
         premium_schedule.euro_conversion_rate.should == PremiumSchedule.current_euro_conversion_rate
+
+        loan.reload
+        loan.state_aid.should_not == old_state_aid
       end
     end
   end

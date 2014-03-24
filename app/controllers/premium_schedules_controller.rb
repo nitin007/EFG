@@ -21,7 +21,7 @@ class PremiumSchedulesController < ApplicationController
     @premium_schedule.calc_type = PremiumSchedule::SCHEDULE_TYPE
     @premium_schedule.reset_euro_conversion_rate
 
-    if @premium_schedule.save
+    if @premium_schedule.save_and_update_loan_state_aid
       redirect_to leave_premium_schedule_path(@loan)
     else
       render :edit
@@ -36,7 +36,7 @@ class PremiumSchedulesController < ApplicationController
   def load_premium_schedule
     @premium_schedule = @loan.premium_schedule || @loan.premium_schedules.build
     @premium_schedule.initial_draw_amount ||= @loan.amount.dup
-    @premium_schedule.repayment_duration ||= @loan.repayment_duration.total_months
+    @premium_schedule.repayment_duration = @loan.repayment_duration.total_months
   end
 
   helper_method :leave_premium_schedule_path

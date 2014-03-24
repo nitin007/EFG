@@ -30,7 +30,7 @@ class UpdateLoanLendingLimit
 
   def update_state_aid
     @previous_state_aid = loan.state_aid
-    loan.recalculate_state_aid
+    loan.calculate_state_aid
     @new_state_aid = loan.state_aid
   end
 end

@@ -51,12 +51,7 @@ module RequestSpecHelpers
     fill_in 'loan_entry_postcode', with: 'N8 4HF'
     fill_in 'loan_entry_sortcode', with: '03-12-45'
     select RepaymentFrequency.find(3).name, from: 'loan_entry_repayment_frequency_id' # quarterly
-
-    calculate_state_aid(loan)
-    check 'loan_entry_state_aid_is_valid'
-
     fill_in 'loan_entry_lender_reference', with: 'lenderref1'
-
     select LoanSecurityType.find(1).name, from: 'loan_entry_loan_security_types' # Residential property
     fill_in 'loan_entry_security_proportion', with: '20'
     fill_in 'loan_entry_generic1', with: 'Generic 1'
@@ -69,11 +64,16 @@ module RequestSpecHelpers
     fill_in 'loan_entry_fees', with: '123.45'
   end
 
+  def fill_in_valid_loan_entry_details_phase_5(loan)
+    fill_in_valid_loan_entry_details(loan)
+    calculate_state_aid(loan)
+    check 'loan_entry_state_aid_is_valid'
+  end
+
   def calculate_state_aid(loan)
     click_button 'State Aid Calculation'
     page.fill_in 'premium_schedule_initial_draw_year', with: Date.current.year
     page.fill_in 'premium_schedule_initial_draw_amount', with: loan.amount.to_s
-    page.fill_in 'premium_schedule_repayment_duration', with: '12'
     click_button 'Submit'
   end
 

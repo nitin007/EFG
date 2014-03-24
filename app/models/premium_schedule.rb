@@ -7,12 +7,11 @@ class PremiumSchedule < ActiveRecord::Base
 
   EURO_CONVERSION_RATE = BigDecimal.new('1.2285')
   MAX_INITIAL_DRAW = Money.new(9_999_999_99)
-  RISK_FACTOR = 0.3
 
   belongs_to :loan, inverse_of: :premium_schedules
 
   attr_accessible :initial_draw_year, :initial_draw_amount,
-    :repayment_duration, :initial_capital_repayment_holiday,
+    :initial_capital_repayment_holiday,
     :second_draw_amount, :second_draw_months, :third_draw_amount,
     :third_draw_months, :fourth_draw_amount, :fourth_draw_months,
     :loan_id, :premium_cheque_month
@@ -23,10 +22,6 @@ class PremiumSchedule < ActiveRecord::Base
 
   before_save do
     write_attribute(:euro_conversion_rate, euro_conversion_rate)
-  end
-
-  after_save do |calculation|
-    calculation.loan.update_attribute :state_aid, state_aid_eur
   end
 
   validates_presence_of :loan_id, strict: true
@@ -50,15 +45,6 @@ class PremiumSchedule < ActiveRecord::Base
 
   def self.current_euro_conversion_rate
     EURO_CONVERSION_RATE
-  end
-
-  def state_aid_gbp
-    (loan.amount * (loan.guarantee_rate / 100) * RISK_FACTOR) - total_premiums
-  end
-
-  def state_aid_eur
-    euro = state_aid_gbp * euro_conversion_rate
-    Money.new(euro.cents, 'EUR')
   end
 
   def reschedule?
@@ -106,6 +92,17 @@ class PremiumSchedule < ActiveRecord::Base
       end
 
       Money.new((outstanding_loan_value_at_quarter.to_d * 100) * premium_rate_per_quarter)
+    end
+  end
+
+  def save_and_update_loan_state_aid
+    transaction do
+      save.tap { |saved|
+        if saved
+          loan.calculate_state_aid
+          loan.save!
+        end
+      }
     end
   end
 

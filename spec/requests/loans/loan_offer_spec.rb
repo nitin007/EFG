@@ -55,7 +55,7 @@ describe 'loan offer' do
       select 'The Next Great Lending Limit', from: 'update_loan_lending_limit[new_lending_limit_id]'
       click_button 'Submit'
 
-      page.should have_content '€3,222.75'
+      page.should have_content '€10,000.00'
       page.should have_content '€2,464.44'
 
       loan.reload
