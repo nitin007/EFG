@@ -152,6 +152,10 @@ class Loan < ActiveRecord::Base
     self.state_aid = rules.state_aid_calculator.new(self).state_aid_eur
   end
 
+  def can_record_agreed_draw?
+    cumulative_drawn_amount < amount
+  end
+
   def cancelled_reason
     CancelReason.find(cancelled_reason_id)
   end
@@ -194,10 +198,6 @@ class Loan < ActiveRecord::Base
 
   def premium_schedule
     premium_schedules.last
-  end
-
-  def has_drawdowns?
-    premium_schedule && premium_schedule.has_drawdowns?
   end
 
   def loan_category

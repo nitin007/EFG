@@ -42,10 +42,6 @@ class PremiumSchedule < ActiveRecord::Base
     calc_type == RESCHEDULE_TYPE
   end
 
-  def has_drawdowns?
-    drawdowns.length > 1
-  end
-
   def drawdowns
     [TrancheDrawdown.new(initial_draw_amount, 0)].tap do |drawdowns|
       if second_draw_amount.present? && second_draw_amount.nonzero? && second_draw_months.present?

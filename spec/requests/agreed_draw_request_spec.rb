@@ -4,22 +4,21 @@ describe 'agreed draw' do
   let(:current_user) { FactoryGirl.create(:lender_user, lender: loan.lender) }
   before { login_as(current_user, scope: :user) }
 
-  let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(100_000_00), maturity_date: Date.new(2014, 12, 25), repayment_duration: 60) }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(100_000_00)) }
 
-  context 'for a loan with no drawdowns' do
+  context 'when the loan has drawn its full amount' do
     before do
-      FactoryGirl.create(:premium_schedule, loan: loan)
+      FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(90_000_00), change_type: ChangeType::RecordAgreedDraw)
+      visit loan_path(loan)
     end
 
     it 'does not include the reprofile draws option' do
-      visit loan_path(loan)
       page.should_not have_content('Record Agreed Draw')
     end
   end
 
-  context 'for a loan with drawdowns' do
+  context 'when the loan has not drawn its full amount' do
     before do
-      FactoryGirl.create(:premium_schedule, :with_drawdowns, loan: loan)
       visit loan_path(loan)
       click_link 'Record Agreed Draw'
     end
