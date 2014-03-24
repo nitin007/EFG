@@ -360,6 +360,7 @@ DEPENDENCIES
   powder (= 0.1.8)
   prawn (= 0.12.0)
   progressbar (= 0.11.0)
+  protected_attributes
   rack-ssl-enforcer
   rails (= 4.1.0.rc1)
   rspec-rails (= 2.14.1)
