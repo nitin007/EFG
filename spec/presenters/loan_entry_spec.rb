@@ -397,33 +397,4 @@ describe LoanEntry do
       end
     end
   end
-
-  describe "#postcode=" do
-    subject { FactoryGirl.build(:loan_entry, postcode: postcode) }
-
-    context "correctly formatted" do
-      let(:postcode) { 'EC1R 4RP' }
-      its(:postcode) { should == 'EC1R 4RP' }
-    end
-
-    context "lower case" do
-      let(:postcode) { 'ec1r 4rp' }
-      its(:postcode) { should == 'EC1R 4RP' }
-    end
-
-    context "no space" do
-      let(:postcode) { 'EC1R4RP' }
-      its(:postcode) { should == 'EC1R 4RP' }
-    end
-
-    context "transposed" do
-      let(:postcode) { 'ECIR 4RP' }
-      its(:postcode) { should == 'EC1R 4RP' }
-    end
-
-    context "invalid" do
-      let(:postcode) { 'invalid' }
-      its(:postcode) { should == 'invalid' }
-    end
-  end
 end

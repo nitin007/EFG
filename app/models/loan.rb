@@ -123,6 +123,7 @@ class Loan < ActiveRecord::Base
   format :remove_guarantee_outstanding_amount, with: MoneyFormatter.new
   format :recovery_on, with: QuickDateFormatter
   format :settled_amount, with: MoneyFormatter.new
+  format :postcode, with: PostcodeFormatter
 
   before_create :set_reference
 
