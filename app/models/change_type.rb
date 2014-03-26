@@ -13,10 +13,6 @@ class ChangeType < StaticAssociation
     { id: 'b', name: 'Repayment frequency' },
   ]
 
-  def self.for_loan_change
-    all.reject { |change_type| change_type == DataCorrection }
-  end
-
   BusinessName = find('1')
   CapitalRepaymentHoliday = find('2')
   ChangeRepayments = find('3')
