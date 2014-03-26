@@ -32,32 +32,37 @@ describe Postcode do
   end
 
   describe '#to_s' do
-    let(:postcode) { Postcode.new(string) }
+    let(:postcode) { Postcode.new(value) }
     subject { postcode.to_s }
 
     context 'correctly formatted' do
-      let(:string) { 'EC1R 4RP' }
+      let(:value) { 'EC1R 4RP' }
       it { should == 'EC1R 4RP' }
     end
 
     context 'lower case' do
-      let(:string) { 'ec1r 4rp' }
+      let(:value) { 'ec1r 4rp' }
       it { should == 'EC1R 4RP' }
     end
 
     context 'no space' do
-      let(:string) { 'EC1R4RP' }
+      let(:value) { 'EC1R4RP' }
       it { should == 'EC1R 4RP' }
     end
 
     context 'transposed' do
-      let(:string) { 'ECIR 4RP' }
+      let(:value) { 'ECIR 4RP' }
       it { should == 'EC1R 4RP' }
     end
 
     context 'invalid' do
-      let(:string) { 'invalid' }
+      let(:value) { 'invalid' }
       it { should == 'invalid' }
+    end
+
+    context 'nil' do
+      let(:value) { nil }
+      it { should == '' }
     end
   end
 end

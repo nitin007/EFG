@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140312115129) do
+ActiveRecord::Schema.define(:version => 20140326154940) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -205,6 +205,8 @@ ActiveRecord::Schema.define(:version => 20140312115129) do
     t.string   "type"
     t.integer  "repayment_frequency_id"
     t.integer  "old_repayment_frequency_id"
+    t.string   "postcode"
+    t.string   "old_postcode"
   end
 
   add_index "loan_modifications", ["loan_id", "seq"], :name => "index_loan_changes_on_loan_id_and_seq", :unique => true

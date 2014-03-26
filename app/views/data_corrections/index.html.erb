@@ -9,5 +9,6 @@
 <ul>
   <li><%= link_to('Business Name', new_loan_data_correction_path(@loan, type: 'business_name')) %></li>
   <% if @loan.state == Loan::Demanded %><li><%= link_to('Demanded Amount', new_loan_data_correction_path(@loan, type: 'demanded_amount')) %></li><% end %>
+  <li><%= link_to('Postcode', new_loan_data_correction_path(@loan, type: 'postcode')) %></li>
   <li><%= link_to('Sortcode', new_loan_data_correction_path(@loan, type: 'sortcode')) %></li>
 </ul>
