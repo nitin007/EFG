@@ -7,7 +7,7 @@ class LoanCategoryValidators
   ].freeze
 
   CategoryC = [
-    PercentageValidator.new(attribute: :original_overdraft_proportion, minimum: 0.1, maximum: 99.9),
+    PercentageValidator.new(attribute: :original_overdraft_proportion, minimum: 0.0, maximum: 99.9),
     PercentageValidator.new(attribute: :refinance_security_proportion, minimum: 0.1, maximum: 100.0)
   ].freeze
 

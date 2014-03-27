@@ -33,7 +33,7 @@ en:
       security_proportion:
         invalid: 'must be greater than 0% and less than 100%'
       original_overdraft_proportion:
-        invalid: 'must be greater than 0% and less than 100%'
+        invalid: 'must be 0% or greater and less than 100%'
       refinance_security_proportion:
         invalid: 'must be greater than 0% and no more than 100%'
       debtor_book_coverage:
