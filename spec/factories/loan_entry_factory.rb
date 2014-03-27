@@ -49,6 +49,7 @@ FactoryGirl.define do
     end
 
     factory :loan_entry_type_e do
+      loan_sub_category_id 1
       overdraft_limit 1000000
       overdraft_maintained true
 

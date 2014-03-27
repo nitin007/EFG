@@ -164,6 +164,28 @@ describe 'loan entry' do
     current_path.should == complete_loan_entry_path(loan)
   end
 
+  context "when a sub-category is required" do
+    it "should allow selection of sub-category" do
+      visit new_loan_entry_path(loan)
+
+      fill_in_valid_loan_entry_details_phase_5(loan)
+      
+      # switch to Category E
+      select "Type E - Overdraft Guarantee Facility", from: "loan_entry_loan_category_id"
+      click_button 'Submit'
+
+      select "Business Credit (or Charge) Cards", from: "loan_entry_loan_sub_category_id"
+      fill_in 'loan_entry_overdraft_limit', with: '1000'
+      choose 'loan_entry_overdraft_maintained_true'
+      click_button 'Submit'
+
+      current_path.should == complete_loan_entry_path(loan)
+      
+      loan.reload
+      loan.loan_sub_category_id.should == 3
+    end
+  end
+
   private
 
     def should_show_only_loan_category_fields(*field_names)

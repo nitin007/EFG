@@ -102,6 +102,7 @@ en:
         debtor_book_topup: What Guaranteed Pre-Payment Percentage will be provided to the Applicant? (Not to exceed the lower of 30% or the difference between the Current Approved Pre-Payment Percentage and 100%)
         notified_aid: Is the intensity of Notified Aid calculated for this project less than 40% for non-Objective 1 loans or less than 60% for Objective 1 loans?
         lender_reference: Lender's loan reference
+        loan_sub_category_id: 'What type of debt instrument is the facility to be guaranteed?'
 
       transferred_loan_entry:
         <<: *loan_entry

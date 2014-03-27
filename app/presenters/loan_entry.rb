@@ -15,6 +15,7 @@ class LoanEntry
   attribute :not_insolvent
   attribute :sic_code
   attribute :loan_category_id
+  attribute :loan_sub_category_id
   attribute :reason_id
   attribute :previous_borrowing
   attribute :private_residence_charge_required
@@ -100,6 +101,9 @@ class LoanEntry
                         if: lambda { loan_category_id == 4 }
 
   # TYPE E & G LOANS
+
+  validates_presence_of :loan_sub_category_id, 
+                        if: lambda { loan_category_id == 5 }
 
   validates_presence_of :overdraft_limit,
                         if: lambda { [5,7].include?(loan_category_id) }

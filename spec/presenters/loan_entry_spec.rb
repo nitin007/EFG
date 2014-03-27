@@ -195,6 +195,11 @@ describe LoanEntry do
         loan_entry.should be_valid
       end
 
+      it "should require loan sub category" do
+        loan_entry.loan_sub_category_id = nil
+        loan_entry.should_not be_valid
+      end
+
       it "should require overdraft limit" do
         loan_entry.overdraft_limit = nil
         loan_entry.should_not be_valid

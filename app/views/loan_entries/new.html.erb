@@ -73,6 +73,7 @@
     <% end %>
 
     <% for_loan_in_categories(@loan_entry, 5, 7) do %>
+      <%= f.input :loan_sub_category_id, as: :loan_sub_category_select, loan_category_id: 5 %>
       <%= f.input :overdraft_limit, as: :currency %>
       <%= f.input :overdraft_maintained, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <% end %>
