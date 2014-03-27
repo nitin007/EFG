@@ -26,7 +26,7 @@ describe LoanAuditReportCsvRow do
         generic4: 'Generic4',
         generic5: 'Generic5',
         reason_id: 1,
-        loan_category_id: 2,
+        loan_category_id: LoanCategory::TypeB.id,
         loan_sub_category_id: 4,
         state: Loan::Guaranteed,
         created_at: Time.zone.parse('12/04/2012 14:34'),
@@ -70,7 +70,7 @@ describe LoanAuditReportCsvRow do
       row[16].should == 'Generic4'                    # generic4
       row[17].should == 'Generic5'                    # generic5
       row[18].should == LoanReason.find(1).name       # loan_reason
-      row[19].should == LoanCategory.find(2).name     # loan_category
+      row[19].should == LoanCategory::TypeB.name      # loan_category
       row[20].should == LoanSubCategory.find(4).name  # loan_sub_category
       row[21].should == Loan::Guaranteed.humanize     # loan_state
       row[22].should == '12-04-2012 02:34 PM'         # created_at

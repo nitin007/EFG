@@ -49,7 +49,7 @@
 
     <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
 
-    <% for_loan_in_categories(@loan_entry, 2) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeB.id) do %>
       <%= f.input :loan_security_types,
                   as: :select,
                   collection: LoanSecurityType.all,
@@ -59,26 +59,26 @@
       <%= f.input :security_proportion, as: :percentage %>
     <% end %>
 
-    <% for_loan_in_categories(@loan_entry, 3) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeC.id) do %>
       <%= f.input :original_overdraft_proportion, as: :percentage %>
     <% end %>
 
-    <% for_loan_in_categories(@loan_entry, 3, 4) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeC.id, LoanCategory::TypeD.id) do %>
       <%= f.input :refinance_security_proportion, as: :percentage %>
     <% end %>
 
-    <% for_loan_in_categories(@loan_entry, 4) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeD.id) do %>
       <%= f.input :current_refinanced_amount, as: :currency %>
       <%= f.input :final_refinanced_amount, as: :currency %>
     <% end %>
 
-    <% for_loan_in_categories(@loan_entry, 5, 7) do %>
-      <%= f.input :loan_sub_category_id, as: :loan_sub_category_select, loan_category_id: 5 %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeE.id, LoanCategory::TypeG.id) do %>
+      <%= f.input :loan_sub_category_id, as: :loan_sub_category_select, loan_category_id: LoanCategory::TypeE.id %>
       <%= f.input :overdraft_limit, as: :currency %>
       <%= f.input :overdraft_maintained, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <% end %>
 
-    <% for_loan_in_categories(@loan_entry, 6, 8) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeF.id, LoanCategory::TypeH.id) do %>
       <%= f.input :invoice_discount_limit, as: :currency %>
       <%= f.input :debtor_book_coverage, as: :percentage %>
       <%= f.input :debtor_book_topup, as: :percentage %>

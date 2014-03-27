@@ -11,7 +11,7 @@ describe RepaymentDurationValidator do
 
   let(:lending_limit) { FactoryGirl.build(:lending_limit) }
   let(:loan) { FactoryGirl.build(:loan, lending_limit: lending_limit, loan_category_id: loan_category_id) }
-  let(:loan_category_id) { 1 }
+  let(:loan_category_id) { LoanCategory::TypeA.id }
   let(:repayment_duration) { MonthDuration.new(total_months) }
 
   subject(:record) { klass.new }
@@ -42,7 +42,7 @@ describe RepaymentDurationValidator do
   end
 
   context 'for a Type F loan' do
-    let(:loan_category_id) { 6 }
+    let(:loan_category_id) { LoanCategory::TypeF.id }
 
     context 'when the repayment duration is longer than 3 years' do
       let(:total_months) { 37 }
@@ -55,7 +55,7 @@ describe RepaymentDurationValidator do
     let(:lending_limit) { FactoryGirl.build(:lending_limit, :phase_5) }
 
     context 'Type E' do
-      let(:loan_category_id) { 5 }
+      let(:loan_category_id) { LoanCategory::TypeE.id }
 
       context 'when the repayment duration is 2 years or shorter' do
         let(:total_months) { 24 }
@@ -75,7 +75,7 @@ describe RepaymentDurationValidator do
     let(:lending_limit) { FactoryGirl.build(:lending_limit, :phase_6) }
 
     context 'Type E' do
-      let(:loan_category_id) { 5 }
+      let(:loan_category_id) { LoanCategory::TypeE.id }
 
       context 'when the repayment duration is 3 years or shorter' do
         let(:total_months) { 36 }

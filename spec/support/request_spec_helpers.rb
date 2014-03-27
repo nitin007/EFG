@@ -34,7 +34,7 @@ module RequestSpecHelpers
     fill_in 'loan_eligibility_check_turnover', with: '1234567.89'
     fill_in 'loan_eligibility_check_trading_date', with: '31/1/2012'
     select_option_value sic_code.code, from: 'loan_eligibility_check_sic_code'
-    select LoanCategory.find(2).name, from: 'loan_eligibility_check_loan_category_id' # Type B - partial security
+    select LoanCategory::TypeB.name, from: 'loan_eligibility_check_loan_category_id'
     select 'Start-up costs', from: 'loan_eligibility_check_reason_id' # Start-up costs
     choose 'loan_eligibility_check_previous_borrowing_true'
     choose 'loan_eligibility_check_private_residence_charge_required_false'

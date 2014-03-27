@@ -72,62 +72,8 @@ class LoanEntry
     errors.add(:declaration_signed, :accepted) unless self.declaration_signed
   end
 
-  # TYPE B LOANS
-
-  validates_numericality_of :security_proportion,
-                            greater_than: 0.0,
-                            less_than: 100,
-                            if: lambda { loan_category_id == 2 }
-
-  validate :loan_security, if: lambda { loan_category_id == 2 }
-
-  # TYPE C LOANS
-
-  validates_numericality_of :original_overdraft_proportion,
-                            greater_than: 0.0,
-                            less_than: 100,
-                            if: lambda { loan_category_id == 3 }
-
-  # TYPE C & D LOANS
-
-  validates_numericality_of :refinance_security_proportion,
-                            greater_than: 0.0,
-                            less_than_or_equal_to: 100,
-                            if: lambda { [3,4].include?(loan_category_id) }
-
-  # TYPE D LOANS
-
-  validates_presence_of :current_refinanced_amount, :final_refinanced_amount,
-                        if: lambda { loan_category_id == 4 }
-
-  # TYPE E & G LOANS
-
-  validates_presence_of :loan_sub_category_id, 
-                        if: lambda { loan_category_id == 5 }
-
-  validates_presence_of :overdraft_limit,
-                        if: lambda { [5,7].include?(loan_category_id) }
-
-  validates_inclusion_of :overdraft_maintained,
-                         in: [true],
-                         if: lambda { [5,7].include?(loan_category_id) }
-
-  # TYPE F & H LOANS
-
-  validates_presence_of :invoice_discount_limit,
-                        if: lambda { [6,8].include?(loan_category_id) }
-
-  validates_numericality_of :debtor_book_coverage,
-                            greater_than_or_equal_to: 1,
-                            less_than: 100,
-                            if: lambda { [6,8].include?(loan_category_id) }
-
-  validates_numericality_of :debtor_book_topup,
-                            greater_than_or_equal_to: 1,
-                            less_than_or_equal_to: 30,
-                            if: lambda { [6,8].include?(loan_category_id) }
-
   validate :validate_eligibility
+  validate :category_validations
 
   def postcode=(str)
     normalised = UKPostcode.new(str).norm
@@ -149,6 +95,13 @@ class LoanEntry
 
   private
 
+  def category_validations
+    validators = LoanCategoryValidators.for_category(loan_category_id)
+    validators.each do |validator|
+      validator.validate(self)
+    end
+  end
+
   def postcode_allowed
     errors.add(:postcode, 'is invalid') unless UKPostcode.new(postcode).full?
   end
@@ -156,11 +109,6 @@ class LoanEntry
   # Note: state aid must be recalculated if the loan term has changed
   def state_aid_calculated
     errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
-  end
-
-  # Type B loans require at least one security
-  def loan_security
-    errors.add(:loan_security_types, :present) if self.loan_security_types.empty?
   end
 
   def company_registration_required?

@@ -26,3 +26,17 @@ en:
     repayment_duration:
       repayment_duration:
         invalid: "Repayment duration should be between 3 months and 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E, Type F, Type G and Type H facilities have a maximum term of three years."
+    security_types:
+      loan_security_types:
+        invalid: 'choose at least one security'
+    percentage:
+      security_proportion:
+        invalid: 'must be greater than 0% and less than 100%'
+      original_overdraft_proportion:
+        invalid: 'must be 0% or greater and less than 100%'
+      refinance_security_proportion:
+        invalid: 'must be greater than 0% and no more than 100%'
+      debtor_book_coverage:
+        invalid: 'must be greater than 0% and less than 100%'
+      debtor_book_topup:
+        invalid: 'must be between 1% and 30%'

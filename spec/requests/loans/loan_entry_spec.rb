@@ -6,7 +6,7 @@ describe 'loan entry' do
   let(:lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
   let(:lending_limit) { FactoryGirl.create(:lending_limit, phase_id: 5, lender: lender) }
-  let(:loan) { FactoryGirl.create(:loan, lender: lender, loan_category_id: 2, lending_limit: lending_limit) }
+  let(:loan) { FactoryGirl.create(:loan, lender: lender, loan_category_id: LoanCategory::TypeB.id, lending_limit: lending_limit) }
   before { login_as(current_user, scope: :user) }
 
   context 'Phase 6' do
@@ -102,7 +102,7 @@ describe 'loan entry' do
   end
 
   it 'should show specific questions for loan category B' do
-    loan.update_attribute(:loan_category_id, 2)
+    loan.update_attribute(:loan_category_id, LoanCategory::TypeB.id)
 
     visit new_loan_entry_path(loan)
 
@@ -110,7 +110,7 @@ describe 'loan entry' do
   end
 
   it 'should show specific questions for loan category C' do
-    loan.update_attribute(:loan_category_id, 3)
+    loan.update_attribute(:loan_category_id, LoanCategory::TypeC.id)
 
     visit new_loan_entry_path(loan)
 
@@ -118,7 +118,7 @@ describe 'loan entry' do
   end
 
   it 'should show specific questions for loan category D' do
-    loan.update_attribute(:loan_category_id, 4)
+    loan.update_attribute(:loan_category_id, LoanCategory::TypeD.id)
 
     visit new_loan_entry_path(loan)
 
@@ -126,7 +126,7 @@ describe 'loan entry' do
   end
 
   it 'should show specific questions for loan category E' do
-    loan.update_attribute(:loan_category_id, 5)
+    loan.update_attribute(:loan_category_id, LoanCategory::TypeE.id)
 
     visit new_loan_entry_path(loan)
 
@@ -134,7 +134,7 @@ describe 'loan entry' do
   end
 
   it 'should show specific questions for loan category F' do
-    loan.update_attribute(:loan_category_id, 6)
+    loan.update_attribute(:loan_category_id, LoanCategory::TypeF.id)
 
     visit new_loan_entry_path(loan)
 

@@ -33,4 +33,13 @@ class LoanCategory < StaticAssociation
       name: 'Type H - Invoice Finance Refinance Guarantee'
     }
   ]
+
+  TypeA = find(1)
+  TypeB = find(2)
+  TypeC = find(3)
+  TypeD = find(4)
+  TypeE = find(5)
+  TypeF = find(6)
+  TypeG = find(7)
+  TypeH = find(8)
 end

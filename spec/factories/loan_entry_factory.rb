@@ -22,7 +22,7 @@ FactoryGirl.define do
       security_proportion 25.0
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :eligible, loan_category_id: 2)
+        loan = FactoryGirl.build(:loan, :eligible, loan_category_id: LoanCategory::TypeB.id)
         new(loan)
       }
     end
@@ -32,7 +32,7 @@ FactoryGirl.define do
       refinance_security_proportion 15.0
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :eligible, loan_category_id: 3)
+        loan = FactoryGirl.build(:loan, :eligible, loan_category_id: LoanCategory::TypeC.id)
         new(loan)
       }
     end
@@ -43,7 +43,7 @@ FactoryGirl.define do
       final_refinanced_amount 20000.00
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :eligible, loan_category_id: 4)
+        loan = FactoryGirl.build(:loan, :eligible, loan_category_id: LoanCategory::TypeD.id)
         new(loan)
       }
     end
@@ -54,7 +54,7 @@ FactoryGirl.define do
       overdraft_maintained true
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :eligible, loan_category_id: 5)
+        loan = FactoryGirl.build(:loan, :eligible, loan_category_id: LoanCategory::TypeE.id)
         new(loan)
       }
     end
@@ -65,21 +65,21 @@ FactoryGirl.define do
       debtor_book_topup 20.0
 
       initialize_with {
-        loan = FactoryGirl.build(:loan, :eligible, loan_category_id: 6)
+        loan = FactoryGirl.build(:loan, :eligible, loan_category_id: LoanCategory::TypeF.id)
         new(loan)
       }
     end
 
     factory :loan_entry_type_g, parent: :loan_entry_type_e do
       initialize_with {
-        loan = FactoryGirl.create(:loan, :eligible, loan_category_id: 7)
+        loan = FactoryGirl.create(:loan, :eligible, loan_category_id: LoanCategory::TypeG.id)
         new(loan)
       }
     end
 
     factory :loan_entry_type_h, parent: :loan_entry_type_f do
       initialize_with {
-        loan = FactoryGirl.create(:loan, :eligible, loan_category_id: 8)
+        loan = FactoryGirl.create(:loan, :eligible, loan_category_id: LoanCategory::TypeH.id)
         new(loan)
       }
     end

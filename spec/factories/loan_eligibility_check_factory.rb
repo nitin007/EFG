@@ -9,7 +9,7 @@ FactoryGirl.define do
     turnover '12345'
     trading_date '31/1/2011'
     sic_code { FactoryGirl.create(:sic_code).code }
-    loan_category_id '1'
+    loan_category_id LoanCategory::TypeA.id
     previous_borrowing 'true'
     private_residence_charge_required 'false'
     personal_guarantee_required 'true'

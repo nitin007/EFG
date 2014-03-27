@@ -38,7 +38,7 @@ describe 'eligibility checks' do
     loan.turnover.should == Money.new(123456789)
     loan.trading_date.should == Date.new(2012, 1, 31)
     loan.sic_code.should == sic_code.code
-    loan.loan_category_id.should == 2
+    loan.loan_category_id.should == LoanCategory::TypeB.id
     loan.reason_id.should == 28
     loan.previous_borrowing.should be_true
     loan.private_residence_charge_required.should be_false

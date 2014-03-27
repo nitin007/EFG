@@ -139,8 +139,8 @@ describe LoanEntry do
         loan_entry.should be_valid
       end
 
-      it "should require original overdraft proportion greater than 0" do
-        loan_entry.original_overdraft_proportion = 0.0
+      it "should require original overdraft proportion not less than 0" do
+        loan_entry.original_overdraft_proportion = -0.1
         loan_entry.should_not be_valid
       end
 

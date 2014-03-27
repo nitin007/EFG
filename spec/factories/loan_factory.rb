@@ -6,7 +6,7 @@ FactoryGirl.define do
     association :modified_by, factory: :lender_user
     modified_by_legacy_id 'system'
     legal_form_id 1
-    loan_category_id 1
+    loan_category_id LoanCategory::TypeA.id
     repayment_frequency_id 4
     reason_id 28
     business_name 'Acme'
