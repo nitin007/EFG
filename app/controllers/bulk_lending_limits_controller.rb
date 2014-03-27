@@ -10,7 +10,7 @@ class BulkLendingLimitsController < ApplicationController
     @phase.created_by = current_user
 
     if @phase.save
-      redirect_to phases_path
+      redirect_to root_url, notice: 'Lending Limits successfully created'
     else
       render :new
     end

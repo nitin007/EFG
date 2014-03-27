@@ -15,92 +15,32 @@ describe 'Loan lifecycle' do
   let!(:ded_code) { FactoryGirl.create(:ded_code) }
 
   context "for new EFG loan" do
+    before do
+      lender.lending_limits.first.update_attribute(:phase_id, phase)
+    end
 
-    it do
-      visit root_path
-      login_as_lender_user
+    context "phase 5" do
+      let(:phase) { 5 }
 
-      # Eligibility Check
-      within_navigation do
-        click_link "New Loan"
+      it do
+        phase_5_loan_lifecycle_steps
       end
+    end
 
-      fill_in_valid_eligibility_check_details(lender)
-      click_button 'Check'
+    context 'phase 6' do
+      let(:phase) { 6 }
 
-      loan = Loan.last
-      current_url.should == loan_eligibility_decision_url(loan.id)
+      it do
+        loan = loan_lifecycle_steps_up_to_complete
 
-      # Loan Entry
-      click_link "View Loan Summary"
-      click_link "Loan Entry"
-      fill_in_valid_loan_entry_details_phase_5(loan)
-      click_button "Submit"
-      current_url.should == complete_loan_entry_url(loan)
+        # Before offering facility in Phase 6, premium schedule must be generated
+        click_link "Generate Premium Schedule"
+        page.fill_in 'premium_schedule_initial_draw_year', with: Date.current.year
+        page.fill_in 'premium_schedule_initial_draw_amount', with: Loan.last.amount.to_s
+        click_button 'Submit'
 
-      # Offer Facility
-      click_link "View Loan Summary"
-      click_link "Offer Scheme Facility"
-      fill_in_valid_loan_offer_details(loan)
-      click_button "Submit"
-      current_url.should == loan_url(loan)
-
-      # Guarantee & Initial Draw
-      click_link "Guarantee & Initial Draw"
-      fill_in_valid_loan_guarantee_details
-      click_button "Submit"
-      current_url.should == loan_url(loan)
-
-      # Loan Change
-      reprofile_draws(loan)
-
-      # Loan Data Correction - loan amount
-      make_loan_data_correction(loan)
-
-      # Demand to Borrower 1
-      make_demand_to_borrower(loan)
-
-      # Satisfy Demand to Borrower
-      satisfy_lender_demand(loan)
-
-      # Demand to Borrower 2
-      make_demand_to_borrower(loan)
-
-      # Demand Against Government Guarantee
-      click_link "Demand Against Guarantee"
-      fill_in_valid_loan_demand_against_government_guarantee_details(loan, ded_code)
-      click_button "Submit"
-
-      current_url.should == loan_url(loan)
-
-      login_as_cfe_user
-
-      # Settle Loan
-      settle_loan(loan)
-
-      login_as_lender_user
-
-      # Recovery Made
-      within_navigation do
-        click_link "Loan Portfolio"
+        loan_lifecycle_steps_from_offered(loan)
       end
-      within("#settled_loans") do
-        click_link "1"
-      end
-
-      click_link loan.reference
-      click_link "Recovery Made"
-
-      fill_in_valid_efg_recovery_details
-      click_button 'Calculate'
-      click_button 'Submit'
-
-      # Realise Recovery
-      login_as_cfe_user
-
-      realise_recovery(loan)
-
-      loan.reload.state.should == Loan::Realised
     end
   end
 
@@ -271,6 +211,103 @@ describe 'Loan lifecycle' do
     end
 
     click_button 'Realise Loans'
+  end
+
+  def phase_5_loan_lifecycle_steps
+    loan = loan_lifecycle_steps_up_to_complete
+    loan_lifecycle_steps_from_offered(loan)
+  end
+
+  def loan_lifecycle_steps_up_to_complete
+    visit root_path
+    login_as_lender_user
+
+    # Eligibility Check
+    within_navigation do
+      click_link "New Loan"
+    end
+
+    fill_in_valid_eligibility_check_details(lender, sic_code)
+    click_button 'Check'
+
+    loan = Loan.last
+    current_url.should == loan_eligibility_decision_url(loan.id)
+
+    # Loan Entry
+    click_link "View Loan Summary"
+    click_link "Loan Entry"
+    send("fill_in_valid_loan_entry_details_phase_#{phase}", loan)
+    click_button "Submit"
+    current_url.should == complete_loan_entry_url(loan)
+
+    click_link "View Loan Summary"
+
+    return loan
+  end
+
+  def loan_lifecycle_steps_from_offered(loan)
+    # Offer Facility
+    click_link "Offer Scheme Facility"
+    fill_in_valid_loan_offer_details(loan)
+    click_button "Submit"
+    current_url.should == loan_url(loan)
+
+    # Guarantee & Initial Draw
+    click_link "Guarantee & Initial Draw"
+    fill_in_valid_loan_guarantee_details
+    click_button "Submit"
+    current_url.should == loan_url(loan)
+
+    # Loan Change
+    reprofile_draws(loan)
+
+    # Loan Data Correction - loan amount
+    make_loan_data_correction(loan)
+
+    # Demand to Borrower 1
+    make_demand_to_borrower(loan)
+
+    # Satisfy Demand to Borrower
+    satisfy_lender_demand(loan)
+
+    # Demand to Borrower 2
+    make_demand_to_borrower(loan)
+
+    # Demand Against Government Guarantee
+    click_link "Demand Against Guarantee"
+    fill_in_valid_loan_demand_against_government_guarantee_details(loan, ded_code)
+    click_button "Submit"
+
+    current_url.should == loan_url(loan)
+
+    login_as_cfe_user
+
+    # Settle Loan
+    settle_loan(loan)
+
+    login_as_lender_user
+
+    # Recovery Made
+    within_navigation do
+      click_link "Loan Portfolio"
+    end
+    within("#settled_loans") do
+      click_link "1"
+    end
+
+    click_link loan.reference
+    click_link "Recovery Made"
+
+    fill_in_valid_efg_recovery_details
+    click_button 'Calculate'
+    click_button 'Submit'
+
+    # Realise Recovery
+    login_as_cfe_user
+
+    realise_recovery(loan)
+
+    loan.reload.state.should == Loan::Realised
   end
 
   def next_quarter_month_name(date)

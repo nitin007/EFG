@@ -5,7 +5,6 @@ class PremiumSchedule < ActiveRecord::Base
   RESCHEDULE_TYPE = 'R'.freeze
   NOTIFIED_AID_TYPE = 'N'.freeze
 
-  EURO_CONVERSION_RATE = BigDecimal.new('1.2285')
   MAX_INITIAL_DRAW = Money.new(9_999_999_99)
 
   belongs_to :loan, inverse_of: :premium_schedules
@@ -19,10 +18,6 @@ class PremiumSchedule < ActiveRecord::Base
   attr_readonly :legacy_premium_calculation
 
   before_validation :set_seq, on: :create
-
-  before_save do
-    write_attribute(:euro_conversion_rate, euro_conversion_rate)
-  end
 
   validates_presence_of :loan_id, strict: true
   validates_presence_of :repayment_duration
@@ -43,20 +38,8 @@ class PremiumSchedule < ActiveRecord::Base
   format :third_draw_amount, with: MoneyFormatter.new
   format :fourth_draw_amount, with: MoneyFormatter.new
 
-  def self.current_euro_conversion_rate
-    EURO_CONVERSION_RATE
-  end
-
   def reschedule?
     calc_type == RESCHEDULE_TYPE
-  end
-
-  def euro_conversion_rate
-    read_attribute(:euro_conversion_rate) || self.class.current_euro_conversion_rate
-  end
-
-  def reset_euro_conversion_rate
-    self.euro_conversion_rate = self.class.current_euro_conversion_rate
   end
 
   def has_drawdowns?

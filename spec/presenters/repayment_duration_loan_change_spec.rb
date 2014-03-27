@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe RepaymentDurationLoanChange do
@@ -76,7 +78,9 @@ describe RepaymentDurationLoanChange do
           presenter.should be_valid
         end
       end
+    end
 
+    context 'phase < 6' do
       context 'calculated #repayment_duration' do
         let(:presenter) { FactoryGirl.build(:repayment_duration_loan_change, loan: loan) }
 
@@ -146,6 +150,60 @@ describe RepaymentDurationLoanChange do
             presenter.should_not be_valid
           end
         end
+      end
+    end
+
+    context 'phase 6' do
+      let(:added_months) { 1 }
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_6) }
+      let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: amount, repayment_duration: repayment_duration, lending_limit: lending_limit) }
+
+      subject { FactoryGirl.build(:repayment_duration_loan_change, loan: loan, added_months: added_months) }
+
+      before do
+        loan.initial_draw_change.update_column(:date_of_change, Date.new(2010, 1, 1))
+
+        # The month of second quarter collection.
+        Timecop.freeze(2010, 4, 1)
+      end
+
+      after do
+        Timecop.return
+      end
+
+      context '£1.2m / 5 years' do
+        let(:amount) { Money.new(1_200_000_00) }
+        let(:repayment_duration) { { years: 4, months: 11 } }
+
+        it { should be_valid }
+      end
+
+      context '£1.2m / >5 years' do
+        let(:amount) { Money.new(1_200_000_00) }
+        let(:repayment_duration) { { years: 5, months: 0 } }
+
+        it { should_not be_valid }
+      end
+
+      context '£600k / 10 years' do
+        let(:amount) { Money.new(600_000_00) }
+        let(:repayment_duration) { { years: 9, months: 11 } }
+
+        it { should be_valid }
+      end
+
+      context '£600k / >10 years' do
+        let(:amount) { Money.new(600_000_00) }
+        let(:repayment_duration) { { years: 10, months: 0 } }
+
+        it { should_not be_valid }
+      end
+
+      context '>£600k / 10 years' do
+        let(:amount) { Money.new(600_000_01) }
+        let(:repayment_duration) { { years: 9, months: 11 } }
+
+        it { should_not be_valid }
       end
     end
   end

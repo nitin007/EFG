@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe BulkLendingLimitsController do
-  let(:phase) { FactoryGirl.create(:phase) }
-
   describe "GET new" do
     def dispatch
       get :new

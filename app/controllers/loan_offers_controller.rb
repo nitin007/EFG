@@ -2,6 +2,7 @@ class LoanOffersController < ApplicationController
   before_filter :verify_create_permission, only: [:new, :create]
   before_filter :load_loan, only: [:new, :create]
   before_filter :redirect_if_lending_limit_unavailable, only: [:new, :create]
+  before_filter :redirect_if_no_premium_schedule, only: [:new, :create]
   rescue_from_incorrect_loan_state_error
 
   def new
@@ -27,6 +28,13 @@ class LoanOffersController < ApplicationController
 
   def load_loan
     @loan = current_lender.loans.find(params[:loan_id])
+  end
+
+  def redirect_if_no_premium_schedule
+    unless @loan.premium_schedule
+      flash[:alert] = I18n.t('premium_schedule.not_yet_generated')
+      redirect_to edit_loan_premium_schedule_path(@loan, redirect: 'loan_offer')
+    end
   end
 
   def redirect_if_lending_limit_unavailable

@@ -28,7 +28,7 @@ en:
         sic_desc: 'SIC code activity description'
         loan_category_id: 'Which EFG Lending Type which most accurately describes the facility to be guaranteed?'
         reason_id: 'What is the principal purpose that this facility will be used for?'
-        previous_borrowing: "Including this facility, will the total outstanding balances and / or available limits of the Applicant's current EFG facilities be no more than £1 million?"
+        previous_borrowing: "Including this facility, will the total outstanding balances and / or available limits of the Applicant's current EFG facilities be no more than £1.2 million?"
         private_residence_charge_required: 'Will the granting of this facility be made conditional upon a new charge being taken over a Principal Private Residence?'
         personal_guarantee_required: 'Will the granting of this facility be made conditional upon the provision of one or more personal guarantees, whether supported or unsupported, by the owners, directors, shareholders or others associated with the borrowing business?'
 

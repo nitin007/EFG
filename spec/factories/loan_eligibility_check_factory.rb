@@ -9,7 +9,6 @@ FactoryGirl.define do
     trading_date '31/1/2011'
     sic_code { FactoryGirl.create(:sic_code).code }
     loan_category_id '1'
-    reason_id '1'
     previous_borrowing 'true'
     private_residence_charge_required 'false'
     personal_guarantee_required 'true'

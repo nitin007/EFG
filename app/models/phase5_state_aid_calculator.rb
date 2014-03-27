@@ -18,7 +18,7 @@ class Phase5StateAidCalculator
     end
 
     def euro_conversion_rate
-      premium_schedule.euro_conversion_rate
+      loan.euro_conversion_rate
     end
 
     def guarantee_rate

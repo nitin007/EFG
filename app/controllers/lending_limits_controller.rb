@@ -78,7 +78,7 @@ class LendingLimitsController < ApplicationController
     end
 
     def load_phases
-      @phases = Phase.order('name ASC')
+      @phases = Phase.all
     end
 
     def verify_create_permission

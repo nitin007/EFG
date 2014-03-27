@@ -44,6 +44,7 @@ class Loan < ActiveRecord::Base
   belongs_to :modified_by, class_name: 'User'
   belongs_to :invoice
   belongs_to :ded_code, foreign_key: 'dti_ded_code', primary_key: 'code'
+  belongs_to :sic, class_name: 'SicCode', foreign_key: 'sic_code', primary_key: 'code'
   has_many :premium_schedules, inverse_of: :loan, order: :seq
   has_one :initial_draw_change
   has_one :transferred_from, class_name: 'Loan', foreign_key: 'id', primary_key: 'transferred_from_id'
@@ -125,6 +126,10 @@ class Loan < ActiveRecord::Base
 
   before_create :set_reference
 
+  delegate :euro_conversion_rate, to: :lending_limit
+
+  delegate :phase, to: :lending_limit
+
   def self.with_scheme(scheme)
     case scheme
     when 'efg'
@@ -145,7 +150,7 @@ class Loan < ActiveRecord::Base
   end
 
   def calculate_state_aid
-    self.state_aid = Phase5StateAidCalculator.new(self).state_aid_eur
+    self.state_aid = rules.state_aid_calculator.new(self).state_aid_eur
   end
 
   def cancelled_reason
@@ -210,10 +215,6 @@ class Loan < ActiveRecord::Base
 
   def legal_form
     LegalForm.find(legal_form_id)
-  end
-
-  def eligibility_check
-    EligibilityCheck.new(self)
   end
 
   def repayment_frequency
@@ -290,6 +291,14 @@ class Loan < ActiveRecord::Base
       self.dti_amount_claimed = demand_outstanding * self.guarantee_rate / 100
     else
       self.dti_amount_claimed = (demand_outstanding + interest + break_costs) * self.guarantee_rate / 100
+    end
+  end
+
+  def rules
+    if lending_limit.try(:phase_id) == 6
+      Phase6Rules
+    else
+      Phase5Rules
     end
   end
 

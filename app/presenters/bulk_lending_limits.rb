@@ -40,16 +40,6 @@ class BulkLendingLimits
     @guarantee_rate = value.try(:to_i)
   end
 
-  # Verify that a "Scheme / Phase" was selected in the validations, but if SFLG
-  # was selected the phase should be nil.
-  def phase
-    if scheme_or_phase_id == Loan::SFLG_SCHEME
-      nil
-    else
-      Phase.find(scheme_or_phase_id)
-    end
-  end
-
   def lenders_attributes=(values)
     values.each do |_, lender_attributes|
       lender = lenders_by_id[lender_attributes[:id].to_i]
@@ -76,7 +66,7 @@ class BulkLendingLimits
       selected_lenders.each do |lender_lending_limit|
         lending_limit = LendingLimit.create! do |lending_limit|
           lending_limit.name = lending_limit_name
-          lending_limit.phase = phase
+          lending_limit.phase_id = phase_id
           lending_limit.starts_on = starts_on
           lending_limit.ends_on = ends_on
           lending_limit.guarantee_rate = guarantee_rate
@@ -101,6 +91,16 @@ class BulkLendingLimits
 
   def lenders_by_id
     @lenders_by_id ||= lenders.index_by(&:id)
+  end
+
+  # Verify that a "Scheme / Phase" was selected in the validations, but if SFLG
+  # was selected the phase should be nil.
+  def phase_id
+    if scheme_or_phase_id == Loan::SFLG_SCHEME
+      nil
+    else
+      Phase.find(scheme_or_phase_id.to_i).id
+    end
   end
 
   def ends_on_is_after_starts_on

@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'LendingLimits' do
   let(:current_user) { FactoryGirl.create(:cfe_admin) }
   before { login_as(current_user, scope: :user) }
-  let!(:phase) { FactoryGirl.create(:phase, name: 'Phase 1') }
+  let(:phase) { Phase.find(1) }
   let!(:lender) { FactoryGirl.create(:lender, name: 'ACME') }
 
   describe 'create' do
@@ -59,7 +59,7 @@ describe 'LendingLimits' do
   end
 
   describe 'update' do
-    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, phase: phase, name: 'Foo', allocation: Money.new(1_000_00)) }
+    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, phase_id: phase.id, name: 'Foo', allocation: Money.new(1_000_00)) }
 
     before do
       visit root_path

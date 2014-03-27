@@ -2,3 +2,5 @@
 <%= simple_form_row 'Original loan term', @loan.repayment_duration.total_months %>
 
 <%= f.input :added_months, input_html: { class: 'input-mini' } %>
+
+<%= render_attribute_errors(f, :repayment_duration, :amount).html_safe %>

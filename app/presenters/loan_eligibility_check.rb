@@ -1,7 +1,6 @@
 class LoanEligibilityCheck
   include LoanPresenter
   include LoanStateTransition
-  include LoanEligibility
   include SharedLoanValidations
 
   attribute :viable_proposition
@@ -22,7 +21,7 @@ class LoanEligibilityCheck
   attribute :loan_scheme
   attribute :loan_source
 
-  delegate :created_by, :created_by=, to: :loan
+  delegate :created_by, :created_by=, :loan_category, :reason, :sic, to: :loan
 
   validates_presence_of :amount, :lending_limit_id, :repayment_duration,
     :turnover, :trading_date, :sic_code, :loan_category_id, :reason_id
@@ -39,14 +38,14 @@ class LoanEligibilityCheck
     errors.add(:sic_code, :not_recognised) if sic_code.blank?
   end
 
-  after_save :save_ineligibility_reasons, unless: :is_eligible?
+  after_save :save_ineligibility_reasons, unless: :eligible?
 
   def transition_to
-    is_eligible? ? Loan::Eligible : Loan::Rejected
+    eligible? ? Loan::Eligible : Loan::Rejected
   end
 
   def event
-    is_eligible? ? LoanEvent::Accept : LoanEvent::Reject
+    eligible? ? LoanEvent::Accept : LoanEvent::Reject
   end
 
   def lending_limit_id=(id)
@@ -63,11 +62,34 @@ class LoanEligibilityCheck
   # cache sic code data on loan, as per legacy system
   def sic_code=(code)
     loan.sic_code = loan.sic_desc = loan.sic_eligible = nil
-    if code.present? && sic_code = SicCode.active.find_by_code!(code)
-      loan.sic_code = sic_code.code
-      loan.sic_desc = sic_code.description
-      loan.sic_eligible = sic_code.eligible
+
+    if code.present? && sic = SicCode.active.find_by_code!(code)
+      loan.sic_code = sic.code
+      loan.sic_desc = sic.description
+      loan.sic_eligible = sic.eligible
     end
   end
 
+  private
+    def eligible?
+      return @eligible if defined?(@eligible)
+      validate_eligibility
+      @eligible = ineligibility_reasons.empty?
+    end
+
+    def ineligibility_reasons
+      # Re-use errors object which will be empty (no validations failures) when
+      # we get here.
+      errors.messages.values.flatten
+    end
+
+    def save_ineligibility_reasons
+      loan.ineligibility_reasons.create!(reason: ineligibility_reasons.join("\n"))
+    end
+
+    def validate_eligibility
+      loan.rules.eligibility_check_validations.each do |validator|
+        validator.validate(self)
+      end
+    end
 end

@@ -17,7 +17,6 @@ class LendingLimit < ActiveRecord::Base
 
   belongs_to :lender
   belongs_to :modified_by, class_name: 'User'
-  belongs_to :phase
 
   has_many :loans
 
@@ -39,6 +38,8 @@ class LendingLimit < ActiveRecord::Base
   format :starts_on, with: QuickDateFormatter
 
   default_scope order('ends_on DESC, allocation_type_id DESC')
+
+  delegate :euro_conversion_rate, to: :phase
 
   scope :active, where(active: true)
 
@@ -63,6 +64,10 @@ class LendingLimit < ActiveRecord::Base
   def available?
     ends_on_with_grace_period = ends_on.advance(days: 30)
     active && (starts_on..ends_on_with_grace_period).cover?(Date.current)
+  end
+
+  def phase
+    Phase.find(phase_id)
   end
 
   def unavailable?

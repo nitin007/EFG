@@ -1,7 +1,6 @@
 class LoanEntry
   include LoanPresenter
   include LoanStateTransition
-  include LoanEligibility
   include SharedLoanValidations
 
   attr_accessible :postcode
@@ -55,11 +54,11 @@ class LoanEntry
   attribute :debtor_book_coverage
   attribute :debtor_book_topup
 
-  after_save :save_as_ineligible, unless: :is_eligible?
+  delegate :calculate_state_aid, :reason, :sic, to: :loan
 
   validates_presence_of :business_name, :fees, :interest_rate,
-    :interest_rate_type_id, :legal_form_id, :repayment_duration,
-    :repayment_frequency_id
+    :interest_rate_type_id, :legal_form_id, :repayment_frequency_id
+  validates_presence_of :state_aid
   validates_presence_of :company_registration, if: :company_registration_required?
   validate :postcode_allowed
   validate :state_aid_calculated
@@ -123,9 +122,15 @@ class LoanEntry
                             less_than_or_equal_to: 30,
                             if: lambda { loan_category_id == 6 }
 
+  validate :validate_eligibility
+
   def postcode=(str)
     normalised = UKPostcode.new(str).norm
     loan.postcode = normalised.empty? ? str : normalised
+  end
+
+  def premium_schedule_required_for_state_aid_calculation?
+    loan.rules.premium_schedule_required_for_state_aid_calculation?
   end
 
   def save_as_incomplete
@@ -145,7 +150,6 @@ class LoanEntry
 
   # Note: state aid must be recalculated if the loan term has changed
   def state_aid_calculated
-    errors.add(:state_aid, :calculated) unless self.loan.premium_schedule
     errors.add(:state_aid, :recalculate) if self.loan.repayment_duration_changed?
   end
 
@@ -158,11 +162,9 @@ class LoanEntry
     legal_form_id && LegalForm.find(legal_form_id).requires_company_registration == true
   end
 
-  def save_as_ineligible
-    loan.transaction do
-      save_as_incomplete
-      save_ineligibility_reasons
+  def validate_eligibility
+    loan.rules.loan_entry_validations.each do |validator|
+      validator.validate(self)
     end
   end
-
 end

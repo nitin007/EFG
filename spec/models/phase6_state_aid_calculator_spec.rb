@@ -1,0 +1,48 @@
+require 'spec_helper'
+
+describe Phase6StateAidCalculator do
+
+  let(:state_aid_calculator) { Phase6StateAidCalculator.new(loan) }
+
+  context "4 year loan" do
+    let(:loan) {
+      double(:loan,
+        amount: Money.new(750_000_00),
+        repayment_duration: MonthDuration.new(48),
+        euro_conversion_rate: BigDecimal.new('1.20744')
+      )
+    }
+
+    it 'calculates state aid in EUR' do
+      state_aid_calculator.state_aid_eur.should == Money.new(96_595_20, 'EUR')
+    end
+  end
+
+  context "8 year loan" do
+    let(:loan) {
+      double(:loan,
+        amount: Money.new(250_000_00),
+        repayment_duration: MonthDuration.new(96),
+        euro_conversion_rate: BigDecimal.new('1.20744')
+      )
+    }
+
+    it 'calculates state aid in EUR' do
+      state_aid_calculator.state_aid_eur.should == Money.new(64_396_80, 'EUR')
+    end
+  end
+
+  context "10 year loan" do
+    let(:loan) {
+      double(:loan,
+        amount: Money.new(100_000_00),
+        repayment_duration: MonthDuration.new(120),
+        euro_conversion_rate: BigDecimal.new('1.20744')
+      )
+    }
+
+    it 'calculates state aid in EUR' do
+      state_aid_calculator.state_aid_eur.should == Money.new(32_198_41, 'EUR')
+    end
+  end
+end

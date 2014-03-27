@@ -100,7 +100,6 @@ describe LoanEligibilityCheck do
         loan_eligibility_check.should_not be_valid
       end
     end
-
   end
 
   describe '#lending_limit_id=' do
@@ -124,56 +123,104 @@ describe LoanEligibilityCheck do
   end
 
   describe '#save' do
-    it "should set the state to Eligible if its eligible" do
-      EligibilityCheck.any_instance.stub(:eligible?).and_return(true)
+    let(:validator) { double(validate: nil) }
 
-      loan_eligibility_check.save
-      loan_eligibility_check.loan.state.should == Loan::Eligible
+    before do
+      loan_eligibility_check.stub(:eligibility_validator).and_return(validator)
     end
 
-    it "should set the state to Rejected if its not eligible" do
-      EligibilityCheck.any_instance.stub(:eligible?).and_return(false)
-      EligibilityCheck.any_instance.stub(:reasons).and_return([ "Reason 1", "Reason 2" ])
+    context 'when there are *no* eligibility errors' do
+      before do
+        loan_eligibility_check.stub(:ineligibility_reasons).and_return([])
+      end
 
-      loan_eligibility_check.save
-      loan_eligibility_check.loan.state.should == Loan::Rejected
-    end
-
-    it "should create rejected loan state change if its not eligible" do
-      EligibilityCheck.any_instance.stub(:eligible?).and_return(false)
-      EligibilityCheck.any_instance.stub(:reasons).and_return([ "Reason 1", "Reason 2" ])
-
-      expect {
+      it 'sets the state to Eligible' do
         loan_eligibility_check.save
-      }.to change(LoanStateChange, :count).by(1)
+        loan_eligibility_check.loan.state.should == Loan::Eligible
+      end
 
-      LoanStateChange.last.event.should == LoanEvent::Reject
+      it 'creates an accepted loan state change' do
+        expect {
+          loan_eligibility_check.save
+        }.to change(LoanStateChange, :count).by(1)
+
+        LoanStateChange.last!.event.should == LoanEvent::Accept
+      end
     end
 
-    it "should create accepted loan state change if its eligible" do
-      EligibilityCheck.any_instance.stub(:eligible?).and_return(true)
+    context 'when there *are* eligibility errors' do
+      before do
+        loan_eligibility_check.stub(:ineligibility_reasons).and_return(['Reason 1', 'Reason 2'])
+      end
 
-      expect {
+      it "should set the state to Rejected if its not eligible" do
         loan_eligibility_check.save
-      }.to change(LoanStateChange, :count).by(1)
+        loan_eligibility_check.loan.state.should == Loan::Rejected
+      end
 
-      LoanStateChange.last.event.should == LoanEvent::Accept
+      it "should create rejected loan state change if its not eligible" do
+        expect {
+          loan_eligibility_check.save
+        }.to change(LoanStateChange, :count).by(1)
+
+        LoanStateChange.last!.event.should == LoanEvent::Reject
+      end
+
+      it "should create loan ineligibility record if its not eligible" do
+        expect {
+          loan_eligibility_check.save
+        }.to change(LoanIneligibilityReason, :count).by(1)
+
+        LoanIneligibilityReason.last!.reason.should == "Reason 1\nReason 2"
+      end
     end
 
-    it "should create loan ineligibility record if its not eligible" do
-      EligibilityCheck.any_instance.stub(:eligible?).and_return(false)
-      EligibilityCheck.any_instance.stub(:reasons).and_return([ "Reason 1", "Reason 2" ])
+    context 'phase 5' do
+      let(:lender) { FactoryGirl.create(:lender) }
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_5, lender: lender) }
 
-      expect {
-        loan_eligibility_check.save
-      }.to change(LoanIneligibilityReason, :count).by(1)
+      before do
+        loan_eligibility_check.loan.lending_limit = lending_limit
+      end
 
-      LoanIneligibilityReason.last.reason.should == "Reason 1\nReason 2"
+      context 'when amount is greater than £1M' do
+        it "is rejected" do
+          loan_eligibility_check.amount = Money.new(1_000_000_01)
+          loan_eligibility_check.save
+          loan_eligibility_check.loan.state.should == Loan::Rejected
+        end
+      end
+    end
+
+    context 'phase 6' do
+      let(:lender) { FactoryGirl.create(:lender) }
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_6, lender: lender) }
+
+      before do
+        loan_eligibility_check.loan.lending_limit = lending_limit
+      end
+
+      context 'when amount is greater than £600k and loan term is longer than 5 years' do
+        it "is rejected" do
+          loan_eligibility_check.amount = Money.new(600_000_01)
+          loan_eligibility_check.repayment_duration = 61
+          loan_eligibility_check.save
+          loan_eligibility_check.loan.state.should == Loan::Rejected
+        end
+      end
+
+      context 'when amount is greater £1.2M' do
+        it "is rejected" do
+          loan_eligibility_check.amount = Money.new(1_200_000_01)
+          loan_eligibility_check.save
+          loan_eligibility_check.loan.state.should == Loan::Rejected
+        end
+      end
     end
   end
 
   describe "#sic_code=" do
-    let(:sic_code) { FactoryGirl.create(:sic_code, code: '86900', description: 'My SIC description', eligible: false) }
+    let(:sic_code) { FactoryGirl.create(:sic_code, description: 'My SIC description', eligible: false) }
 
     it "should cache SIC code, description and eligibility on the loan" do
       loan_eligibility_check.loan.sic_desc = nil

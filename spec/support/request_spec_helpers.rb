@@ -23,7 +23,7 @@ module RequestSpecHelpers
 
   # Eligibility Check
 
-  def fill_in_valid_eligibility_check_details(lender)
+  def fill_in_valid_eligibility_check_details(lender, sic_code)
     choose 'loan_eligibility_check_viable_proposition_true'
     choose 'loan_eligibility_check_would_you_lend_true'
     choose 'loan_eligibility_check_collateral_exhausted_true'
@@ -67,6 +67,12 @@ module RequestSpecHelpers
   def fill_in_valid_loan_entry_details_phase_5(loan)
     fill_in_valid_loan_entry_details(loan)
     calculate_state_aid(loan)
+    check 'loan_entry_state_aid_is_valid'
+  end
+
+  def fill_in_valid_loan_entry_details_phase_6(loan)
+    fill_in_valid_loan_entry_details(loan)
+    click_button 'State Aid Calculation'
     check 'loan_entry_state_aid_is_valid'
   end
 

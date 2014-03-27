@@ -1,12 +1,18 @@
-class Phase < ActiveRecord::Base
-  belongs_to :created_by, class_name: 'User'
-  belongs_to :modified_by, class_name: 'User'
+class Phase < StaticAssociation
+  self.data = [
+    { id: 1, euro_conversion_rate: BigDecimal.new('1.04058') },
+    { id: 2, euro_conversion_rate: BigDecimal.new('1.04058') },
+    { id: 3, euro_conversion_rate: BigDecimal.new('1.04058') },
+    { id: 4, euro_conversion_rate: BigDecimal.new('1.19740') },
+    { id: 5, euro_conversion_rate: BigDecimal.new('1.22850') },
+    { id: 6, euro_conversion_rate: BigDecimal.new('1.20744') }
+  ]
 
-  has_many :lending_limits
+  def lending_limits
+    LendingLimit.where(phase_id: id)
+  end
 
-  validates_presence_of :name
-  validates_presence_of :created_by, strict: true
-  validates_presence_of :modified_by, strict: true
-
-  attr_accessible :name
+  def name
+    "Phase #{id}"
+  end
 end

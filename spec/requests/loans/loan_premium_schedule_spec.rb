@@ -83,4 +83,20 @@ describe 'loan entry' do
       page.should have_content(I18n.t('premium_schedule.repayment_frequency_not_set'))
     end
   end
+
+  context 'when loan does not have a premium schedule' do
+    let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
+    let(:lender) { FactoryGirl.create(:lender) }
+    let(:loan) { FactoryGirl.create(:loan, :completed, lender: lender) }
+
+    before do
+      login_as(current_user, scope: :user)
+      visit loan_path(loan)
+      click_link "Generate Premium Schedule"
+    end
+
+    it "opens the create Premium Schedule form" do
+      current_path.should == edit_loan_premium_schedule_path(loan)
+    end
+  end
 end

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe 'eligibility checks' do
@@ -14,7 +16,7 @@ describe 'eligibility checks' do
     visit root_path
     click_link 'New Loan Application'
 
-    fill_in_valid_eligibility_check_details(lender)
+    fill_in_valid_eligibility_check_details(lender, sic_code)
 
     expect {
       click_button 'Check'
@@ -82,7 +84,7 @@ describe 'eligibility checks' do
     visit root_path
     click_link 'New Loan Application'
 
-    fill_in_valid_eligibility_check_details(lender)
+    fill_in_valid_eligibility_check_details(lender, sic_code)
     # make loan fail eligibility check
     fill_in :loan_eligibility_check_amount, with: '6000000'
 
@@ -95,9 +97,7 @@ describe 'eligibility checks' do
     current_url.should == loan_eligibility_decision_url(loan.id)
 
     loan.state.should == Loan::Rejected
-    loan.ineligibility_reasons.count.should == 1
-    loan.ineligibility_reasons.last.reason.should == I18n.t('eligibility_check.attributes.amount.invalid')
-    page.should have_content(I18n.t('eligibility_check.attributes.amount.invalid'))
+    page.should have_content(I18n.t('validators.amount.amount.invalid', maximum: '£1,000,000.00', minimum: '£1,000.00'))
 
     # email eligibility decision
 
