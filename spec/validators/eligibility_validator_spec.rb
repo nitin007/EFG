@@ -11,6 +11,7 @@ describe EligibilityValidator do
   }
 
   let(:collateral_exhausted) { true }
+  let(:not_insolvent) { true }
   let(:previous_borrowing) { true }
   let(:private_residence_charge_required) { false }
   let(:reason) { double(eligible?: true) }
@@ -24,6 +25,7 @@ describe EligibilityValidator do
   before do
     record.stub(
       collateral_exhausted: collateral_exhausted,
+      not_insolvent: not_insolvent,
       previous_borrowing: previous_borrowing,
       private_residence_charge_required: private_residence_charge_required,
       reason: reason,
@@ -42,6 +44,12 @@ describe EligibilityValidator do
 
   context 'when collateral_exhausted is false' do
     let(:collateral_exhausted) { false }
+
+    it { should_not be_valid }
+  end
+
+  context 'when not_insolvent is false' do
+    let(:not_insolvent) { false }
 
     it { should_not be_valid }
   end

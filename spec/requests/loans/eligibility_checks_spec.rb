@@ -31,6 +31,7 @@ describe 'eligibility checks' do
     loan.viable_proposition.should be_true
     loan.would_you_lend.should be_true
     loan.collateral_exhausted.should be_true
+    loan.not_insolvent.should be_true
     loan.amount.should == Money.new(5000089)
     loan.lending_limit.should be_instance_of(LendingLimit)
     loan.repayment_duration.should == MonthDuration.new(30)

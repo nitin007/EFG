@@ -19,6 +19,7 @@ en:
         viable_proposition: "Other than in respect of the availability of security, are the Applicant's plans viable and serviceable, as assessed according to your Normal Commercial Lending Criteria?"
         would_you_lend: "Following Due Enquiry are you prepared, subject to the backing of the Enterprise Finance Guarantee, to provide the Applicant with a term loan or other debt facility?"
         collateral_exhausted: "Do you confirm that, even after taking any available Collateral, the inadequacy of the Applicant's security would otherwise prevent a facility from being provided except with the backing of the Enterprise Finance Guarantee?"
+        not_insolvent: 'Do you confirm that the Applicant is not a business which is, or likely to become, unable to meet its obligations as they fall due (whether through its own resources or with the funds it is able to obtain from its shareholders or creditors)?'
         amount: 'What is the value of the facility being applied for?'
         lending_limit_id: 'What is the Lending Limit against which this facility is to be allocated? (Note that the date of the Scheme Facility Letter must fall within the validity of the Lending Limit)'
         repayment_duration: 'Over what term does the Applicant intend to repay the guaranteed facility?'

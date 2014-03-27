@@ -74,8 +74,8 @@ describe LoanCsvExport do
         sic_eligible sic_notified_aid sic_parent_desc
         signed_direct_debit_received standard_cap state state_aid
         state_aid_is_valid trading_date trading_name transferred_from
-        turnover updated_at viable_proposition would_you_lend lender_reference
-        settled_amount cumulative_pre_claim_limit_realised_amount
+        turnover updated_at viable_proposition would_you_lend not_insolvent 
+        lender_reference settled_amount cumulative_pre_claim_limit_realised_amount
         cumulative_post_claim_limit_realised_amount)
     end
 
@@ -176,6 +176,7 @@ describe LoanCsvExport do
       row['updated_at'].should == '01/10/2012 16:23:45'
       row['viable_proposition'].should == 'Yes'
       row['would_you_lend'].should == 'Yes'
+      row['not_insolvent'].should == 'Yes'
       row['lender_reference'].should == 'lenderref1'
       row['settled_amount'].should == '100.00'
       row['cumulative_pre_claim_limit_realised_amount'].should == '300.00'

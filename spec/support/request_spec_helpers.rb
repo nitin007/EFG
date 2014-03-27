@@ -27,6 +27,7 @@ module RequestSpecHelpers
     choose 'loan_eligibility_check_viable_proposition_true'
     choose 'loan_eligibility_check_would_you_lend_true'
     choose 'loan_eligibility_check_collateral_exhausted_true'
+    choose 'loan_eligibility_check_not_insolvent_true'
     fill_in 'loan_eligibility_check_amount', with: '50000.89'
     select lender.lending_limits.first.name, from: 'loan_eligibility_check_lending_limit_id'
     fill_in_duration_input 'repayment_duration', 2, 6

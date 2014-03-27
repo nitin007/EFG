@@ -375,6 +375,7 @@ ActiveRecord::Schema.define(:version => 20140310125559) do
     t.string   "lender_reference"
     t.datetime "last_modified_at"
     t.decimal  "euro_conversion_rate",                              :precision => 17, :scale => 14
+    t.boolean  "not_insolvent"
   end
 
   add_index "loans", ["legacy_id"], :name => "index_loans_on_legacy_id", :unique => true

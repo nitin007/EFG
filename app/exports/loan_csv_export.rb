@@ -147,6 +147,7 @@ class LoanCsvExport < BaseCsvExport
       :updated_at,
       :viable_proposition,
       :would_you_lend,
+      :not_insolvent,
       :lender_reference,
       :settled_amount,
       :cumulative_pre_claim_limit_realised_amount,

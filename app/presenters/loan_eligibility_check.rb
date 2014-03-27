@@ -6,6 +6,7 @@ class LoanEligibilityCheck
   attribute :viable_proposition
   attribute :would_you_lend
   attribute :collateral_exhausted
+  attribute :not_insolvent
   attribute :lender
   attribute :lending_limit_id, readonly: true
   attribute :sic_code
@@ -26,7 +27,7 @@ class LoanEligibilityCheck
   validates_presence_of :amount, :lending_limit_id, :repayment_duration,
     :turnover, :trading_date, :sic_code, :loan_category_id, :reason_id
   validates_inclusion_of :viable_proposition, :would_you_lend,
-    :collateral_exhausted, :previous_borrowing,
+    :collateral_exhausted, :not_insolvent, :previous_borrowing,
     :private_residence_charge_required, :personal_guarantee_required, in: [true, false]
   validates_inclusion_of :loan_scheme, in: [ Loan::EFG_SCHEME ]
   validates_inclusion_of :loan_source, in: [ Loan::SFLG_SOURCE ]
