@@ -1,7 +1,6 @@
-module Phase2Rules
-  extend self
+class Phase2Rules < Phase1Rules
 
-  def claim_limit_calculator
+  def self.claim_limit_calculator
     Phase2ClaimLimitCalculator
   end
 

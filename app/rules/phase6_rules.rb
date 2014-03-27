@@ -1,5 +1,4 @@
-module Phase6Rules
-  extend self
+class Phase6Rules < Phase5Rules
 
   LOAN_CATEGORY_REPAYMENT_DURATIONS = {
     nil => 3..120,
@@ -22,51 +21,59 @@ module Phase6Rules
     6 => BigDecimal.new('1.3')
   }
 
-  def eligibility_check_validations
-    [
-      EligibilityValidator.new({}),
-      AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_200_000_00)),
-      RepaymentDurationValidator.new({}),
-      Phase6AmountValidator.new({})
-    ]
-  end
+  class << self
 
-  def loan_category_guarantee_rate
-    BigDecimal.new('75.0')
-  end
+    def claim_limit_calculator
+      Phase6ClaimLimitCalculator
+    end
 
-  def loan_category_premium_rate(category_id)
-    LOAN_CATEGORY_PREMIUM_RATES.fetch(category_id)
-  end
+    def eligibility_check_validations
+      [
+        EligibilityValidator.new({}),
+        AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_200_000_00)),
+        RepaymentDurationValidator.new({}),
+        Phase6AmountValidator.new({})
+      ]
+    end
 
-  def loan_category_repayment_duration(type)
-    LOAN_CATEGORY_REPAYMENT_DURATIONS.fetch(type)
-  end
+    def loan_category_guarantee_rate
+      BigDecimal.new('75.0')
+    end
 
-  def loan_entry_validations
-    eligibility_check_validations
-  end
+    def loan_category_premium_rate(category_id)
+      LOAN_CATEGORY_PREMIUM_RATES.fetch(category_id)
+    end
 
-  def premium_schedule_required_for_state_aid_calculation?
-    false
-  end
+    def loan_category_repayment_duration(type)
+      LOAN_CATEGORY_REPAYMENT_DURATIONS.fetch(type)
+    end
 
-  def repayment_duration_loan_change_validations
-    [
-      RepaymentDurationValidator.new({}),
-      Phase6AmountValidator.new({})
-    ]
-  end
+    def loan_entry_validations
+      eligibility_check_validations
+    end
 
-  def state_aid_calculator
-    Phase6StateAidCalculator
-  end
+    def premium_schedule_required_for_state_aid_calculation?
+      false
+    end
 
-  def update_loan_lending_limit_validations
-    [
-      AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_200_000_00)),
-      RepaymentDurationValidator.new({}),
-      Phase6AmountValidator.new({})
-    ]
+    def repayment_duration_loan_change_validations
+      [
+        RepaymentDurationValidator.new({}),
+        Phase6AmountValidator.new({})
+      ]
+    end
+
+    def state_aid_calculator
+      Phase6StateAidCalculator
+    end
+
+    def update_loan_lending_limit_validations
+      [
+        AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_200_000_00)),
+        RepaymentDurationValidator.new({}),
+        Phase6AmountValidator.new({})
+      ]
+    end
+
   end
 end
