@@ -27,6 +27,7 @@ describe LoanAuditReportCsvRow do
         generic5: 'Generic5',
         reason_id: 1,
         loan_category_id: 2,
+        loan_sub_category_id: 4,
         state: Loan::Guaranteed,
         created_at: Time.zone.parse('12/04/2012 14:34'),
         updated_at: Time.zone.parse('13/04/2012 14:34')
@@ -70,29 +71,30 @@ describe LoanAuditReportCsvRow do
       row[17].should == 'Generic5'                    # generic5
       row[18].should == LoanReason.find(1).name       # loan_reason
       row[19].should == LoanCategory.find(2).name     # loan_category
-      row[20].should == Loan::Guaranteed.humanize     # loan_state
-      row[21].should == '12-04-2012 02:34 PM'         # created_at
-      row[22].should == user.username                 # created_by
-      row[23].should == '13-04-2012 02:34 PM'         # modified_date
-      row[24].should == user.username                 # modified_by
-      row[25].should == "2"                           # audit_record_sequence
-      row[26].should == "Offered"                     # from_state
-      row[27].should == "Auto-cancelled"              # to_state
-      row[28].should == "Cancel loan"                 # loan_function
-      row[29].should == "11-06-2012 11:00 AM"         # audit_record_modified_at
-      row[30].should == user.username                 # audit_record_modified_by
+      row[20].should == LoanSubCategory.find(4).name  # loan_sub_category
+      row[21].should == Loan::Guaranteed.humanize     # loan_state
+      row[22].should == '12-04-2012 02:34 PM'         # created_at
+      row[23].should == user.username                 # created_by
+      row[24].should == '13-04-2012 02:34 PM'         # modified_date
+      row[25].should == user.username                 # modified_by
+      row[26].should == "2"                           # audit_record_sequence
+      row[27].should == "Offered"                     # from_state
+      row[28].should == "Auto-cancelled"              # to_state
+      row[29].should == "Cancel loan"                 # loan_function
+      row[30].should == "11-06-2012 11:00 AM"         # audit_record_modified_at
+      row[31].should == user.username                 # audit_record_modified_by
     end
 
     it "should have 'Check eligibility' when loan_function is Accept" do
       loan.stub(loan_state_change_event_id: LoanEvent::Accept.id)
 
-      row[28].should == 'Check eligibility'
+      row[29].should == 'Check eligibility'
     end
 
     it "should have 'Check eligibility' when loan_function is Reject" do
       loan.stub(loan_state_change_event_id: LoanEvent::Reject.id)
 
-      row[28].should == 'Check eligibility'
+      row[29].should == 'Check eligibility'
     end
   end
 

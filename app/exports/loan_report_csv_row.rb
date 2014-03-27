@@ -66,6 +66,7 @@ class LoanReportCsvRow
       row['settled_on'].try(:strftime, '%d-%m-%Y'),
       row['invoice_reference'],
       LoanCategory.find(row['loan_category_id']).try(:name),
+      LoanSubCategory.find(row['loan_sub_category_id']).try(:name),
       InterestRateType.find(row['interest_rate_type_id']).try(:name),
       row['interest_rate'],
       Money.new(row['fees'] || 0).to_s,

@@ -65,6 +65,7 @@ class LoanReportCsvExport < BaseCsvExport
       :settled_date,
       :invoice_reference,
       :loan_category,
+      :loan_sub_category,
       :interest_type,
       :interest_rate,
       :fees,

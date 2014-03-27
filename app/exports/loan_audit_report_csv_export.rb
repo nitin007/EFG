@@ -25,6 +25,7 @@ class LoanAuditReportCsvExport < BaseCsvExport
       :generic5,
       :loan_reason,
       :loan_category,
+      :loan_sub_category,
       :loan_state,
       :created_at,
       :created_by,

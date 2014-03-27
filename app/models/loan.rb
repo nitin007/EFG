@@ -205,6 +205,10 @@ class Loan < ActiveRecord::Base
     LoanCategory.find(loan_category_id)
   end
 
+  def loan_sub_category
+    LoanSubCategory.find(loan_sub_category_id)
+  end
+
   def reason
     LoanReason.find(reason_id)
   end

@@ -80,6 +80,10 @@ class InformationDeclaration < Prawn::Document
       [ row_description(:state_aid_is_valid), @loan.state_aid_is_valid? ? "Yes" : "No" ]
     ]
 
+    if @loan.loan_sub_category
+      data.insert(14, [ row_description(:loan_sub_category_id), @loan.loan_sub_category.try(:name) ])
+    end
+
     table(data, column_widths: [350, 190]) do
       cells.borders = []
       cells.rows(->(index) { index.even? }).background_color = 'f4f4f4'
