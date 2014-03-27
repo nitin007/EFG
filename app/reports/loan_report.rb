@@ -29,9 +29,8 @@ class LoanReport
     loans = loans.joins('LEFT JOIN invoices ON loans.invoice_id = invoices.id')
 
     # Lending Limit attributes
+    loans = loans.select('lending_limits.phase_id AS lending_limit_phase_id')
     loans = loans.select('lending_limits.name AS lending_limit_name')
-    loans = loans.select('lending_limits.guarantee_rate AS lending_limit_guarantee_rate')
-    loans = loans.select('lending_limits.premium_rate AS lending_limit_premium_rate')
     loans = loans.joins('LEFT JOIN lending_limits ON loans.lending_limit_id = lending_limits.id')
 
     # User attributes

@@ -17,8 +17,8 @@ describe UpdateLoanLendingLimit do
   describe "#save" do
     let(:lender) { FactoryGirl.create(:lender) }
     let!(:lending_limit1) { FactoryGirl.create(:lending_limit, name: 'Lending Limit #1', lender: lender) }
-    let!(:lending_limit2) { FactoryGirl.create(:lending_limit, name: 'Lending Limit #2', lender: lender, premium_rate: 10) }
-    let!(:loan) { FactoryGirl.create(:loan, :completed, lender: lender, lending_limit: lending_limit1) }
+    let!(:lending_limit2) { FactoryGirl.create(:lending_limit, :phase_6, name: 'Lending Limit #2', lender: lender) }
+    let!(:loan) { FactoryGirl.create(:loan, :completed, lender: lender, lending_limit: lending_limit1, loan_category_id: 6) }
     let!(:premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan) }
     let(:presenter) do
       UpdateLoanLendingLimit.new(loan).tap do |presenter|
@@ -43,7 +43,7 @@ describe UpdateLoanLendingLimit do
 
     it "stores the new state aid figure" do
       presenter.save
-      presenter.new_state_aid.should == Money.new(246_444, 'EUR')
+      presenter.new_state_aid.should == Money.new(794_98, 'EUR')
     end
   end
 end

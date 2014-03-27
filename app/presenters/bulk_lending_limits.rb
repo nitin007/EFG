@@ -5,13 +5,13 @@ class BulkLendingLimits
   include ActiveModel::MassAssignmentSecurity
 
   attr_accessor :scheme_or_phase_id, :created_by, :modified_by, :lending_limit_name,
-    :ends_on, :starts_on, :guarantee_rate, :premium_rate, :allocation_type_id
+    :ends_on, :starts_on, :allocation_type_id
 
-  attr_accessible :scheme_or_phase_id, :lending_limit_name, :ends_on, :starts_on, :guarantee_rate,
-    :premium_rate, :allocation_type_id, :lenders_attributes
+  attr_accessible :scheme_or_phase_id, :lending_limit_name, :ends_on, :starts_on,
+    :allocation_type_id, :lenders_attributes
 
-  validates_presence_of :allocation_type_id, :scheme_or_phase_id, :ends_on, :guarantee_rate,
-    :premium_rate, :starts_on, :lending_limit_name
+  validates_presence_of :allocation_type_id, :scheme_or_phase_id, :ends_on,
+    :starts_on, :lending_limit_name
 
   validate :ends_on_is_after_starts_on
   validates_inclusion_of :allocation_type_id, in: [LendingLimitType::Annual, LendingLimitType::Specific].map(&:id)
@@ -30,14 +30,6 @@ class BulkLendingLimits
 
   def allocation_type_id=(value)
     @allocation_type_id = value.try(:to_i)
-  end
-
-  def premium_rate=(value)
-    @premium_rate = value.try(:to_i)
-  end
-
-  def guarantee_rate=(value)
-    @guarantee_rate = value.try(:to_i)
   end
 
   def lenders_attributes=(values)
@@ -69,8 +61,6 @@ class BulkLendingLimits
           lending_limit.phase_id = phase_id
           lending_limit.starts_on = starts_on
           lending_limit.ends_on = ends_on
-          lending_limit.guarantee_rate = guarantee_rate
-          lending_limit.premium_rate = premium_rate
           lending_limit.allocation_type_id = allocation_type_id
 
           lending_limit.lender = lender_lending_limit.lender

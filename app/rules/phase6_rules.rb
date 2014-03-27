@@ -11,6 +11,15 @@ module Phase6Rules
     6   => 3..36
   }
 
+  LOAN_CATEGORY_PREMIUM_RATES = {
+    1 => BigDecimal.new('2.0'),
+    2 => BigDecimal.new('2.0'),
+    3 => BigDecimal.new('2.0'),
+    4 => BigDecimal.new('2.0'),
+    5 => BigDecimal.new('2.0'),
+    6 => BigDecimal.new('1.3')
+  }
+
   def eligibility_check_validations
     [
       EligibilityValidator.new({}),
@@ -18,6 +27,14 @@ module Phase6Rules
       RepaymentDurationValidator.new({}),
       Phase6AmountValidator.new({})
     ]
+  end
+
+  def loan_category_guarantee_rate
+    BigDecimal.new('75.0')
+  end
+
+  def loan_category_premium_rate(category_id)
+    LOAN_CATEGORY_PREMIUM_RATES.fetch(category_id)
   end
 
   def loan_category_repayment_duration(type)

@@ -45,7 +45,7 @@ describe 'loan offer' do
 
   context "with an unavailable lending limit" do
     let(:lending_limit) { FactoryGirl.create(:lending_limit, :inactive, lender: current_user.lender) }
-    let!(:new_lending_limit) { FactoryGirl.create(:lending_limit, :active, lender: current_user.lender, name: 'The Next Great Lending Limit', premium_rate: 10) }
+    let!(:new_lending_limit) { FactoryGirl.create(:lending_limit, :active, lender: current_user.lender, name: 'The Next Great Lending Limit') }
 
     it "prompts to change the lending limit" do
       dispatch
@@ -54,9 +54,6 @@ describe 'loan offer' do
 
       select 'The Next Great Lending Limit', from: 'update_loan_lending_limit[new_lending_limit_id]'
       click_button 'Submit'
-
-      page.should have_content '€10,000.00'
-      page.should have_content '€2,464.44'
 
       loan.reload
       loan.lending_limit.should == new_lending_limit

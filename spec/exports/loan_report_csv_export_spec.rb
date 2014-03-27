@@ -98,8 +98,8 @@ describe LoanReportCsvExport do
         sic_parent_desc: 'Sic parent description',
         reason_id: 1,
         amount: 250000,
-        guarantee_rate: 75.0,
-        premium_rate: 2.0,
+        guarantee_rate: 85.0,
+        premium_rate: 3.0,
         state: 'eligible',
         repayment_duration: { months: 24 },
         repayment_frequency_id: 1,
@@ -253,8 +253,8 @@ describe LoanReportCsvExport do
       row[t(:parent_sic_code_description)].should == 'Sic parent description'
       row[t(:purpose_of_loan)].should == LoanReason.find(1).name
       row[t(:facility_amount)].should == '250000.00'
-      row[t(:guarantee_rate)].should == '75.0'
-      row[t(:premium_rate)].should == '2.0'
+      row[t(:guarantee_rate)].should == '85.0'
+      row[t(:premium_rate)].should == '3.0'
       row[t(:lending_limit)].should == 'lending limit'
       row[t(:lender_reference)].should == 'ABC123'
       row[t(:loan_state)].should == 'Eligible'
@@ -324,6 +324,26 @@ describe LoanReportCsvExport do
       row[t(:cumulative_pre_claim_limit_realised_amount)].should == '3000.00'
       row[t(:cumulative_post_claim_limit_realised_amount)].should == '2000.00'
     end
+
+    context "without guarantee rate on loan" do
+      before do
+        loan.update_attribute(:guarantee_rate, nil)
+      end
+
+      it "exports phase's premium rate" do
+        row[t(:guarantee_rate)].should == '75.0'
+      end
+    end
+
+    context "without premium rate on loan" do
+      before do
+        loan.update_attribute(:premium_rate, nil)
+      end
+
+      it "exports phase's premium rate" do
+        row[t(:premium_rate)].should == '2.0'
+      end
+    end  
   end
 
   private

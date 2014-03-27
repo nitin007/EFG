@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140225123214) do
+ActiveRecord::Schema.define(:version => 20140310125559) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -131,23 +131,21 @@ ActiveRecord::Schema.define(:version => 20140225123214) do
   add_index "lenders", ["organisation_reference_code"], :name => "index_lenders_on_organisation_reference_code", :unique => true
 
   create_table "lending_limits", :force => true do |t|
-    t.integer  "lender_id",                                                                            :null => false
+    t.integer  "lender_id",                                             :null => false
     t.integer  "legacy_id"
     t.integer  "lender_legacy_id"
     t.integer  "version"
-    t.integer  "allocation_type_id",                                                                   :null => false
-    t.boolean  "active",                                                            :default => false, :null => false
-    t.integer  "allocation",            :limit => 8,                                                   :null => false
-    t.date     "starts_on",                                                                            :null => false
-    t.date     "ends_on",                                                                              :null => false
-    t.string   "name",                                                                                 :null => false
+    t.integer  "allocation_type_id",                                    :null => false
+    t.boolean  "active",                             :default => false, :null => false
+    t.integer  "allocation",            :limit => 8,                    :null => false
+    t.date     "starts_on",                                             :null => false
+    t.date     "ends_on",                                               :null => false
+    t.string   "name",                                                  :null => false
     t.string   "modified_by_legacy_id"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.decimal  "premium_rate",                       :precision => 16, :scale => 2,                    :null => false
-    t.decimal  "guarantee_rate",                     :precision => 16, :scale => 2,                    :null => false
-    t.datetime "created_at",                                                                           :null => false
-    t.datetime "updated_at",                                                                           :null => false
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
     t.integer  "modified_by_id"
     t.integer  "phase_id"
   end

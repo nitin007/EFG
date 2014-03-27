@@ -8,8 +8,6 @@ FactoryGirl.define do
     sequence(:name) { |n| "lending limit #{n}" }
     starts_on 1.month.ago
     ends_on { |lending_limit| lending_limit.starts_on.advance(years: 1) }
-    premium_rate 2
-    guarantee_rate 75
 
     trait :active do
       active true
