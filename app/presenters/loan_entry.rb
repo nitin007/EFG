@@ -8,6 +8,7 @@ class LoanEntry
   transition from: [Loan::Eligible, Loan::Incomplete], to: Loan::Completed, event: LoanEvent::Complete
 
   attribute :lender, read_only: true
+  attribute :state_aid_threshold, read_only: true
 
   attribute :viable_proposition
   attribute :would_you_lend
@@ -64,6 +65,7 @@ class LoanEntry
   validates_presence_of :company_registration, if: :company_registration_required?
   validate :postcode_allowed
   validate :state_aid_calculated
+  validate :state_aid_within_sic_threshold, if: :state_aid
   validate :repayment_frequency_allowed
   validate :company_turnover_is_allowed, if: :turnover
   validates_acceptance_of :state_aid_is_valid, allow_nil: false, accept: true
@@ -122,6 +124,12 @@ class LoanEntry
   def validate_eligibility
     loan.rules.loan_entry_validations.each do |validator|
       validator.validate(self)
+    end
+  end
+
+  def state_aid_within_sic_threshold
+    if state_aid > state_aid_threshold
+      errors.add(:state_aid, :exceeds_sic_threshold, threshold: state_aid_threshold.format(no_cents: true))
     end
   end
 end

@@ -77,7 +77,7 @@ class InformationDeclaration < Prawn::Document
       [ row_description(:reason_id), @loan.reason.try(:name) ],
       [ row_description(:previous_borrowing), @loan.previous_borrowing? ? "Yes" : "No" ],
       [ row_description(:state_aid), @loan.state_aid.try(:format) ],
-      [ row_description(:state_aid_is_valid), @loan.state_aid_is_valid? ? "Yes" : "No" ]
+      [ row_description(:state_aid_is_valid, threshold: state_aid_threshold), @loan.state_aid_is_valid? ? "Yes" : "No" ]
     ]
 
     if @loan.loan_sub_category
@@ -90,8 +90,8 @@ class InformationDeclaration < Prawn::Document
     end
   end
 
-  def row_description(key)
-    I18n.t("simple_form.labels.loan_entry.#{key}")
+  def row_description(key, options = {})
+    I18n.t("simple_form.labels.loan_entry.#{key}", options)
   end
 
   def declaration
@@ -134,6 +134,10 @@ class InformationDeclaration < Prawn::Document
   def signatories
     move_down 15
     text I18n.t('pdfs.information_declaration.signatories')
+  end
+
+  def state_aid_threshold
+    @loan.sic.state_aid_threshold.format(no_cents: true)
   end
 
 end

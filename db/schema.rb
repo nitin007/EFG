@@ -476,9 +476,10 @@ ActiveRecord::Schema.define(:version => 20140317123040) do
   create_table "sic_codes", :force => true do |t|
     t.string  "code"
     t.string  "description"
-    t.boolean "eligible",                 :default => false
-    t.boolean "public_sector_restricted", :default => false
-    t.boolean "active",                   :default => true
+    t.boolean "eligible",                              :default => false
+    t.boolean "public_sector_restricted",              :default => false
+    t.boolean "active",                                :default => true
+    t.integer "state_aid_threshold",      :limit => 8,                    :null => false
   end
 
   add_index "sic_codes", ["code"], :name => "index_sic_codes_on_code", :unique => true

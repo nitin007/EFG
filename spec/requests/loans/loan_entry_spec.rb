@@ -7,6 +7,7 @@ describe 'loan entry' do
   let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
   let(:lending_limit) { FactoryGirl.create(:lending_limit, phase_id: 5, lender: lender) }
   let(:loan) { FactoryGirl.create(:loan, lender: lender, loan_category_id: LoanCategory::TypeB.id, lending_limit: lending_limit) }
+
   before { login_as(current_user, scope: :user) }
 
   context 'Phase 6' do
@@ -169,7 +170,7 @@ describe 'loan entry' do
       visit new_loan_entry_path(loan)
 
       fill_in_valid_loan_entry_details_phase_5(loan)
-      
+
       # switch to Category E
       select "Type E - Revolving Credit Guarantee", from: "loan_entry_loan_category_id"
       click_button 'Submit'
@@ -180,9 +181,24 @@ describe 'loan entry' do
       click_button 'Submit'
 
       current_path.should == complete_loan_entry_path(loan)
-      
+
       loan.reload
       loan.loan_sub_category_id.should == 3
+    end
+  end
+
+  context "with loan in sector with reduced state aid threshold" do
+    let(:sic_code) { SicCode.find_by_code!(loan.sic_code) }
+
+    before do
+      sic_code.state_aid_threshold = Money.new(100_000_00, 'EUR')
+      sic_code.save
+    end
+
+    it "shows the correct state aid threshold in question text" do
+      visit new_loan_entry_path(loan)
+      expected_amount = Money.new(100_000_00, 'EUR').format(no_cents: true)
+      page.should have_content("no more than #{expected_amount}")
     end
   end
 
