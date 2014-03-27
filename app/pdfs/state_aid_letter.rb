@@ -6,7 +6,7 @@ class StateAidLetter < Prawn::Document
   def initialize(loan, pdf_opts = {})
     super(pdf_opts)
     @loan = loan
-    @filename = "state_aid_letter_#{loan.reference || loan.id}.pdf"
+    @filename = "state_aid_letter_#{loan.reference}.pdf"
     self.font_size = 12
     build
   end
@@ -50,9 +50,9 @@ class StateAidLetter < Prawn::Document
 
   def loan_details
     data = [
-      ["Borrower:", @loan.business_name || '<undefined>'],
+      ["Borrower:", @loan.business_name],
       ["Lender:", @loan.lender.name],
-      ["Loan Reference Number:", @loan.reference || @loan.id],
+      ["Loan Reference Number:", @loan.reference],
       ["Loan Amount:", @loan.amount.format],
       ["Loan Term:", "#{@loan.repayment_duration.total_months} months"],
       ["Anticipated drawdown date:", "tbc"]

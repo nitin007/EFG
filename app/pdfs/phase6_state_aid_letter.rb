@@ -23,9 +23,9 @@ class Phase6StateAidLetter < StateAidLetter
 
   def loan_details
     data = [
-      ["Applicant:", @loan.business_name || '<undefined>'],
+      ["Applicant:", @loan.business_name],
       ["Lender:", @loan.lender.name],
-      ["EFG Facility Reference Number:", @loan.reference || @loan.id],
+      ["EFG Facility Reference Number:", @loan.reference],
       ["Facility Amount:", @loan.amount.format],
       ["Guarantee Term:", "#{@loan.repayment_duration.total_months} months"],
     ]
