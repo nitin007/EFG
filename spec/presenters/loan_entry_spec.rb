@@ -206,8 +206,59 @@ describe LoanEntry do
       end
     end
 
+    context 'when a type G loan' do
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_g) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
+      end
+
+      it "should require overdraft limit" do
+        loan_entry.overdraft_limit = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require overdraft maintained" do
+        loan_entry.overdraft_maintained = false
+        loan_entry.should_not be_valid
+      end
+    end
+
     context 'when a type F loan' do
       let(:loan_entry) { FactoryGirl.build(:loan_entry_type_f) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
+      end
+
+      it "should require invoice discount limit" do
+        loan_entry.invoice_discount_limit = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book coverage greater than or equal to 1" do
+        loan_entry.debtor_book_coverage = 0.9
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book coverage less than 100" do
+        loan_entry.debtor_book_coverage = 100
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book topup greater than or equal to 1" do
+        loan_entry.debtor_book_topup = 0.9
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book topup less than or equal to 30" do
+        loan_entry.debtor_book_topup = 30.1
+        loan_entry.should_not be_valid
+      end
+    end
+
+    context 'when a type H loan' do
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_h) }
 
       it "should have a valid factory" do
         loan_entry.should be_valid

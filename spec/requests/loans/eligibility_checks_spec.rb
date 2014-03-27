@@ -81,6 +81,20 @@ describe 'eligibility checks' do
     current_path.should == '/loans/eligibility_check'
   end
 
+  it 'works for Type H loan category' do
+    visit root_path
+    click_link 'New Loan Application'
+
+    fill_in_valid_eligibility_check_details(lender, sic_code)
+    select LoanCategory.find(8).name, from: 'loan_eligibility_check_loan_category_id'
+
+    expect {
+      click_button 'Check'
+    }.to change(Loan, :count)
+
+    current_url.should == loan_eligibility_decision_url(Loan.last.id)
+  end
+
   it 'displays ineligibility reasons for a reject loan' do
     visit root_path
     click_link 'New Loan Application'

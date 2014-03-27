@@ -99,29 +99,29 @@ class LoanEntry
   validates_presence_of :current_refinanced_amount, :final_refinanced_amount,
                         if: lambda { loan_category_id == 4 }
 
-  # TYPE E LOANS
+  # TYPE E & G LOANS
 
   validates_presence_of :overdraft_limit,
-                        if: lambda { loan_category_id == 5 }
+                        if: lambda { [5,7].include?(loan_category_id) }
 
   validates_inclusion_of :overdraft_maintained,
                          in: [true],
-                         if: lambda { loan_category_id == 5 }
+                         if: lambda { [5,7].include?(loan_category_id) }
 
-  # TYPE F LOANS
+  # TYPE F & H LOANS
 
   validates_presence_of :invoice_discount_limit,
-                        if: lambda { loan_category_id == 6 }
+                        if: lambda { [6,8].include?(loan_category_id) }
 
   validates_numericality_of :debtor_book_coverage,
                             greater_than_or_equal_to: 1,
                             less_than: 100,
-                            if: lambda { loan_category_id == 6 }
+                            if: lambda { [6,8].include?(loan_category_id) }
 
   validates_numericality_of :debtor_book_topup,
                             greater_than_or_equal_to: 1,
                             less_than_or_equal_to: 30,
-                            if: lambda { loan_category_id == 6 }
+                            if: lambda { [6,8].include?(loan_category_id) }
 
   validate :validate_eligibility
 

@@ -25,4 +25,4 @@ en:
         invalid: "A business cannot borrow more than £600,000 for longer than 5 years"
     repayment_duration:
       repayment_duration:
-        invalid: "Repayment duration should be between 3 months and 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E and Type F facilities have a maximum term of three years."
+        invalid: "Repayment duration should be between 3 months and 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E, Type F, Type G and Type H facilities have a maximum term of three years."

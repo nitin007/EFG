@@ -8,7 +8,9 @@ module Phase5Rules
     3   => 3..120,
     4   => 3..120,
     5   => 3..24,
-    6   => 3..36
+    6   => 3..36,
+    7   => 3..24,
+    8   => 3..36
   }
 
   def eligibility_check_validations
