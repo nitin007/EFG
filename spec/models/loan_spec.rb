@@ -453,7 +453,7 @@ describe Loan do
     context 'phase 6' do
       let(:lending_limit) { FactoryGirl.build(:lending_limit, :phase_6) }
 
-      let(:loan) { FactoryGirl.build(:loan, premium_rate: nil, lending_limit: lending_limit, loan_category_id: 6) }
+      let(:loan) { FactoryGirl.build(:loan, premium_rate: nil, lending_limit: lending_limit, loan_category_id: LoanCategory::TypeF.id) }
 
       it "returns the loan's category specific premium rate" do
         loan.premium_rate.should == 1.3

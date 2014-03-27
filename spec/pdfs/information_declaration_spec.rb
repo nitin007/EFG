@@ -10,7 +10,7 @@ describe InformationDeclaration do
       business_name: 'ACME',
       company_registration: 'B1234567890',
       legal_form_id: 2,
-      loan_category_id: 5,
+      loan_category_id: LoanCategory::TypeE.id,
       loan_sub_category_id: 1,
       maturity_date: Date.new(2020, 3, 2),
       postcode: 'ABC 123',

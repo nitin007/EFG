@@ -101,7 +101,7 @@ describe 'loan change' do
 
       context 'when new loan repayment duration is invalid' do
         before do
-          loan.update_attribute(:loan_category_id, 5)
+          loan.update_attribute(:loan_category_id, LoanCategory::TypeE.id)
         end
 
         it 'displays error message explaining why loan term cannot be extended' do
