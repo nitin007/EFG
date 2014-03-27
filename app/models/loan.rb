@@ -126,9 +126,8 @@ class Loan < ActiveRecord::Base
 
   before_create :set_reference
 
-  delegate :euro_conversion_rate, to: :lending_limit
-
-  delegate :phase, to: :lending_limit
+  delegate :euro_conversion_rate, :phase, to: :lending_limit
+  delegate :state_aid_threshold, to: :sic
 
   def self.with_scheme(scheme)
     case scheme
@@ -304,10 +303,6 @@ class Loan < ActiveRecord::Base
     else
       Phase5Rules
     end
-  end
-
-  def state_aid_threshold
-    SicCode.find_by_code(sic_code).state_aid_threshold
   end
 
   private

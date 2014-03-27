@@ -8,6 +8,7 @@ class LoanEntry
   transition from: [Loan::Eligible, Loan::Incomplete], to: Loan::Completed, event: LoanEvent::Complete
 
   attribute :lender, read_only: true
+  attribute :state_aid_threshold, read_only: true
 
   attribute :viable_proposition
   attribute :would_you_lend
@@ -44,7 +45,6 @@ class LoanEntry
   attribute :fees
   attribute :state_aid_is_valid
   attribute :state_aid
-  attribute :state_aid_threshold
   attribute :loan_security_types
   attribute :security_proportion
   attribute :original_overdraft_proportion
@@ -95,10 +95,6 @@ class LoanEntry
     loan.state == Loan::Completed
   end
 
-  def state_aid_threshold
-    SicCode.find_by_code(sic_code).state_aid_threshold
-  end
-
   def total_prepayment
     (debtor_book_coverage || 0) + (debtor_book_topup || 0)
   end
@@ -132,10 +128,8 @@ class LoanEntry
   end
 
   def state_aid_within_sic_threshold
-    sic = SicCode.find_by_code!(sic_code)
-    if state_aid > sic.state_aid_threshold
-      errors.add(:state_aid, :exceeds_sic_threshold, threshold: sic.state_aid_threshold.format(no_cents: true))
-      return false
+    if state_aid > state_aid_threshold
+      errors.add(:state_aid, :exceeds_sic_threshold, threshold: state_aid_threshold.format(no_cents: true))
     end
   end
 end
