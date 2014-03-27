@@ -42,21 +42,8 @@ class ClaimLimitCalculator
 
   def cumulative_drawn_amount
     @cumulative_drawn_amount ||= begin
-      loan = Loan.find_by_sql(
-        [
-          "SELECT SUM(amount_drawn) as amount_drawn
-          FROM loan_modifications
-          INNER JOIN loans ON (loan_modifications.loan_id = loans.id)
-          INNER JOIN lending_limits ON (loans.lending_limit_id = lending_limits.id)
-          WHERE loans.lender_id = ?
-            AND loans.loan_scheme = ?
-            AND (loan_modifications.type = 'InitialDrawChange' OR loan_modifications.change_type_id = ?)
-            AND lending_limits.phase_id = ?
-            AND loans.state IN (?)
-          ", lender.id, Loan::EFG_SCHEME, ChangeType::RecordAgreedDraw.id, phase.id, ClaimLimitStates
-        ]
-      ).first
-      Money.new(loan.amount_drawn.to_i)
+      amount = cumulative_drawn_amount_relation.sum(:amount_drawn)
+      Money.new(amount)
     end
   end
 
@@ -73,43 +60,49 @@ class ClaimLimitCalculator
 
   def pre_claim_realisations_amount
     @pre_claim_realisations_amount ||= begin
-      loan = Loan.find_by_sql(
-        [
-          "SELECT SUM(realised_amount) as total_realised_amount
-          FROM loan_realisations
-          INNER JOIN loans ON (loan_realisations.realised_loan_id = loans.id)
-          INNER JOIN lending_limits ON (loans.lending_limit_id = lending_limits.id)
-          WHERE loans.lender_id = ?
-            AND loans.loan_scheme = ?
-            AND lending_limits.phase_id = ?
-            AND loans.state IN (?)
-          ", lender.id, Loan::EFG_SCHEME, phase.id, SettledStates
-        ]
-      ).first
-      Money.new(loan.total_realised_amount.to_i)
+      amount = Loan
+        .joins(:loan_realisations)
+        .joins(:lending_limit)
+        .where(lender_id: lender.id)
+        .where(loan_scheme: Loan::EFG_SCHEME)
+        .where(state: SettledStates)
+        .where(lending_limits: { phase_id: phase.id })
+        .sum(:realised_amount)
+
+      Money.new(amount)
     end
   end
 
   def settled_amount
     @settled_amount ||= begin
-      loan = Loan.find_by_sql(
-        [
-          "SELECT SUM(settled_amount) as total_settled_amount
-          FROM loans
-          INNER JOIN lending_limits ON (loans.lending_limit_id = lending_limits.id)
-          WHERE loans.lender_id = ?
-            AND loans.loan_scheme = ?
-            AND lending_limits.phase_id = ?
-            AND loans.state IN (?)
-          ", lender.id, Loan::EFG_SCHEME, phase.id, SettledStates
-        ]
-      ).first
-      Money.new(loan.total_settled_amount.to_i)
+      amount = Loan
+        .joins(:lending_limit)
+        .where(lender_id: lender.id)
+        .where(loan_scheme: Loan::EFG_SCHEME)
+        .where(state: SettledStates)
+        .where(lending_limits: { phase_id: phase.id})
+        .sum(:settled_amount)
+
+      Money.new(amount)
     end
   end
 
   def total_amount
     raise NotImplementedError, 'Implement in sub-class'
+  end
+
+  private
+
+  def cumulative_drawn_amount_relation
+    Loan
+      .joins(:loan_modifications)
+      .joins(:lending_limit)
+      .where(lender_id: lender.id)
+      .where(loan_scheme: Loan::EFG_SCHEME)
+      .where(state: ClaimLimitStates)
+      .where("loan_modifications.type = 'InitialDrawChange' OR
+              loan_modifications.change_type_id = ?", ChangeType::RecordAgreedDraw.id)
+      .where(lending_limits: { phase_id: phase.id })
   end
 
 end

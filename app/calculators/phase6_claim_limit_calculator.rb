@@ -34,43 +34,22 @@ class Phase6ClaimLimitCalculator < ClaimLimitCalculator
 
   def non_reduced_loans_cumulative_draw_amount
     @non_reduced_loans_cumulative_draw_amount ||= begin
-      loan = Loan.find_by_sql(
-        [
-          "SELECT SUM(amount_drawn) as amount_drawn
-          FROM loan_modifications
-          INNER JOIN loans ON (loan_modifications.loan_id = loans.id)
-          INNER JOIN lending_limits ON (loans.lending_limit_id = lending_limits.id)
-          WHERE loans.lender_id = ?
-            AND loans.loan_scheme = ?
-            AND (loan_modifications.type = 'InitialDrawChange' OR loan_modifications.change_type_id = ?)
-            AND lending_limits.phase_id = ?
-            AND loans.state IN (?)
-            AND loans.loan_category_id NOT IN (?)
-          ", lender.id, Loan::EFG_SCHEME, ChangeType::RecordAgreedDraw.id, phase.id, ClaimLimitStates, ReducedLoanCategoryIds
-        ]
-      ).first
-      Money.new(loan.amount_drawn.to_i)
+      # TODO: use .where.not() when on Rails 4
+      amount = cumulative_drawn_amount_relation
+        .where('loan_category_id NOT IN (?)', ReducedLoanCategoryIds)
+        .sum(:amount_drawn)
+
+      Money.new(amount)
     end
   end
 
   def reduced_loans_cumulative_draw_amount
     @reduced_loans_cumulative_draw_amount ||= begin
-      loan = Loan.find_by_sql(
-        [
-          "SELECT SUM(amount_drawn) as amount_drawn
-          FROM loan_modifications
-          INNER JOIN loans ON (loan_modifications.loan_id = loans.id)
-          INNER JOIN lending_limits ON (loans.lending_limit_id = lending_limits.id)
-          WHERE loans.lender_id = ?
-            AND loans.loan_scheme = ?
-            AND (loan_modifications.type = 'InitialDrawChange' OR loan_modifications.change_type_id = ?)
-            AND lending_limits.phase_id = ?
-            AND loans.state IN (?)
-            AND loans.loan_category_id IN (?)
-          ", lender.id, Loan::EFG_SCHEME, ChangeType::RecordAgreedDraw.id, phase.id, ClaimLimitStates, ReducedLoanCategoryIds
-        ]
-      ).first
-      Money.new(loan.amount_drawn.to_i) * ReducedLoanPercentage / 100
+      amount = cumulative_drawn_amount_relation
+        .where(loan_category_id: ReducedLoanCategoryIds)
+        .sum(:amount_drawn)
+
+      Money.new(amount) * ReducedLoanPercentage / 100
     end
   end
 
