@@ -5,7 +5,10 @@ module PresenterFormatterConcern
     def format(attribute, options)
       formatter = options.fetch(:with)
 
-      attr_reader attribute
+      define_method(attribute) do
+        value = instance_variable_get("@#{attribute}")
+        formatter.format(value)
+      end
 
       define_method("#{attribute}=") do |value|
         instance_variable_set "@#{attribute}", formatter.parse(value)

@@ -1,15 +1,14 @@
 class PostcodeDataCorrection < DataCorrectionPresenter
-  attr_reader :postcode
+  include PresenterFormatterConcern
+
+  format :postcode, with: PostcodeFormatter
+
   attr_accessible :postcode
 
   before_save :update_data_correction
   before_save :update_loan
 
   validate :validate_postcode
-
-  def postcode=(value)
-    @postcode = Postcode.new(value)
-  end
 
   private
     def update_data_correction
