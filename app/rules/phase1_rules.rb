@@ -12,56 +12,53 @@ class Phase1Rules
     8   => 3..36
   }
 
-  class << self
-
-    def claim_limit_calculator
-      Phase1ClaimLimitCalculator
-    end
-
-    def eligibility_check_validations
-      [
-        EligibilityValidator.new({}),
-        AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_000_000_00)),
-        RepaymentDurationValidator.new({})
-      ]
-    end
-
-    def loan_category_guarantee_rate
-      BigDecimal.new('75.0')
-    end
-
-    def loan_category_premium_rate(category_id = nil)
-      BigDecimal.new('2.0')
-    end
-
-    def loan_category_repayment_duration(type)
-      self::LOAN_CATEGORY_REPAYMENT_DURATIONS.fetch(type)
-    end
-
-    def loan_entry_validations
-      eligibility_check_validations
-    end
-
-    def premium_schedule_required_for_state_aid_calculation?
-      true
-    end
-
-    def repayment_duration_loan_change_validations
-      [
-        RepaymentDurationValidator.new({})
-      ]
-    end
-
-    def state_aid_calculator
-      Phase5StateAidCalculator
-    end
-
-    def update_loan_lending_limit_validations
-      [
-        AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_000_000_00)),
-        RepaymentDurationValidator.new({})
-      ]
-    end
-
+  def self.claim_limit_calculator
+    Phase1ClaimLimitCalculator
   end
+
+  def self.eligibility_check_validations
+    [
+      EligibilityValidator.new({}),
+      AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_000_000_00)),
+      RepaymentDurationValidator.new({})
+    ]
+  end
+
+  def self.loan_category_guarantee_rate
+    BigDecimal.new('75.0')
+  end
+
+  def self.loan_category_premium_rate(category_id = nil)
+    BigDecimal.new('2.0')
+  end
+
+  def self.loan_category_repayment_duration(type)
+    self::LOAN_CATEGORY_REPAYMENT_DURATIONS.fetch(type)
+  end
+
+  def self.loan_entry_validations
+    eligibility_check_validations
+  end
+
+  def self.premium_schedule_required_for_state_aid_calculation?
+    true
+  end
+
+  def self.repayment_duration_loan_change_validations
+    [
+      RepaymentDurationValidator.new({})
+    ]
+  end
+
+  def self.state_aid_calculator
+    Phase5StateAidCalculator
+  end
+
+  def self.update_loan_lending_limit_validations
+    [
+      AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_000_000_00)),
+      RepaymentDurationValidator.new({})
+    ]
+  end
+
 end
