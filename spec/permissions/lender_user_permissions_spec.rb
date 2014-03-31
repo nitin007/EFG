@@ -5,6 +5,12 @@ describe LenderUserPermissions do
 
   let(:user) { FactoryGirl.build(:lender_user) }
 
+  context 'ClaimLimitsCsvExport' do
+    it { refute user.can_create?(ClaimLimitsCsvExport) }
+    it { refute user.can_update?(ClaimLimitsCsvExport) }
+    it { refute user.can_view?(ClaimLimitsCsvExport) }
+  end
+
   context 'invoices' do
     it { refute user.can_view?(Invoice) }
     it { refute user.can_create?(Invoice) }
@@ -32,6 +38,10 @@ describe LenderUserPermissions do
     it { assert user.can_create?(PremiumSchedule) }
     it { assert user.can_update?(PremiumSchedule) }
     it { assert user.can_view?(PremiumSchedule) }
+  end
+
+  context 'claim limit calculator' do
+    it { assert user.can_view?(ClaimLimitCalculator) }
   end
 
   context 'data protection declaration' do

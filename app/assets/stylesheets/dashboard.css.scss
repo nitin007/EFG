@@ -1,4 +1,11 @@
-.dashboard_widgets {
+@import "bourbon";
+@import "variables";
+
+.dashboard {
+  float: left;
+  width: 940px;
+  margin-bottom: 2em;
+
   h2 {
     font-size: 1.5em;
     line-height: 1em;
@@ -8,5 +15,79 @@
     color: #fff;
     font-weight: normal;
     border-radius: 10px;
+  }
+}
+
+.dashboard-widgets {
+  float: left;
+  width: 450px;
+  margin-top: 20px;
+
+  &.primary {
+    margin-right: 40px;
+  }
+
+  .widget-block {
+    float: left;
+    width: 450px;
+    background-color: $beige;
+    border-radius: 10px;
+    @include box-shadow(1px 1px 1px #ccc);
+    @include linear-gradient($beige,#fff);
+    margin: 0 0 1em;
+
+    h3 {
+      background: $gold;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      font-size: 1.2em;
+      font-weight: normal;
+      margin: 0;
+      padding: 0 10px;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 10px;
+    }
+
+    li {
+      margin-top: 0.5em;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    .chart {
+      float: left;
+
+      .pie {
+        display: none;
+      }
+
+      svg {
+        margin: 10px 20px 10px 10px;
+      }
+    }
+  }
+
+  &.primary .widget-block ul {
+    margin-top: 12px;
+  }
+
+  &.secondary .widget-block {
+    background-color: $light_green;
+    @include linear-gradient($light_green,#fff);
+
+    h3 {
+      color: #fff;
+      background-color: $dark_green;
+    }
+
+    .chart {
+      margin-top: 10px;
+    }
   }
 }

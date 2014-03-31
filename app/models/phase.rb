@@ -15,4 +15,8 @@ class Phase < StaticAssociation
   def name
     "Phase #{id}"
   end
+
+  def rules
+    "Phase#{id}Rules".constantize
+  end
 end

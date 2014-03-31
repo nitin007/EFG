@@ -1,21 +1,56 @@
 @import "bourbon";
 @import "variables";
 
-#loan_alerts {
-  float: left;
-  width: 620px;
+.loan-alerts {
+  width: 940px;
 
   .loan-alert {
     position: relative;
     background-color: $light_grey;
-    padding: 1em 10px;
+    padding: 0 0 10px 0;
     margin-bottom: 1em;
     border-radius: 10px;
     @include box-shadow(1px 1px 1px #ccc);
     @include linear-gradient($light_grey,#fff);
 
     h4 {
-      margin-bottom: 0.5em;
+      margin: 0 0 20px 0;
+      padding: 10px;
+      font-size: 1.2em;
+      font-weight: normal;
+      background-color: $medium_grey;
+      color: #fff;
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+
+      .tip {
+        display: inline-block;
+        position: relative;
+        top: -2px;
+        margin: 0 0 0 5px;
+        padding: 0 7px;
+        color: #000;
+        font-size: 10px;
+        background-color: $light_grey;
+        font-family: Verdana, Helvetica, sans-serif;
+        border-radius: 10px;
+
+        &:hover {
+          background-color: #fff;
+          cursor: help;
+        }
+      }
+
+      .tooltip.in {
+        opacity: 1;
+        filter: alpha(opacity=100);
+      }
+
+      .tooltip-inner {
+        font-size: 125%;
+        padding: 10px;
+        max-width: 500px;
+      }
     }
 
     canvas {
@@ -23,10 +58,10 @@
     }
 
     ol.dates {
-      width: 100%;
+      width: 915px;
       list-style: none;
       margin: 0;
-      padding: 0;
+      padding: 0 20px;
 
       li {
         float: left;
@@ -49,17 +84,22 @@
 
     .view-all {
       position: absolute;
-      top: 0.75em;
-      right: 0.5em;
+      top: 8px;
+      right: 10px;
       padding: 0.2em 0.5em;
-      background-color: #ddd;
+      background-color: $light_grey;
       border-radius: 5px;
+
+      &:hover {
+        background-color: #fff;
+      }
     }
   }
 
 }
 
 .bar-chart {
+  margin: 0 20px;
   height: 100px;
   position: relative;
   overflow: hidden;
@@ -73,7 +113,7 @@
     text-decoration: none;
 
     &.high-priority {
-      width: 100px;
+      width: 150px;
 
       span {
         background-color: $red;
@@ -81,7 +121,7 @@
     }
 
     &.medium-priority {
-      width: 200px;
+      width: 300px;
 
       span {
         background-color: $amber;
@@ -89,10 +129,10 @@
     }
 
     &.low-priority {
-      width: 300px;
+      width: 450px;
 
       span {
-        background-color: $light_green;
+        background-color: $dark_green;
       }
     }
 
@@ -105,7 +145,7 @@
       text-align: center;
       font-size: 1.5em;
       color: $medium_grey;
-      line-height: 5em;
+      line-height: 2em;
     }
 
     &:hover p.total-loans {
@@ -119,7 +159,7 @@
       position: relative;
       display: block;
       float: left;
-      width: 9px;
+      width: 14px;
       margin-right: 1px;
       height: 100%;
 

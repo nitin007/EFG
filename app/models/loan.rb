@@ -298,10 +298,10 @@ class Loan < ActiveRecord::Base
   end
 
   def rules
-    if lending_limit.try(:phase_id) == 6
-      Phase6Rules
+    if lending_limit.try(:phase)
+      lending_limit.phase.rules
     else
-      Phase5Rules
+      Phase1Rules
     end
   end
 

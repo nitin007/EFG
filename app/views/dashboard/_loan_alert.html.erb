@@ -1,5 +1,8 @@
 <div class="loan-alert clearfix">
-  <h4><%= title %></h4>
+  <h4>
+    <%= t("loan_alerts.#{type}_title") %>
+    <span class="tip" data-toggle="tooltip" data-placement="top" title="<%= t("loan_alerts.#{type}_description") %>">?</span>
+  </h4>
 
   <div class="bar-chart">
     <% presenter.alerts_grouped_by_priority.each do |alert_group| %>
