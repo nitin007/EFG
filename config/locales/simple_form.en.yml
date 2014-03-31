@@ -20,7 +20,7 @@ en:
         would_you_lend: "Following Due Enquiry are you prepared, subject to the backing of the Enterprise Finance Guarantee, to provide the Applicant with a term loan or other debt facility?"
         collateral_exhausted: "Do you confirm that, even after taking any available Collateral, the inadequacy of the Applicant's security would otherwise prevent a facility from being provided except with the backing of the Enterprise Finance Guarantee?"
         not_insolvent: 'Do you confirm that the Applicant is not a business which is, or likely to become, unable to meet its obligations as they fall due (whether through its own resources or with the funds it is able to obtain from its shareholders or creditors)?'
-        amount: 'What is the value of the facility being applied for?'
+        amount: 'What is the value of the EFG facility being applied for?'
         lending_limit_id: 'What is the Lending Limit against which this facility is to be allocated? (Note that the date of the Scheme Facility Letter must fall within the validity of the Lending Limit)'
         repayment_duration: 'Over what term does the Applicant intend to repay the guaranteed facility?'
         turnover: 'What is the current annual turnover of the Applicant business?'
@@ -78,7 +78,7 @@ en:
         trading_date: 'What is the Commencement of Trading Date of the Applicant business?'
         postcode: "What is the postcode of the Applicant's main business address? (In instances where the Applicant's postcode is not available please enter the lender's branch postcode)."
         sortcode: '(For banks only) What is the Sort Code of the bank branch or business centre which originated this application? (nnnnnn)'
-        repayment_frequency_id: At what frequency will the Applicant make repayments of the principal of the facility?
+        repayment_frequency_id: "At what frequency will the Applicant make repayments of the principal of the facility? (Note: Type E, F, G & H facilities should be input as Interest Only unless there is to be a structured repayment of the facility principal over the period the guarantee is to be in place.)"
         generic1: Enter any lender specific information to be captured for this application. (For optional internal use). Field 1.
         generic2: Enter any lender specific information to be captured for this application. (For optional internal use). Field 2.
         generic3: Enter any lender specific information to be captured for this application. (For optional internal use). Field 3.
@@ -95,11 +95,11 @@ en:
         refinance_security_proportion: 'Based on your normal security valuation policy, what proportion of the total value of the refinanced package will be covered by any security held?'
         current_refinanced_amount: What is the current outstanding value of the existing facility or facilities intended to be refinanced?
         final_refinanced_amount: 'On completion of the refinancing exercise what will be the total outstanding value, including any new funds provided, of the entire refinanced package?'
-        overdraft_limit: What is the limit of the Applicant's current overdraft facility (prior to the granting of the EFG facility)?
-        overdraft_maintained: "Are you able to confirm that the Applicant's current overdraft facility has not been cancelled or reduced in the preceding three months and, subject to normal account behaviour being maintained, will be maintained while the EFG facility remains in place?"
-        invoice_discount_limit: What is the current limit of the Applicant's Invoice Finance facility?
-        debtor_book_coverage: What is the Applicant's Current Approved Pre-Payment Percentage?
-        debtor_book_topup: What Guaranteed Pre-Payment Percentage will be provided to the Applicant? (Not to exceed the lower of 30% or the difference between the Current Approved Pre-Payment Percentage and 100%)
+        overdraft_limit: What is the limit of the Applicant's current facility (prior to the granting of the EFG facility)?
+        overdraft_maintained: "Are you able to confirm that if the Applicant’s current, or previous, facility has been cancelled or reduced in the preceding three months that you have re-assessed the facts, circumstances and matters contributing to the decision and concluded that the facility satisfies the eligibility criteria for EFG?"
+        invoice_discount_limit: What limit can be supported under Normal Commercial Lending Policy without EFG?
+        debtor_book_coverage: What pre-payment percentage can be supported for this applicant under Normal Commercial lending Policy without EFG?
+        debtor_book_topup: What Guaranteed Pre-Payment Percentage will be provided to the Applicant? (Not to exceed the lower of 30% or the difference between the non-EFG Pre-payment Percentage which can be supported for the Applicant under Normal Commercial Lending Policy and 100%)
         notified_aid: Is the intensity of Notified Aid calculated for this project less than 40% for non-Objective 1 loans or less than 60% for Objective 1 loans?
         lender_reference: Lender's loan reference
         loan_sub_category_id: 'What type of debt instrument is the facility to be guaranteed?'
