@@ -42,11 +42,12 @@ describe LoanTypeGroupSet do
     let(:set) { LoanTypeGroupSet.filter(:loans, loans) }
 
     it "returns the correct groups" do
-      FactoryGirl.create(:phase, name: 'Phase 1')
-      FactoryGirl.create(:phase, name: 'Phase 2')
+      expected_group_names = ['Legacy SFLG Loans', 'SFLG Loans']
+      expected_group_names.concat Phase.all.map { |phase| "EFG Loans – #{phase.name}" }
+      expected_group_names << 'EFG Loans – Unknown Phase'
 
       group_names = set.groups.map(&:name).to_a
-      group_names.should == ['Legacy SFLG Loans', 'SFLG Loans', 'EFG Loans – Phase 1', 'EFG Loans – Phase 2', 'EFG Loans – Unknown Phase']
+      group_names.should == expected_group_names
     end
 
     it "returns groups that respond to the objects name" do

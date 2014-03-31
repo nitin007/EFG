@@ -6,7 +6,7 @@ describe RepaymentDuration do
 
   context 'with loan category' do
     context 'and non-transferred loan' do
-      let(:loan) { FactoryGirl.build(:loan, loan_category_id: 5) }
+      let(:loan) { FactoryGirl.build(:loan, loan_category_id: LoanCategory::TypeE.id) }
 
       describe '#min_months' do
         it "should return minimum number of loans months based on loan category minimum term months" do

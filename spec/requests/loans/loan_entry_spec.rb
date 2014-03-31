@@ -5,40 +5,61 @@ require 'spec_helper'
 describe 'loan entry' do
   let(:lender) { FactoryGirl.create(:lender) }
   let(:current_user) { FactoryGirl.create(:lender_user, lender: lender) }
-  let(:loan) { FactoryGirl.create(:loan, lender: lender, loan_category_id: 2) }
+  let(:lending_limit) { FactoryGirl.create(:lending_limit, phase_id: 5, lender: lender) }
+  let(:loan) { FactoryGirl.create(:loan, lender: lender, loan_category_id: LoanCategory::TypeB.id, lending_limit: lending_limit) }
+
   before { login_as(current_user, scope: :user) }
 
-  it 'entering further loan information' do
-    visit loan_path(loan)
-    click_link 'Loan Entry'
+  context 'Phase 6' do
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, phase_id: 6, lender: lender) }
 
-    fill_in_valid_loan_entry_details_phase_5(loan)
-    click_button 'Submit'
+    it 'can transition the loan to Complete' do
+      visit loan_path(loan)
+      click_link 'Loan Entry'
 
-    loan = Loan.last
+      fill_in_valid_loan_entry_details_phase_6(loan)
+      click_button 'Submit'
 
-    current_path.should == complete_loan_entry_path(loan)
+      loan = Loan.last
 
-    loan.state.should == Loan::Completed
-    loan.declaration_signed.should be_true
-    loan.business_name.should == 'Widgets Ltd.'
-    loan.trading_name.should == 'Brilliant Widgets'
-    loan.company_registration.should == '0123456789'
-    loan.postcode.should == 'N8 4HF'
-    loan.sortcode.should == '03-12-45'
-    loan.lender_reference.should == 'lenderref1'
-    loan.generic1.should == 'Generic 1'
-    loan.generic2.should == 'Generic 2'
-    loan.generic3.should == 'Generic 3'
-    loan.generic4.should == 'Generic 4'
-    loan.generic5.should == 'Generic 5'
-    loan.interest_rate_type.should == InterestRateType.find(1)
-    loan.interest_rate.should == 2.25
-    loan.fees.should == Money.new(12345)
-    loan.modified_by.should == current_user
-    loan.state_aid.should == Money.new(3_071_08, 'EUR')
+      current_path.should == complete_loan_entry_path(loan)
 
-    should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
+      loan.state.should == Loan::Completed
+      loan.declaration_signed.should be_true
+      loan.business_name.should == 'Widgets Ltd.'
+      loan.trading_name.should == 'Brilliant Widgets'
+      loan.company_registration.should == '0123456789'
+      loan.postcode.should == 'N8 4HF'
+      loan.sortcode.should == '03-12-45'
+      loan.lender_reference.should == 'lenderref1'
+      loan.generic1.should == 'Generic 1'
+      loan.generic2.should == 'Generic 2'
+      loan.generic3.should == 'Generic 3'
+      loan.generic4.should == 'Generic 4'
+      loan.generic5.should == 'Generic 5'
+      loan.interest_rate_type.should == InterestRateType.find(1)
+      loan.interest_rate.should == 2.25
+      loan.fees.should == Money.new(12345)
+      loan.modified_by.should == current_user
+      loan.state_aid.should == Money.new(794_98, 'EUR')
+
+      should_log_loan_state_change(loan, Loan::Completed, 4, current_user)
+    end
+  end
+
+  context 'Phase 5' do
+    it 'can transition the loan to Complete' do
+      visit loan_path(loan)
+      click_link 'Loan Entry'
+
+      fill_in_valid_loan_entry_details_phase_5(loan)
+      click_button 'Submit'
+
+      loan = Loan.last
+
+      current_path.should == complete_loan_entry_path(loan)
+      loan.state_aid.should == Money.new(3_071_08, 'EUR')
+    end
   end
 
   it 'does not continue with invalid values' do
@@ -81,36 +102,8 @@ describe 'loan entry' do
     loan.modified_by.should == current_user
   end
 
-  it 'saves the loan as incomplete when it is no longer eligible' do
-    loan.ineligibility_reasons.should be_empty
-
-    visit loan_path(loan)
-
-    click_link 'Loan Entry'
-    fill_in_ineligible_details(loan)
-    click_button 'Submit'
-
-    loan.reload
-    loan.state.should == Loan::Incomplete
-    loan.ineligibility_reasons.count.should == 1
-
-    current_path.should == loan_path(loan)
-
-    loan.ineligibility_reasons.count.should == 1
-    page.should have_content(loan.ineligibility_reasons.first.reason)
-
-    # verify existing ineligibility reasons are cleared when resubmitting ineligible loan entry
-
-    click_link 'Loan Entry'
-    fill_in_ineligible_details(loan)
-    click_button 'Submit'
-
-    loan.ineligibility_reasons.count.should == 1
-    page.should have_content(loan.ineligibility_reasons.first.reason)
-  end
-
   it 'should show specific questions for loan category B' do
-    loan.update_attribute(:loan_category_id, 2)
+    loan.update_attribute(:loan_category_id, LoanCategory::TypeB.id)
 
     visit new_loan_entry_path(loan)
 
@@ -118,7 +111,7 @@ describe 'loan entry' do
   end
 
   it 'should show specific questions for loan category C' do
-    loan.update_attribute(:loan_category_id, 3)
+    loan.update_attribute(:loan_category_id, LoanCategory::TypeC.id)
 
     visit new_loan_entry_path(loan)
 
@@ -126,7 +119,7 @@ describe 'loan entry' do
   end
 
   it 'should show specific questions for loan category D' do
-    loan.update_attribute(:loan_category_id, 4)
+    loan.update_attribute(:loan_category_id, LoanCategory::TypeD.id)
 
     visit new_loan_entry_path(loan)
 
@@ -134,7 +127,7 @@ describe 'loan entry' do
   end
 
   it 'should show specific questions for loan category E' do
-    loan.update_attribute(:loan_category_id, 5)
+    loan.update_attribute(:loan_category_id, LoanCategory::TypeE.id)
 
     visit new_loan_entry_path(loan)
 
@@ -142,7 +135,7 @@ describe 'loan entry' do
   end
 
   it 'should show specific questions for loan category F' do
-    loan.update_attribute(:loan_category_id, 6)
+    loan.update_attribute(:loan_category_id, LoanCategory::TypeF.id)
 
     visit new_loan_entry_path(loan)
 
@@ -172,12 +165,44 @@ describe 'loan entry' do
     current_path.should == complete_loan_entry_path(loan)
   end
 
-  private
+  context "when a sub-category is required" do
+    it "should allow selection of sub-category" do
+      visit new_loan_entry_path(loan)
 
-    def fill_in_ineligible_details(loan)
       fill_in_valid_loan_entry_details_phase_5(loan)
-      choose 'loan_entry_viable_proposition_false'
+
+      # switch to Category E
+      select "Type E - Revolving Credit Guarantee", from: "loan_entry_loan_category_id"
+      click_button 'Submit'
+
+      select "Business Credit (or Charge) Cards", from: "loan_entry_loan_sub_category_id"
+      fill_in 'loan_entry_overdraft_limit', with: '1000'
+      choose 'loan_entry_overdraft_maintained_true'
+      click_button 'Submit'
+
+      current_path.should == complete_loan_entry_path(loan)
+
+      loan.reload
+      loan.loan_sub_category_id.should == 3
     end
+  end
+
+  context "with loan in sector with reduced state aid threshold" do
+    let(:sic_code) { SicCode.find_by_code!(loan.sic_code) }
+
+    before do
+      sic_code.state_aid_threshold = Money.new(100_000_00, 'EUR')
+      sic_code.save
+    end
+
+    it "shows the correct state aid threshold in question text" do
+      visit new_loan_entry_path(loan)
+      expected_amount = Money.new(100_000_00, 'EUR').format(no_cents: true)
+      page.should have_content("no more than #{expected_amount}")
+    end
+  end
+
+  private
 
     def should_show_only_loan_category_fields(*field_names)
       loan_category_fields = [

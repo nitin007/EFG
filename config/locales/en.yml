@@ -2,26 +2,6 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  eligibility_check:
-    attributes:
-      viable_proposition:
-        invalid: This is not a viable lending proposition. Lenders' normal commercial lending practices provide the mechanism for determining whether the proposition under consideration is viable and thus that the business will be able to repay any facility offered.
-      would_you_lend:
-        invalid: Lender does not wish to lend. All Lenders have their own commercial criteria that define whether or not they would lend to a particular business proposition. Lenders must be content that they wish to provide a facility before determining whether use of EFG is appropriate and necessary to enable the facility to be offered.
-      collateral_exhausted:
-        invalid: "As part of the decision to use EFG it is the Lender's responsibility to ensure that all available collateral has been considered. Available collateral is that which, in the view of the Lender acting in the normal course of their SME financing activities, it is reasonable to expect the Borrower to make available in order to help secure the facility requested. The wish of a potential Borrower to avoid making particular assets available as security does not make that security unavailable and only when the status of all available security has been considered may the use of EFG be considered. It should, however, be noted that the principal private residence of an individual borrower or guarantor of another borrower should be explicitly excluded from consideration. In cases where there is sufficient collateral available to secure some but not all of the facility requested, then that should be taken by the Lender alongside the EFG Guarantee."
-      amount:
-        invalid: "A business may only borrow between £1,000 and £1,000,000 (inclusive) under the Enterprise Finance Guarantee (EFG)."
-      repayment_duration:
-        invalid: "Repayment duration should be between 3 months and 2, 3 or 10 years (inclusive). EFG facilities are only available for terms of between three months and ten years in most cases. Type E facilities have a maximum term of two years and Type F facilities have a maximum of three years."
-      previous_borrowing:
-        invalid: "Although a business may benefit from EFG on more than one occasion, and may have more than one EFG-backed facility at any one time, the total outstanding balances and/or active available limits of the Applicant's current EFG facilities may not exceed £1 million at any one time."
-      private_residence_charge_required:
-        invalid: A new charge may not not be taken over a principal private residence in connection with providing an EFG-backed facility.
-      sic_code:
-        invalid: "SIC code is ineligible. The SIC code is used to classify business activities. While businesses in the majority of sectors are eligible there are a small number of exclusions, usually due to either UK or EU regulations."
-      reason_id:
-        invalid: The loan purpose is not eligible for funds. The Enterprise Finance Guarantee is governed by the Industrial Development Act (IDA) of 1982 and is also subject to European Union State Aid regulations. While most business purposes are eligible there are certain exclusions.
   errors:
     messages:
       insufficient_entropy: "not strong enough. Consider using a longer password, and including different cases, numbers and symbols in your password."
@@ -47,8 +27,6 @@ en:
               must_not_be_zero: "cannot be zero"
               must_match_repayment_frequency: "must be a multiple of %{months_per_repayment_period} to match the loan's repayment frequency"
               must_have_a_positive_repayment_duration_at_next_premium: "must ensure a valid loan term at the next premium collection quarter"
-              too_long: "can't be more than %{count} months"
-              too_short: "can't be less than %{count} months"
             lump_sum_repayment:
               required: "can't be blank"
               must_be_gt_zero: "can't be negative"
@@ -79,8 +57,9 @@ en:
             declaration_signed:
               accepted: A customer declaration must have been received before a loan can be entered.
             state_aid:
-              calculated: must be calculated
+              blank: must be calculated
               recalculate: must be re-calculated when you change the loan term
+              exceeds_sic_threshold: 'calculated state aid exceeds the allowed amount of %{threshold}'
             loan_security_types:
               present: choose at least one security
             repayment_frequency_id:
@@ -226,14 +205,14 @@ en:
 
   loan_alerts:
     title: Loan Alerts For The Next 60 Days
-    not_drawn_title: "Loans which will have the <em>Guarantee</em> removed if not <em>Drawn</em>:"
-    not_drawn_description: "This page lists those facilities approaching the six month limit from the date of the Scheme Facility Letter at which the Guarantee will be withdrawn if the facility is not Drawn. These should be reviewed and, for any that are still to proceed, the facility must be Drawn within the six months and correctly recorded as such. If the facility is not drawn in time the Offer will lapse and a new application will be required. Offers that are no longer required should be Cancelled."
-    not_demanded_title: "<em>Lender Demand</em> loans that will be removed if not moved to <em>Demanded</em>:"
-    not_demanded_description: "This page lists those loans for which Demand has been made on the Borrower but Demand has not been made against the Guarantee. The interval between these two processes must not exceed six months for SFLG loans. You should review these loans. Those where Demand on the Borrower has been satisfied should be recorded as 'Repaid' or the loan should be Rescheduled using 'Change Amount or Terms'. For those where Demand has not been satisfied a decision must be made whether to make Demand against the Guarantee or to record a 'No Claim'. If Demand has not been made against the Guarantee within six months of Demand on the Borrower the entitlement to claim will lapse."
-    not_progressed_title: "<em>Eligible</em> Loans which will be removed if not <em>Progressed</em>:"
-    not_progressed_description: 'This page lists those facilities in a state of either Eligible, Incomplete or Complete which are approaching the six month limit at which they will be removed. It is assumed that these applications will not now progress any further and so will be auto-cancelled if no further action is taken. The applications should be reviewed and, if still "live", progressed before expiry.'
-    not_closed_title: "Loans assumed to have been <em>Repaid</em> due to <em>lack of updates</em>:"
-    not_closed_description: "This page lists all facilities that have not been updated to 'Repaid' in the six months following the expected date of repayment (or 3 months for EFG facilities). They should be reviewed and the records updated as appropriate."
+    not_drawn_title: "Loans which will have the guarantee removed if not drawn"
+    not_drawn_description: "Facilities approaching the six month limit from the date of the Scheme Facility Letter at which the Guarantee will be withdrawn if the facility is not Drawn. These should be reviewed and, for any that are still to proceed, the facility must be Drawn within the six months and correctly recorded as such. If the facility is not drawn in time the Offer will lapse and a new application will be required. Offers that are no longer required should be Cancelled."
+    not_demanded_title: "Lender Demand loans that will be removed if not moved to demanded"
+    not_demanded_description: "Loans for which Demand has been made on the Borrower but Demand has not been made against the Guarantee. The interval between these two processes must not exceed six months for SFLG loans. You should review these loans. Those where Demand on the Borrower has been satisfied should be recorded as 'Repaid' or the loan should be Rescheduled using 'Change Amount or Terms'. For those where Demand has not been satisfied a decision must be made whether to make Demand against the Guarantee or to record a 'No Claim'. If Demand has not been made against the Guarantee within six months of Demand on the Borrower the entitlement to claim will lapse."
+    not_progressed_title: "Eligible loans which will be removed if not progressed"
+    not_progressed_description: 'Facilities in a state of either Eligible, Incomplete or Complete which are approaching the six month limit at which they will be removed. It is assumed that these applications will not now progress any further and so will be auto-cancelled if no further action is taken. The applications should be reviewed and, if still "live", progressed before expiry.'
+    not_closed_title: "Loans assumed to have been Repaid due to lack of updates"
+    not_closed_description: "Facilities that have not been updated to 'Repaid' in the six months following the expected date of repayment (or 3 months for EFG facilities). They should be reviewed and the records updated as appropriate."
 
   manage_users:
     new_account_email_sent: "An email has been sent to %{email} with instructions for activating their account."
@@ -244,3 +223,7 @@ en:
 
   premium_schedule:
     repayment_frequency_not_set: "Cannot proceed until a repayment frequency has been selected for the loan."
+    not_yet_generated: "A Premium Schedule must be generated before this loan can be offered."
+
+  update_loan_lending_limit:
+    loan_not_valid_for_lending_limit: "This loan is not valid for the chosen Lending Limit. Please update the loan details below."

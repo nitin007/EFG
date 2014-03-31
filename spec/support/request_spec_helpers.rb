@@ -23,17 +23,18 @@ module RequestSpecHelpers
 
   # Eligibility Check
 
-  def fill_in_valid_eligibility_check_details(lender)
+  def fill_in_valid_eligibility_check_details(lender, sic_code)
     choose 'loan_eligibility_check_viable_proposition_true'
     choose 'loan_eligibility_check_would_you_lend_true'
     choose 'loan_eligibility_check_collateral_exhausted_true'
+    choose 'loan_eligibility_check_not_insolvent_true'
     fill_in 'loan_eligibility_check_amount', with: '50000.89'
     select lender.lending_limits.first.name, from: 'loan_eligibility_check_lending_limit_id'
     fill_in_duration_input 'repayment_duration', 2, 6
     fill_in 'loan_eligibility_check_turnover', with: '1234567.89'
     fill_in 'loan_eligibility_check_trading_date', with: '31/1/2012'
     select_option_value sic_code.code, from: 'loan_eligibility_check_sic_code'
-    select LoanCategory.find(2).name, from: 'loan_eligibility_check_loan_category_id' # Type B - partial security
+    select LoanCategory::TypeB.name, from: 'loan_eligibility_check_loan_category_id'
     select 'Start-up costs', from: 'loan_eligibility_check_reason_id' # Start-up costs
     choose 'loan_eligibility_check_previous_borrowing_true'
     choose 'loan_eligibility_check_private_residence_charge_required_false'
@@ -67,6 +68,12 @@ module RequestSpecHelpers
   def fill_in_valid_loan_entry_details_phase_5(loan)
     fill_in_valid_loan_entry_details(loan)
     calculate_state_aid(loan)
+    check 'loan_entry_state_aid_is_valid'
+  end
+
+  def fill_in_valid_loan_entry_details_phase_6(loan)
+    fill_in_valid_loan_entry_details(loan)
+    click_button 'State Aid Calculation'
     check 'loan_entry_state_aid_is_valid'
   end
 

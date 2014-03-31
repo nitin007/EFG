@@ -98,8 +98,8 @@ describe LoanReportCsvExport do
         sic_parent_desc: 'Sic parent description',
         reason_id: 1,
         amount: 250000,
-        guarantee_rate: 75.0,
-        premium_rate: 2.0,
+        guarantee_rate: 85.0,
+        premium_rate: 3.0,
         state: 'eligible',
         repayment_duration: { months: 24 },
         repayment_frequency_id: 1,
@@ -133,7 +133,8 @@ describe LoanReportCsvExport do
         state_aid: 5600,
         settled_on: Date.new(2012, 7, 17),
         settled_amount: 1_000.00,
-        loan_category_id: 1,
+        loan_category_id: LoanCategory::TypeA.id,
+        loan_sub_category_id: 4,
         interest_rate_type_id: 1,
         interest_rate: 2.0,
         fees: 5000,
@@ -219,6 +220,7 @@ describe LoanReportCsvExport do
           :settled_date,
           :invoice_reference,
           :loan_category,
+          :loan_sub_category,
           :interest_type,
           :interest_rate,
           :fees,
@@ -253,8 +255,8 @@ describe LoanReportCsvExport do
       row[t(:parent_sic_code_description)].should == 'Sic parent description'
       row[t(:purpose_of_loan)].should == LoanReason.find(1).name
       row[t(:facility_amount)].should == '250000.00'
-      row[t(:guarantee_rate)].should == '75.0'
-      row[t(:premium_rate)].should == '2.0'
+      row[t(:guarantee_rate)].should == '85.0'
+      row[t(:premium_rate)].should == '3.0'
       row[t(:lending_limit)].should == 'lending limit'
       row[t(:lender_reference)].should == 'ABC123'
       row[t(:loan_state)].should == 'Eligible'
@@ -302,7 +304,8 @@ describe LoanReportCsvExport do
       row[t(:state_aid_amount)].should == '5600.00'
       row[t(:settled_date)].should == '17-07-2012'
       row[t(:invoice_reference)].should == '123-INV'
-      row[t(:loan_category)].should == LoanCategory.find(1).name
+      row[t(:loan_category)].should == LoanCategory::TypeA.name
+      row[t(:loan_sub_category)].should == LoanSubCategory.find(4).name
       row[t(:interest_type)].should == InterestRateType.find(1).name
       row[t(:interest_rate)].should == '2.0'
       row[t(:fees)].should == '5000.00'
@@ -324,6 +327,26 @@ describe LoanReportCsvExport do
       row[t(:cumulative_pre_claim_limit_realised_amount)].should == '3000.00'
       row[t(:cumulative_post_claim_limit_realised_amount)].should == '2000.00'
     end
+
+    context "without guarantee rate on loan" do
+      before do
+        loan.update_attribute(:guarantee_rate, nil)
+      end
+
+      it "exports phase's premium rate" do
+        row[t(:guarantee_rate)].should == '75.0'
+      end
+    end
+
+    context "without premium rate on loan" do
+      before do
+        loan.update_attribute(:premium_rate, nil)
+      end
+
+      it "exports phase's premium rate" do
+        row[t(:premium_rate)].should == '2.0'
+      end
+    end  
   end
 
   private

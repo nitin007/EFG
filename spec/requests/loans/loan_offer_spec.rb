@@ -5,8 +5,8 @@ require 'spec_helper'
 describe 'loan offer' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
   let(:lending_limit) { FactoryGirl.create(:lending_limit) }
-  let(:loan) { FactoryGirl.create(:loan, :completed, lender: current_user.lender, lending_limit: lending_limit) }
-  let!(:premium_schedule) { FactoryGirl.create(:premium_schedule, loan: loan) }
+  let(:loan) { FactoryGirl.create(:loan, :completed, :with_premium_schedule, lender: current_user.lender, lending_limit: lending_limit) }
+
   before { login_as(current_user, scope: :user) }
 
   def dispatch
@@ -45,7 +45,7 @@ describe 'loan offer' do
 
   context "with an unavailable lending limit" do
     let(:lending_limit) { FactoryGirl.create(:lending_limit, :inactive, lender: current_user.lender) }
-    let!(:new_lending_limit) { FactoryGirl.create(:lending_limit, :active, lender: current_user.lender, name: 'The Next Great Lending Limit', premium_rate: 10) }
+    let!(:new_lending_limit) { FactoryGirl.create(:lending_limit, :active, lender: current_user.lender, name: 'The Next Great Lending Limit') }
 
     it "prompts to change the lending limit" do
       dispatch
@@ -55,12 +55,26 @@ describe 'loan offer' do
       select 'The Next Great Lending Limit', from: 'update_loan_lending_limit[new_lending_limit_id]'
       click_button 'Submit'
 
-      page.should have_content '€10,000.00'
-      page.should have_content '€2,464.44'
-
       loan.reload
       loan.lending_limit.should == new_lending_limit
       loan.modified_by.should == current_user
+    end
+  end
+
+  context "when a premium schedule has not yet been generated" do
+    let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_6) }
+    let(:loan) { FactoryGirl.create(:loan, :completed, lender: current_user.lender, lending_limit: lending_limit) }
+
+    it "redirects to the generate premium schedule form before progressing to loan offer form" do
+      dispatch
+
+      expected_text = I18n.t('premium_schedule.not_yet_generated')
+      page.should have_content(expected_text)
+
+      page.fill_in :premium_schedule_initial_draw_year, with: '2014'
+      click_button 'Submit'
+
+      page.current_url.should == new_loan_offer_url(loan)
     end
   end
 end

@@ -5,7 +5,7 @@ class DocumentsController < ApplicationController
   def state_aid_letter
     enforce_view_permission(StateAidLetter)
     loan = current_lender.loans.find(params[:id])
-    pdf = StateAidLetter.new(loan)
+    pdf = loan.rules.state_aid_letter.new(loan)
 
     send_data(pdf.render, filename: pdf.filename, type: "application/pdf", disposition: "inline")
   end

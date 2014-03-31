@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140109110133) do
+ActiveRecord::Schema.define(:version => 20140312115129) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -131,23 +131,21 @@ ActiveRecord::Schema.define(:version => 20140109110133) do
   add_index "lenders", ["organisation_reference_code"], :name => "index_lenders_on_organisation_reference_code", :unique => true
 
   create_table "lending_limits", :force => true do |t|
-    t.integer  "lender_id",                                                                            :null => false
+    t.integer  "lender_id",                                             :null => false
     t.integer  "legacy_id"
     t.integer  "lender_legacy_id"
     t.integer  "version"
-    t.integer  "allocation_type_id",                                                                   :null => false
-    t.boolean  "active",                                                            :default => false, :null => false
-    t.integer  "allocation",            :limit => 8,                                                   :null => false
-    t.date     "starts_on",                                                                            :null => false
-    t.date     "ends_on",                                                                              :null => false
-    t.string   "name",                                                                                 :null => false
+    t.integer  "allocation_type_id",                                    :null => false
+    t.boolean  "active",                             :default => false, :null => false
+    t.integer  "allocation",            :limit => 8,                    :null => false
+    t.date     "starts_on",                                             :null => false
+    t.date     "ends_on",                                               :null => false
+    t.string   "name",                                                  :null => false
     t.string   "modified_by_legacy_id"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.decimal  "premium_rate",                       :precision => 16, :scale => 2,                    :null => false
-    t.decimal  "guarantee_rate",                     :precision => 16, :scale => 2,                    :null => false
-    t.datetime "created_at",                                                                           :null => false
-    t.datetime "updated_at",                                                                           :null => false
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
     t.integer  "modified_by_id"
     t.integer  "phase_id"
   end
@@ -257,23 +255,23 @@ ActiveRecord::Schema.define(:version => 20140109110133) do
   add_index "loan_state_changes", ["loan_id", "modified_at"], :name => "loan_association"
 
   create_table "loans", :force => true do |t|
-    t.boolean  "viable_proposition",                                                                                  :null => false
-    t.boolean  "would_you_lend",                                                                                      :null => false
-    t.boolean  "collateral_exhausted",                                                                                :null => false
-    t.integer  "amount",                              :limit => 8,                                                    :null => false
+    t.boolean  "viable_proposition",                                                                                   :null => false
+    t.boolean  "would_you_lend",                                                                                       :null => false
+    t.boolean  "collateral_exhausted",                                                                                 :null => false
+    t.integer  "amount",                              :limit => 8,                                                     :null => false
     t.integer  "lender_cap_id"
-    t.integer  "repayment_duration",                                                                                  :null => false
+    t.integer  "repayment_duration",                                                                                   :null => false
     t.integer  "turnover",                            :limit => 8
     t.date     "trading_date"
-    t.string   "sic_code",                                                                                            :null => false
+    t.string   "sic_code",                                                                                             :null => false
     t.integer  "loan_category_id"
     t.integer  "reason_id"
-    t.boolean  "previous_borrowing",                                                                                  :null => false
+    t.boolean  "previous_borrowing",                                                                                   :null => false
     t.boolean  "private_residence_charge_required"
     t.boolean  "personal_guarantee_required"
-    t.datetime "created_at",                                                                                          :null => false
-    t.datetime "updated_at",                                                                                          :null => false
-    t.integer  "lender_id",                                                                                           :null => false
+    t.datetime "created_at",                                                                                           :null => false
+    t.datetime "updated_at",                                                                                           :null => false
+    t.integer  "lender_id",                                                                                            :null => false
     t.boolean  "declaration_signed"
     t.string   "business_name"
     t.string   "trading_name"
@@ -327,7 +325,7 @@ ActiveRecord::Schema.define(:version => 20140109110133) do
     t.integer  "state_aid",                           :limit => 8
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.integer  "notified_aid",                                                                     :default => 0,     :null => false
+    t.integer  "notified_aid",                                                                      :default => 0,     :null => false
     t.integer  "remove_guarantee_outstanding_amount", :limit => 8
     t.date     "remove_guarantee_on"
     t.string   "remove_guarantee_reason"
@@ -346,7 +344,7 @@ ActiveRecord::Schema.define(:version => 20140109110133) do
     t.integer  "dti_break_costs",                     :limit => 8
     t.decimal  "guarantee_rate",                                    :precision => 16, :scale => 2
     t.decimal  "premium_rate",                                      :precision => 16, :scale => 2
-    t.boolean  "legacy_small_loan",                                                                :default => false, :null => false
+    t.boolean  "legacy_small_loan",                                                                 :default => false, :null => false
     t.integer  "next_in_realise_seq"
     t.integer  "next_in_recover_seq"
     t.date     "recovery_on"
@@ -366,16 +364,19 @@ ActiveRecord::Schema.define(:version => 20140109110133) do
     t.integer  "lending_limit_id"
     t.integer  "invoice_id"
     t.integer  "transferred_from_id"
-    t.integer  "created_by_id",                                                                                       :null => false
-    t.integer  "modified_by_id",                                                                                      :null => false
+    t.integer  "created_by_id",                                                                                        :null => false
+    t.integer  "modified_by_id",                                                                                       :null => false
     t.string   "legacy_sic_code"
     t.string   "legacy_sic_desc"
     t.string   "legacy_sic_parent_desc"
-    t.boolean  "legacy_sic_notified_aid",                                                          :default => false
-    t.boolean  "legacy_sic_eligible",                                                              :default => false
+    t.boolean  "legacy_sic_notified_aid",                                                           :default => false
+    t.boolean  "legacy_sic_eligible",                                                               :default => false
     t.integer  "settled_amount"
     t.string   "lender_reference"
     t.datetime "last_modified_at"
+    t.boolean  "not_insolvent"
+    t.decimal  "euro_conversion_rate",                              :precision => 17, :scale => 14
+    t.integer  "loan_sub_category_id"
   end
 
   add_index "loans", ["legacy_id"], :name => "index_loans_on_legacy_id", :unique => true
@@ -384,18 +385,10 @@ ActiveRecord::Schema.define(:version => 20140109110133) do
   add_index "loans", ["reference"], :name => "index_loans_on_reference", :unique => true
   add_index "loans", ["state"], :name => "index_loans_on_state"
 
-  create_table "phases", :force => true do |t|
-    t.string   "name"
-    t.integer  "created_by_id"
-    t.integer  "modified_by_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-  end
-
   create_table "premium_schedules", :force => true do |t|
-    t.integer  "loan_id",                                                                                           :null => false
+    t.integer  "loan_id",                                                                                         :null => false
     t.integer  "initial_draw_year"
-    t.integer  "initial_draw_amount",               :limit => 8,                                                    :null => false
+    t.integer  "initial_draw_amount",               :limit => 8,                                                  :null => false
     t.integer  "repayment_duration"
     t.integer  "initial_capital_repayment_holiday"
     t.integer  "second_draw_amount",                :limit => 8
@@ -404,8 +397,8 @@ ActiveRecord::Schema.define(:version => 20140109110133) do
     t.integer  "third_draw_months"
     t.integer  "fourth_draw_amount",                :limit => 8
     t.integer  "fourth_draw_months"
-    t.datetime "created_at",                                                                                        :null => false
-    t.datetime "updated_at",                                                                                        :null => false
+    t.datetime "created_at",                                                                                      :null => false
+    t.datetime "updated_at",                                                                                      :null => false
     t.string   "legacy_loan_id"
     t.integer  "seq"
     t.integer  "loan_version"
@@ -422,14 +415,13 @@ ActiveRecord::Schema.define(:version => 20140109110133) do
     t.boolean  "promote"
     t.boolean  "agriculture"
     t.integer  "guarantee_rate"
-    t.decimal  "npv",                                            :precision => 2,  :scale => 1
-    t.decimal  "prem_rate",                                      :precision => 2,  :scale => 1
-    t.decimal  "euro_conversion_rate",                           :precision => 17, :scale => 14,                    :null => false
+    t.decimal  "npv",                                            :precision => 2, :scale => 1
+    t.decimal  "prem_rate",                                      :precision => 2, :scale => 1
     t.integer  "elsewhere_perc"
     t.integer  "obj1_perc"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.boolean  "legacy_premium_calculation",                                                     :default => false
+    t.boolean  "legacy_premium_calculation",                                                   :default => false
   end
 
   add_index "premium_schedules", ["legacy_loan_id"], :name => "index_premium_schedules_on_legacy_loan_id"
@@ -484,9 +476,10 @@ ActiveRecord::Schema.define(:version => 20140109110133) do
   create_table "sic_codes", :force => true do |t|
     t.string  "code"
     t.string  "description"
-    t.boolean "eligible",                 :default => false
-    t.boolean "public_sector_restricted", :default => false
-    t.boolean "active",                   :default => true
+    t.boolean "eligible",                              :default => false
+    t.boolean "public_sector_restricted",              :default => false
+    t.boolean "active",                                :default => true
+    t.integer "state_aid_threshold",      :limit => 8,                    :null => false
   end
 
   add_index "sic_codes", ["code"], :name => "index_sic_codes_on_code", :unique => true

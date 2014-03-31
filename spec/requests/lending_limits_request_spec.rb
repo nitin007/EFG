@@ -5,7 +5,7 @@ require 'spec_helper'
 describe 'LendingLimits' do
   let(:current_user) { FactoryGirl.create(:cfe_admin) }
   before { login_as(current_user, scope: :user) }
-  let!(:phase) { FactoryGirl.create(:phase, name: 'Phase 1') }
+  let(:phase) { Phase.find(1) }
   let!(:lender) { FactoryGirl.create(:lender, name: 'ACME') }
 
   describe 'create' do
@@ -34,8 +34,6 @@ describe 'LendingLimits' do
       fill_in :starts_on, '1/1/12'
       fill_in :ends_on, '31/12/12'
       fill_in :allocation, '5000000'
-      fill_in :guarantee_rate, '75'
-      fill_in :premium_rate, '2'
       click_button 'Create Lending Limit'
 
       lending_limit = LendingLimit.last
@@ -47,8 +45,6 @@ describe 'LendingLimits' do
       lending_limit.starts_on.should == Date.new(2012, 1, 1)
       lending_limit.ends_on.should == Date.new(2012, 12, 31)
       lending_limit.allocation.should == Money.new(5_000_000_00)
-      lending_limit.guarantee_rate.should == 75
-      lending_limit.premium_rate.should == 2
 
       admin_audit = AdminAudit.last!
       admin_audit.action.should == AdminAudit::LendingLimitCreated
@@ -59,7 +55,7 @@ describe 'LendingLimits' do
   end
 
   describe 'update' do
-    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, phase: phase, name: 'Foo', allocation: Money.new(1_000_00)) }
+    let!(:lending_limit) { FactoryGirl.create(:lending_limit, lender: lender, phase_id: phase.id, name: 'Foo', allocation: Money.new(1_000_00)) }
 
     before do
       visit root_path
@@ -71,8 +67,6 @@ describe 'LendingLimits' do
     it do
       page.should_not have_selector('input[id^=lending_limit_allocation_type_id]')
       page.should_not have_selector('#lending_limit_ends_on')
-      page.should_not have_selector('#lending_limit_guarantee_rate')
-      page.should_not have_selector('#lending_limit_premium_rate')
       page.should_not have_selector('#lending_limit_starts_on')
 
       fill_in :name, 'Updated'

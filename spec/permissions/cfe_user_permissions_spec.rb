@@ -5,6 +5,12 @@ describe CfeUserPermissions do
 
   let(:user) { FactoryGirl.build(:cfe_user) }
 
+  context 'ClaimLimitsCsvExport' do
+    it { assert user.can_create?(ClaimLimitsCsvExport) }
+    it { refute user.can_update?(ClaimLimitsCsvExport) }
+    it { refute user.can_view?(ClaimLimitsCsvExport) }
+  end
+
   context 'invoices' do
     it { assert user.can_view?(Invoice) }
     it { assert user.can_create?(Invoice) }
@@ -32,6 +38,10 @@ describe CfeUserPermissions do
     it { refute user.can_create?(PremiumSchedule) }
     it { refute user.can_update?(PremiumSchedule) }
     it { assert user.can_view?(PremiumSchedule) }
+  end
+
+  context 'claim limit calculator' do
+    it { refute user.can_view?(ClaimLimitCalculator) }
   end
 
   context 'data protection declaration' do

@@ -27,20 +27,6 @@
 
   <%= f.input :allocation, as: :currency %>
 
-  <% if @lending_limit.new_record? %>
-    <%= f.input :guarantee_rate, as: :string %>
-    <%= f.input :premium_rate, as: :string %>
-  <% else %>
-    <div class="control-group">
-      <div class="control-label"><%=t 'simple_form.labels.lending_limit.guarantee_rate' %></div>
-      <div class="controls"><%= @lending_limit.guarantee_rate %></div>
-    </div>
-    <div class="control-group">
-      <div class="control-label"><%=t 'simple_form.labels.lending_limit.premium_rate' %></div>
-      <div class="controls"><%= @lending_limit.premium_rate %></div>
-    </div>
-  <% end %>
-
   <div class="form-actions">
     <%= f.button :submit, class: 'btn btn-primary', value: @lending_limit.new_record? ? 'Create Lending Limit' : 'Update Lending Limit', data: { 'disable-with' => 'Submitting...' } %>
   </div>

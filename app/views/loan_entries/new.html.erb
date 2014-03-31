@@ -10,7 +10,7 @@
 
 <hr>
 
-<%= simple_form_for(@loan_entry, url: loan_entry_path(@loan), html: {class: 'form-horizontal form-loan-entry'}) do |f| %>
+<%= simple_form_for(@loan_entry, url: loan_entry_path(@loan, anchor: nil), html: {class: 'form-horizontal form-loan-entry'}) do |f| %>
   <%= field_set_tag do %>
     <%= f.input :declaration_signed, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
   <% end %>
@@ -40,7 +40,7 @@
     <%= f.input :fees, as: :currency %>
     <%= f.input :previous_borrowing, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :state_aid, as: :state_aid %>
-    <%= f.input :state_aid_is_valid, as: :boolean %>
+    <%= f.input :state_aid_is_valid, as: :boolean, label: t('simple_form.labels.loan_entry.state_aid_is_valid', threshold: @loan_entry.state_aid_threshold.format(no_cents: true)) %>
     <%= f.input :private_residence_charge_required, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :personal_guarantee_required, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
   <% end %>
@@ -49,7 +49,7 @@
 
     <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
 
-    <% for_loan_in_categories(@loan_entry, 2) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeB.id) do %>
       <%= f.input :loan_security_types,
                   as: :select,
                   collection: LoanSecurityType.all,
@@ -59,28 +59,31 @@
       <%= f.input :security_proportion, as: :percentage %>
     <% end %>
 
-    <% for_loan_in_categories(@loan_entry, 3) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeC.id) do %>
       <%= f.input :original_overdraft_proportion, as: :percentage %>
     <% end %>
 
-    <% for_loan_in_categories(@loan_entry, 3, 4) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeC.id, LoanCategory::TypeD.id) do %>
       <%= f.input :refinance_security_proportion, as: :percentage %>
     <% end %>
 
-    <% for_loan_in_categories(@loan_entry, 4) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeD.id) do %>
       <%= f.input :current_refinanced_amount, as: :currency %>
       <%= f.input :final_refinanced_amount, as: :currency %>
     <% end %>
 
-    <% for_loan_in_categories(@loan_entry, 5) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeE.id, LoanCategory::TypeG.id) do %>
+      <%= f.input :loan_sub_category_id, as: :loan_sub_category_select, loan_category_id: LoanCategory::TypeE.id %>
       <%= f.input :overdraft_limit, as: :currency %>
       <%= f.input :overdraft_maintained, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <% end %>
 
-    <% for_loan_in_categories(@loan_entry, 6) do %>
+    <% for_loan_in_categories(@loan_entry, LoanCategory::TypeF.id, LoanCategory::TypeH.id) do %>
       <%= f.input :invoice_discount_limit, as: :currency %>
       <%= f.input :debtor_book_coverage, as: :percentage %>
       <%= f.input :debtor_book_topup, as: :percentage %>
+
+      <%= render_attribute_errors(f, :total_prepayment).html_safe %>
     <% end %>
 
   <% end %>
@@ -89,6 +92,7 @@
     <%= f.input :viable_proposition, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :would_you_lend, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :collateral_exhausted, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
+    <%= f.input :not_insolvent, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :generic1, as: :string %>
     <%= f.input :generic2, as: :string %>
     <%= f.input :generic3, as: :string %>

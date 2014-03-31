@@ -24,16 +24,6 @@ describe BulkLendingLimits do
       bulk_lending_limits.should_not be_valid
     end
 
-    it 'requires a guarantee rate' do
-      bulk_lending_limits.guarantee_rate = nil
-      bulk_lending_limits.should_not be_valid
-    end
-
-    it 'requires a premium rate' do
-      bulk_lending_limits.premium_rate = nil
-      bulk_lending_limits.should_not be_valid
-    end
-
     it 'requires a valid allocation_type_id' do
       bulk_lending_limits.allocation_type_id = ''
       bulk_lending_limits.should_not be_valid
@@ -75,8 +65,6 @@ describe BulkLendingLimits do
       lending_limit_name: 'lending limit name',
       starts_on: '1/1/12',
       ends_on: '31/12/12',
-      guarantee_rate: '75',
-      premium_rate: '2',
       lenders_attributes: { '0' => lender_attributes }
     } }
 
@@ -95,8 +83,6 @@ describe BulkLendingLimits do
     its(:lending_limit_name) { should == 'lending limit name' }
     its(:starts_on) { should == Date.new(2012, 1, 1) }
     its(:ends_on) { should == Date.new(2012, 12, 31) }
-    its(:guarantee_rate) { should == 75 }
-    its(:premium_rate) { should == 2 }
 
     context "selected lenders" do
       subject { bulk_lending_limits.lenders.first }
@@ -152,15 +138,13 @@ describe BulkLendingLimits do
       lending_limit_name: 'lending limit name',
       starts_on: '1/1/12',
       ends_on: '31/12/12',
-      guarantee_rate: '75',
-      premium_rate: '2',
       lenders_attributes: lender_attributes
     } }
 
     let(:lender1) { FactoryGirl.create(:lender) }
     let(:lender2) { FactoryGirl.create(:lender) }
     let(:lender3) { FactoryGirl.create(:lender) }
-    let(:phase) { FactoryGirl.create(:phase) }
+    let(:phase) { Phase.find(5) }
     let(:user) { FactoryGirl.create(:cfe_admin) }
 
     before { AdminAudit.stub!(:log) }
@@ -181,8 +165,6 @@ describe BulkLendingLimits do
       lending_limits.each do |lending_limit|
         lending_limit.starts_on.should == Date.new(2012, 1, 1)
         lending_limit.ends_on.should == Date.new(2012, 12, 31)
-        lending_limit.guarantee_rate.should == 75
-        lending_limit.premium_rate.should == 2
         lending_limit.name.should == 'lending limit name'
         lending_limit.allocation_type_id.should == 1
       end

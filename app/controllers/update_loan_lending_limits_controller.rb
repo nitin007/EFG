@@ -12,7 +12,11 @@ class UpdateLoanLendingLimitsController < ApplicationController
     @update_lending_limit.modified_by = current_user
 
     if @update_lending_limit.save
-      render
+      if @update_lending_limit.state == Loan::Incomplete
+        redirect_to(new_loan_entry_path(@loan), alert: t('update_loan_lending_limit.loan_not_valid_for_lending_limit'))
+      else
+        render
+      end
     else
       render :new
     end

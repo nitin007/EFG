@@ -31,16 +31,6 @@ describe LendingLimit do
       lending_limit.should_not be_valid
     end
 
-    it 'requires a guarantee rate' do
-      lending_limit.guarantee_rate = nil
-      lending_limit.should_not be_valid
-    end
-
-    it 'requires a premium rate' do
-      lending_limit.premium_rate = nil
-      lending_limit.should_not be_valid
-    end
-
     it 'requires a valid allocation_type_id' do
       lending_limit.allocation_type_id = ''
       lending_limit.should_not be_valid

@@ -8,9 +8,20 @@ class DashboardController < ApplicationController
       @not_demanded_alerts_presenter   = LoanAlerts::Presenter.new(not_demanded_loans_groups)
       @not_closed_presenter            = LoanAlerts::Presenter.new(not_closed_loans_groups)
     end
+
+    if current_user.can_view?(ClaimLimitCalculator)
+      @claim_limit_calculators = setup_claim_limit_calculators
+    end
   end
 
   private
+
+  def setup_claim_limit_calculators
+    Phase.all.reverse.each_with_object([]) do |phase, memo|
+      calculator = phase.rules.claim_limit_calculator.new(current_lender)
+      memo << calculator unless calculator.total_amount.zero?
+    end
+  end
 
   def setup_lending_limit_utilisations
     current_lender.lending_limits.active.map do |lending_limit|

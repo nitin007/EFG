@@ -141,6 +141,8 @@ EFG::Application.routes.draw do
 
   resource :loan_audit_report, only: [:new, :create]
 
+  resource :claim_limits_report, only: [:show]
+
   resources :premium_schedule_reports, only: [:new, :create]
 
   resource :account_disabled, controller: 'account_disabled'
@@ -150,8 +152,6 @@ EFG::Application.routes.draw do
   resource :change_password, controller: 'change_password'
 
   resource :usernames_reminder, only: [:new, :create], controller: 'usernames_reminder'
-
-  resources :phases, except: [:show, :destroy]
 
   resources :bulk_lending_limits, only: [:new, :create]
 end

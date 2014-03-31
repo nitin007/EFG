@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe 'eligibility checks' do
@@ -14,7 +16,7 @@ describe 'eligibility checks' do
     visit root_path
     click_link 'New Loan Application'
 
-    fill_in_valid_eligibility_check_details(lender)
+    fill_in_valid_eligibility_check_details(lender, sic_code)
 
     expect {
       click_button 'Check'
@@ -29,13 +31,14 @@ describe 'eligibility checks' do
     loan.viable_proposition.should be_true
     loan.would_you_lend.should be_true
     loan.collateral_exhausted.should be_true
+    loan.not_insolvent.should be_true
     loan.amount.should == Money.new(5000089)
     loan.lending_limit.should be_instance_of(LendingLimit)
     loan.repayment_duration.should == MonthDuration.new(30)
     loan.turnover.should == Money.new(123456789)
     loan.trading_date.should == Date.new(2012, 1, 31)
     loan.sic_code.should == sic_code.code
-    loan.loan_category_id.should == 2
+    loan.loan_category_id.should == LoanCategory::TypeB.id
     loan.reason_id.should == 28
     loan.previous_borrowing.should be_true
     loan.private_residence_charge_required.should be_false
@@ -78,11 +81,25 @@ describe 'eligibility checks' do
     current_path.should == '/loans/eligibility_check'
   end
 
+  it 'works for Type H loan category' do
+    visit root_path
+    click_link 'New Loan Application'
+
+    fill_in_valid_eligibility_check_details(lender, sic_code)
+    select LoanCategory.find(8).name, from: 'loan_eligibility_check_loan_category_id'
+
+    expect {
+      click_button 'Check'
+    }.to change(Loan, :count)
+
+    current_url.should == loan_eligibility_decision_url(Loan.last.id)
+  end
+
   it 'displays ineligibility reasons for a reject loan' do
     visit root_path
     click_link 'New Loan Application'
 
-    fill_in_valid_eligibility_check_details(lender)
+    fill_in_valid_eligibility_check_details(lender, sic_code)
     # make loan fail eligibility check
     fill_in :loan_eligibility_check_amount, with: '6000000'
 
@@ -95,9 +112,7 @@ describe 'eligibility checks' do
     current_url.should == loan_eligibility_decision_url(loan.id)
 
     loan.state.should == Loan::Rejected
-    loan.ineligibility_reasons.count.should == 1
-    loan.ineligibility_reasons.last.reason.should == I18n.t('eligibility_check.attributes.amount.invalid')
-    page.should have_content(I18n.t('eligibility_check.attributes.amount.invalid'))
+    page.should have_content(I18n.t('validators.amount.amount.invalid', maximum: '£1,000,000.00', minimum: '£1,000.00'))
 
     # email eligibility decision
 

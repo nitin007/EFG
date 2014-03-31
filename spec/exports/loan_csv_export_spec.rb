@@ -6,6 +6,7 @@ describe LoanCsvExport do
     let(:user) { FactoryGirl.create(:cfe_user, first_name: 'Joe', last_name: 'Bloggs') }
     let(:lender) { FactoryGirl.create(:lender, name: 'Little Tinkers') }
     let(:lending_limit) { FactoryGirl.create(:lending_limit, name: 'Lending Limit') }
+    let(:sic) { loan.sic }
     let(:loan) {
       FactoryGirl.create(:loan, :completed, :guaranteed,
         created_by: user,
@@ -16,7 +17,8 @@ describe LoanCsvExport do
         trading_date: Date.new(1999, 9, 9),
         lender_reference: 'lenderref1',
         dti_amount_claimed: Money.new(123_45),
-        settled_amount: Money.new(100_00)
+        settled_amount: Money.new(100_00),
+        loan_sub_category_id: 4
       )
     }
     let(:csv) {
@@ -59,7 +61,7 @@ describe LoanCsvExport do
         guarantee_rate guaranteed_on initial_draw_date initial_draw_amount
         interest_rate interest_rate_type invoice_discount_limit
         legacy_small_loan legal_form lender lending_limit loan_category
-        loan_scheme loan_source maturity_date next_borrower_demand_seq
+        loan_sub_category loan_scheme loan_source maturity_date next_borrower_demand_seq
         next_change_history_seq next_in_calc_seq next_in_realise_seq
         next_in_recover_seq no_claim_on non_val_postcode
         notified_aid original_overdraft_proportion
@@ -73,8 +75,8 @@ describe LoanCsvExport do
         sic_eligible sic_notified_aid sic_parent_desc
         signed_direct_debit_received standard_cap state state_aid
         state_aid_is_valid trading_date trading_name transferred_from
-        turnover updated_at viable_proposition would_you_lend lender_reference
-        settled_amount cumulative_pre_claim_limit_realised_amount
+        turnover updated_at viable_proposition would_you_lend not_insolvent 
+        lender_reference settled_amount cumulative_pre_claim_limit_realised_amount
         cumulative_post_claim_limit_realised_amount)
     end
 
@@ -125,6 +127,7 @@ describe LoanCsvExport do
       row['lender'].should == 'Little Tinkers'
       row['lending_limit'].should == 'Lending Limit'
       row['loan_category'].should == 'Type A - New Term Loan with No Security'
+      row['loan_sub_category'].should == 'Bonds & Guarantees (Performance Bonds, VAT Deferment etc.)'
       row['loan_scheme'].should == 'E'
       row['loan_source'].should == 'S'
       row['maturity_date'].should == '22/02/2022'
@@ -158,8 +161,8 @@ describe LoanCsvExport do
       row['repayment_frequency'].should == 'Monthly'
       row['security_proportion'].should == ''
       row['settled_on'].should == ''
-      row['sic_code'].should == '12345'
-      row['sic_desc'].should == 'Growing of rice'
+      row['sic_code'].should == sic.code
+      row['sic_desc'].should == sic.description
       row['sic_eligible'].should == 'Yes'
       row['sic_notified_aid'].should == ''
       row['sic_parent_desc'].should == ''
@@ -175,6 +178,7 @@ describe LoanCsvExport do
       row['updated_at'].should == '01/10/2012 16:23:45'
       row['viable_proposition'].should == 'Yes'
       row['would_you_lend'].should == 'Yes'
+      row['not_insolvent'].should == 'Yes'
       row['lender_reference'].should == 'lenderref1'
       row['settled_amount'].should == '100.00'
       row['cumulative_pre_claim_limit_realised_amount'].should == '300.00'

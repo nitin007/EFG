@@ -17,7 +17,6 @@ class LendingLimit < ActiveRecord::Base
 
   belongs_to :lender
   belongs_to :modified_by, class_name: 'User'
-  belongs_to :phase
 
   has_many :loans
 
@@ -26,19 +25,20 @@ class LendingLimit < ActiveRecord::Base
            conditions: ["loans.state IN (?)", USAGE_LOAN_STATES]
 
   validates_presence_of :lender_id, strict: true
-  validates_presence_of :allocation, :name, :ends_on, :guarantee_rate,
-    :premium_rate, :starts_on
+  validates_presence_of :allocation, :name, :ends_on, :starts_on
   validates_inclusion_of :allocation_type_id, in: [LendingLimitType::Annual, LendingLimitType::Specific].map(&:id)
   validate :ends_on_is_after_starts_on
 
   attr_accessible :allocation, :allocation_type_id, :name, :ends_on,
-    :guarantee_rate, :premium_rate, :starts_on, :phase_id
+    :starts_on, :phase_id
 
   format :allocation, with: MoneyFormatter.new
   format :ends_on, with: QuickDateFormatter
   format :starts_on, with: QuickDateFormatter
 
   default_scope order('ends_on DESC, allocation_type_id DESC')
+
+  delegate :euro_conversion_rate, to: :phase
 
   scope :active, where(active: true)
 
@@ -63,6 +63,10 @@ class LendingLimit < ActiveRecord::Base
   def available?
     ends_on_with_grace_period = ends_on.advance(days: 30)
     active && (starts_on..ends_on_with_grace_period).cover?(Date.current)
+  end
+
+  def phase
+    Phase.find(phase_id)
   end
 
   def unavailable?

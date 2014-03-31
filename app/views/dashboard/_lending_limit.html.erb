@@ -1,10 +1,14 @@
-<div class="utilisation-year">
+<div class="widget-block">
   <div class="content">
     <h3><%= lending_limit.name %></h3>
 
+    <div class="chart">
+      <span class="pie" data-diameter="100" data-fill='["#FFDC03", "#eee"]'><%= lending_limit.usage_percentage.to_i %>/100</span>
+    </div>
+
     <ul>
-      <li><strong>Allocation:</strong> <%= lending_limit.allocation.format %></li>
-      <li><strong>Usage:</strong> <%= lending_limit.usage_amount.format %></li>
+      <li><strong>Allocation:</strong> <%= lending_limit.allocation.format(no_cents: true) %></li>
+      <li><strong>Usage:</strong> <%= lending_limit.usage_amount.format(no_cents: true) %></li>
       <li><strong>Utilisation:</strong> <%= lending_limit.usage_percentage %></li>
     </ul>
   </div>

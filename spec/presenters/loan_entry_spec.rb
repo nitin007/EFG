@@ -40,6 +40,11 @@ describe LoanEntry do
       loan_entry.should_not be_valid
     end
 
+    it "should be invalid without an amount" do
+      loan_entry.amount = nil
+      loan_entry.should_not be_valid
+    end
+
     context '#postcode' do
       it 'is required' do
         loan_entry.postcode = ''
@@ -82,8 +87,8 @@ describe LoanEntry do
       loan_entry.should_not be_valid
     end
 
-    it "should be invalid without a state aid calculation" do
-      loan_entry.loan.premium_schedules.delete_all
+    it "should be invalid without state aid" do
+      loan_entry.loan.state_aid = nil
       loan_entry.should_not be_valid
       loan_entry.errors[:state_aid].should == ['must be calculated']
     end
@@ -101,6 +106,19 @@ describe LoanEntry do
           loan_entry.company_registration = "B1234567890"
           loan_entry.should be_valid
         end
+      end
+    end
+
+    context "when state aid exceeds SIC state aid threshold" do
+      let!(:sic) { FactoryGirl.create(:sic_code, state_aid_threshold: Money.new(15_000_00)) }
+
+      before do
+        loan_entry.sic_code = sic.code
+        loan_entry.state_aid = Money.new(15_000_01)
+      end
+
+      it "should be invalid" do
+        loan_entry.should_not be_valid
       end
     end
 
@@ -134,8 +152,8 @@ describe LoanEntry do
         loan_entry.should be_valid
       end
 
-      it "should require original overdraft proportion greater than 0" do
-        loan_entry.original_overdraft_proportion = 0.0
+      it "should require original overdraft proportion not less than 0" do
+        loan_entry.original_overdraft_proportion = -0.1
         loan_entry.should_not be_valid
       end
 
@@ -190,6 +208,29 @@ describe LoanEntry do
         loan_entry.should be_valid
       end
 
+      it "should require loan sub category" do
+        loan_entry.loan_sub_category_id = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require overdraft limit" do
+        loan_entry.overdraft_limit = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require overdraft maintained" do
+        loan_entry.overdraft_maintained = false
+        loan_entry.should_not be_valid
+      end
+    end
+
+    context 'when a type G loan' do
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_g) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
+      end
+
       it "should require overdraft limit" do
         loan_entry.overdraft_limit = nil
         loan_entry.should_not be_valid
@@ -203,6 +244,51 @@ describe LoanEntry do
 
     context 'when a type F loan' do
       let(:loan_entry) { FactoryGirl.build(:loan_entry_type_f) }
+
+      it "should have a valid factory" do
+        loan_entry.should be_valid
+      end
+
+      it "should require invoice discount limit" do
+        loan_entry.invoice_discount_limit = nil
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book coverage greater than or equal to 1" do
+        loan_entry.debtor_book_coverage = 0.9
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book coverage less than 100" do
+        loan_entry.debtor_book_coverage = 100
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book topup greater than or equal to 1" do
+        loan_entry.debtor_book_topup = 0.9
+        loan_entry.should_not be_valid
+      end
+
+      it "should require debtor book topup less than or equal to 30" do
+        loan_entry.debtor_book_topup = 30.1
+        loan_entry.should_not be_valid
+      end
+
+      it "should require a total prepayment no greater than 100" do
+        loan_entry.debtor_book_topup = 30
+        loan_entry.debtor_book_coverage = 80
+        loan_entry.should_not be_valid
+      end
+
+      it "should require a total prepayment greater than or equal to 0" do
+        loan_entry.debtor_book_topup = 0
+        loan_entry.debtor_book_coverage = -1
+        loan_entry.should_not be_valid
+      end
+    end
+
+    context 'when a type H loan' do
+      let(:loan_entry) { FactoryGirl.build(:loan_entry_type_h) }
 
       it "should have a valid factory" do
         loan_entry.should be_valid
@@ -249,24 +335,65 @@ describe LoanEntry do
     it_behaves_like 'loan presenter that validates loan repayment frequency' do
       let(:loan_presenter) { loan_entry }
     end
-  end
 
-  describe "#save" do
-    context "when loan is no longer eligible" do
+    it 'should require viable_proposition to be true' do
+      loan_entry.viable_proposition = false
+
+      loan_entry.should_not be_valid
+      loan_entry.should have(1).error_on(:viable_proposition)
+    end
+
+    it 'should require would_you_lend to be true' do
+      loan_entry.would_you_lend = false
+
+      loan_entry.should_not be_valid
+      loan_entry.should have(1).error_on(:would_you_lend)
+    end
+
+    it 'should require collateral_exhausted to be true' do
+      loan_entry.collateral_exhausted = false
+
+      loan_entry.should_not be_valid
+      loan_entry.should have(1).error_on(:collateral_exhausted)
+    end
+
+    context 'phase 5' do
+      let(:lender) { FactoryGirl.create(:lender) }
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_5, lender: lender) }
+
       before do
-        loan_entry.viable_proposition = false
+        loan_entry.loan.lending_limit = lending_limit
       end
 
-      it "should set state to 'incomplete'" do
-        expect {
-          loan_entry.save
-        }.to change(loan_entry.loan, :state).to(Loan::Incomplete)
+      context 'when amount is greater than £1M' do
+        it "is invalid" do
+          loan_entry.amount = Money.new(1_000_000_01)
+          loan_entry.should_not be_valid
+        end
+      end
+    end
+
+    context 'phase 6' do
+      let(:lender) { FactoryGirl.create(:lender) }
+      let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_6, lender: lender) }
+
+      before do
+        loan_entry.loan.lending_limit = lending_limit
       end
 
-      it "should save ineligibility reasons" do
-        expect {
-          loan_entry.save
-        }.to change(loan_entry.loan.ineligibility_reasons, :count).by(1)
+      context 'when amount is greater than £600k and loan term is longer than 5 years' do
+        it "is invalid" do
+          loan_entry.amount = Money.new(600_000_01)
+          loan_entry.repayment_duration = 61
+          loan_entry.should_not be_valid
+        end
+      end
+
+      context 'when amount is greater £1.2M' do
+        it "is invalid" do
+          loan_entry.amount = Money.new(1_200_000_01)
+          loan_entry.should_not be_valid
+        end
       end
     end
   end

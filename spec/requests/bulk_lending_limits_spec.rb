@@ -7,11 +7,10 @@ describe "bulk creation of lending limits" do
   describe 'creating a new phase and setting up lending limits' do
     def dispatch
       visit root_path
-      click_link 'Manage Phases'
-      visit_bulk_lending_limits_form
+      click_link 'Bulk Create Lending Limits'
     end
 
-    let!(:phase) { FactoryGirl.create(:phase, name: 'Phase 1') }
+    let!(:phase) { Phase.find(1) }
     let!(:lender1) { FactoryGirl.create(:lender) }
     let!(:lender2) { FactoryGirl.create(:lender) }
     let!(:lender3) { FactoryGirl.create(:lender) }
@@ -33,8 +32,6 @@ describe "bulk creation of lending limits" do
       fill_in 'lending_limit_name', 'This year'
       fill_in 'starts_on', '1/1/12'
       fill_in 'ends_on', '31/12/12'
-      fill_in 'guarantee_rate', '75'
-      fill_in 'premium_rate', '2'
 
       setup_lending_limit lender1, allocation: '987', active: true
       setup_lending_limit lender3, allocation: '123,456.78', active: false
@@ -53,8 +50,6 @@ describe "bulk creation of lending limits" do
         lending_limit.name.should == 'This year'
         lending_limit.starts_on.should == Date.new(2012, 1, 1)
         lending_limit.ends_on.should == Date.new(2012, 12, 31)
-        lending_limit.guarantee_rate.should == 75
-        lending_limit.premium_rate.should == 2
       end
 
       phase.lending_limits.map(&:lender).should =~ [lender1, lender3]
@@ -63,11 +58,6 @@ describe "bulk creation of lending limits" do
   end
 
   private
-  def visit_bulk_lending_limits_form
-    within '.actions' do
-      find(:xpath, '//a[contains(.,"Bulk Create Lending Limits")]').click
-    end
-  end
 
   def setup_lending_limit(lender, params = {})
     within "#lender_lending_limit_#{lender.id}" do

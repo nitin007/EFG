@@ -3,13 +3,13 @@ FactoryGirl.define do
     viable_proposition 'true'
     would_you_lend 'true'
     collateral_exhausted 'true'
+    not_insolvent 'true'
     amount '12345'
     repayment_duration({ years: '1', months: '6' })
     turnover '12345'
     trading_date '31/1/2011'
     sic_code { FactoryGirl.create(:sic_code).code }
-    loan_category_id '1'
-    reason_id '1'
+    loan_category_id LoanCategory::TypeA.id
     previous_borrowing 'true'
     private_residence_charge_required 'false'
     personal_guarantee_required 'true'

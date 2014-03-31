@@ -6,7 +6,7 @@ FactoryGirl.define do
     association :modified_by, factory: :lender_user
     modified_by_legacy_id 'system'
     legal_form_id 1
-    loan_category_id 1
+    loan_category_id LoanCategory::TypeA.id
     repayment_frequency_id 4
     reason_id 28
     business_name 'Acme'
@@ -15,11 +15,12 @@ FactoryGirl.define do
     viable_proposition true
     would_you_lend true
     collateral_exhausted true
+    not_insolvent true
     amount 12345
     repayment_duration 24
     turnover 12345
     trading_date 2.years.ago
-    sic_code '12345'
+    sic_code { |loan| FactoryGirl.create(:sic_code).code }
     sic_desc 'Growing of rice'
     sic_eligible true
     previous_borrowing true
@@ -125,8 +126,9 @@ FactoryGirl.define do
 
     trait :settled do
       state Loan::Settled
-      dti_demand_outstanding { |loan| loan.amount * 0.5 }
+      dti_demand_outstanding { |loan| loan.amount * 0.25 }
       dti_amount_claimed { |loan| loan.dti_demand_outstanding * 0.75 }
+      settled_amount { |loan| loan.dti_amount_claimed }
       settled_on { Date.current }
 
       after(:create) do |loan|

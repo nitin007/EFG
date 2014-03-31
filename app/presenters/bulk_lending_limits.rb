@@ -5,13 +5,13 @@ class BulkLendingLimits
   include ActiveModel::MassAssignmentSecurity
 
   attr_accessor :scheme_or_phase_id, :created_by, :modified_by, :lending_limit_name,
-    :ends_on, :starts_on, :guarantee_rate, :premium_rate, :allocation_type_id
+    :ends_on, :starts_on, :allocation_type_id
 
-  attr_accessible :scheme_or_phase_id, :lending_limit_name, :ends_on, :starts_on, :guarantee_rate,
-    :premium_rate, :allocation_type_id, :lenders_attributes
+  attr_accessible :scheme_or_phase_id, :lending_limit_name, :ends_on, :starts_on,
+    :allocation_type_id, :lenders_attributes
 
-  validates_presence_of :allocation_type_id, :scheme_or_phase_id, :ends_on, :guarantee_rate,
-    :premium_rate, :starts_on, :lending_limit_name
+  validates_presence_of :allocation_type_id, :scheme_or_phase_id, :ends_on,
+    :starts_on, :lending_limit_name
 
   validate :ends_on_is_after_starts_on
   validates_inclusion_of :allocation_type_id, in: [LendingLimitType::Annual, LendingLimitType::Specific].map(&:id)
@@ -30,24 +30,6 @@ class BulkLendingLimits
 
   def allocation_type_id=(value)
     @allocation_type_id = value.try(:to_i)
-  end
-
-  def premium_rate=(value)
-    @premium_rate = value.try(:to_i)
-  end
-
-  def guarantee_rate=(value)
-    @guarantee_rate = value.try(:to_i)
-  end
-
-  # Verify that a "Scheme / Phase" was selected in the validations, but if SFLG
-  # was selected the phase should be nil.
-  def phase
-    if scheme_or_phase_id == Loan::SFLG_SCHEME
-      nil
-    else
-      Phase.find(scheme_or_phase_id)
-    end
   end
 
   def lenders_attributes=(values)
@@ -76,11 +58,9 @@ class BulkLendingLimits
       selected_lenders.each do |lender_lending_limit|
         lending_limit = LendingLimit.create! do |lending_limit|
           lending_limit.name = lending_limit_name
-          lending_limit.phase = phase
+          lending_limit.phase_id = phase_id
           lending_limit.starts_on = starts_on
           lending_limit.ends_on = ends_on
-          lending_limit.guarantee_rate = guarantee_rate
-          lending_limit.premium_rate = premium_rate
           lending_limit.allocation_type_id = allocation_type_id
 
           lending_limit.lender = lender_lending_limit.lender
@@ -101,6 +81,16 @@ class BulkLendingLimits
 
   def lenders_by_id
     @lenders_by_id ||= lenders.index_by(&:id)
+  end
+
+  # Verify that a "Scheme / Phase" was selected in the validations, but if SFLG
+  # was selected the phase should be nil.
+  def phase_id
+    if scheme_or_phase_id == Loan::SFLG_SCHEME
+      nil
+    else
+      Phase.find(scheme_or_phase_id.to_i).id
+    end
   end
 
   def ends_on_is_after_starts_on

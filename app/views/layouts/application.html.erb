@@ -32,7 +32,7 @@
               <%= dropdown.item 'Premium Collection Guidance', '/help/Premium Collection Guidance Note.pdf', class: 'pdf-download' %>
 
               <% if current_user.can_create?(AskCfe) %>
-                <%= dropdown.item 'Ask CfE', new_help_ask_cfe_path %>
+                <%= dropdown.item 'Ask British Business Bank', new_help_ask_cfe_path %>
               <% end %>
               <% if current_user.can_create?(AskAnExpert) %>
                 <%= dropdown.item 'Ask an Expert', new_help_ask_an_expert_path %>
@@ -77,6 +77,9 @@
             <% end %>
             <% if current_user.can_create?(LoanAuditReport) %>
               <%= dropdown.item 'Generate Loan Audit Report', new_loan_audit_report_path %>
+            <% end %>
+            <% if current_user.can_create?(ClaimLimitsCsvExport) %>
+              <%= dropdown.item 'Generate Claim Limits Report', claim_limits_report_path(format: :csv) %>
             <% end %>
           <% end %>
           <% if current_user.can_view?(Search) %>

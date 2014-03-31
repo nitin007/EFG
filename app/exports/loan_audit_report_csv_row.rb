@@ -28,6 +28,7 @@ class LoanAuditReportCsvRow
       loan.generic5,
       loan.reason.try(:name),
       loan.loan_category.try(:name),
+      loan.loan_sub_category.try(:name),
       humanized_state(loan.state),
       loan.created_at.try(:strftime, "%d-%m-%Y %I:%M %p"),
       loan.loan_created_by,

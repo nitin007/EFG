@@ -5,14 +5,14 @@ describe Phase5StateAidCalculator do
     double(:loan,
       amount: Money.new(100_000_00),
       guarantee_rate: BigDecimal.new('75'),
+      euro_conversion_rate: BigDecimal.new('1.1974'),
       premium_schedule: premium_schedule
     )
   }
 
   let(:premium_schedule) {
     double(:premium_schedule,
-      total_premiums: Money.new(1_652_75),
-      euro_conversion_rate: BigDecimal.new('1.1974')
+      total_premiums: Money.new(1_652_75)
     )
   }
 

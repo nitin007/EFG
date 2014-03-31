@@ -19,7 +19,6 @@ class PremiumSchedulesController < ApplicationController
   def update
     @premium_schedule.attributes = params[:premium_schedule]
     @premium_schedule.calc_type = PremiumSchedule::SCHEDULE_TYPE
-    @premium_schedule.reset_euro_conversion_rate
 
     if @premium_schedule.save_and_update_loan_state_aid
       redirect_to leave_premium_schedule_path(@loan)
@@ -47,6 +46,8 @@ class PremiumSchedulesController < ApplicationController
       new_loan_transferred_entry_path(loan)
     elsif params[:redirect] == 'loan_guarantee'
       new_loan_guarantee_path(loan)
+    elsif params[:redirect] == 'loan_offer'
+      new_loan_offer_path(loan)
     else
       loan_path(loan)
     end

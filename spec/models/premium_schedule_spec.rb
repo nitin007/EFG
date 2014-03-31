@@ -258,33 +258,6 @@ describe PremiumSchedule do
     end
   end
 
-  describe "#euro_conversion_rate" do
-    it "returns the default value" do
-      premium_schedule = FactoryGirl.build(:premium_schedule)
-      premium_schedule.euro_conversion_rate.should == PremiumSchedule.current_euro_conversion_rate
-    end
-
-    it "returns a set value" do
-      premium_schedule = FactoryGirl.build(:premium_schedule, euro_conversion_rate: 0.65)
-      premium_schedule.euro_conversion_rate.should == 0.65
-    end
-
-    it "saves the euro_conversion_rate used" do
-      premium_schedule = FactoryGirl.create(:premium_schedule, euro_conversion_rate: 0.75)
-
-      premium_schedule[:euro_conversion_rate].should == 0.75
-    end
-  end
-
-  describe "reset_euro_conversion_rate" do
-    it "clears the euro_conversion_rate so we get the current exchange rate" do
-      premium_schedule = FactoryGirl.create(:premium_schedule, euro_conversion_rate: 0.80)
-
-      premium_schedule.reset_euro_conversion_rate
-      premium_schedule.euro_conversion_rate.should == PremiumSchedule.current_euro_conversion_rate
-    end
-  end
-
   describe '#total_premiums' do
     context "legacy calculation" do
       let(:premium_schedule) {
