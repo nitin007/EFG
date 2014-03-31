@@ -65,6 +65,10 @@ class Phase6Rules < Phase5Rules
     Phase6StateAidCalculator
   end
 
+  def self.state_aid_letter
+    Phase6StateAidLetter
+  end
+
   def self.update_loan_lending_limit_validations
     [
       AmountValidator.new(minimum: Money.new(1_000_00), maximum: Money.new(1_200_000_00)),
