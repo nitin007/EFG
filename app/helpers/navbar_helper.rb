@@ -66,6 +66,10 @@ module NavbarHelper
   end
 
   class Dropdown < ActionView::Base
+    def header(name)
+      content_tag(:li, name, class: 'dropdown-header')
+    end
+
     def item(name, path = '', options = {})
       link = link_to(name, path, options)
       content_tag(:li, link)
