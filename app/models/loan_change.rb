@@ -7,11 +7,20 @@ class LoanChange < LoanModification
     ChangeType::LumpSumRepayment,
     ChangeType::RecordAgreedDraw,
     ChangeType::ReprofileDraws,
-    ChangeType::DecreaseTerm
+    ChangeType::DecreaseTerm,
+    ChangeType::RepaymentFrequency,
   ].map(&:id)
 
   validates_inclusion_of :change_type_id, in: ALLOWED_CHANGE_TYPE_IDS, strict: true
   validate :validate_non_negative_amounts
+
+  def repayment_frequency
+    RepaymentFrequency.find(repayment_frequency_id)
+  end
+
+  def old_repayment_frequency
+    RepaymentFrequency.find(old_repayment_frequency_id)
+  end
 
   private
     def validate_non_negative_amounts
