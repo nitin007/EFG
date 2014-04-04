@@ -67,7 +67,7 @@ class InformationDeclaration < Prawn::Document
       [ row_description(:company_registration), @loan.company_registration ],
       [ row_description(:turnover), @loan.turnover.try(:format) ],
       [ row_description(:trading_date), @loan.trading_date.try(:strftime, '%d-%m-%Y') ],
-      [ row_description(:postcode), @loan.postcode ],
+      [ row_description(:postcode), @loan.postcode.to_s ],
       [ row_description(:amount), @loan.amount.try(:format) ],
       [ row_description(:repayment_duration), @loan.repayment_duration.try(:format) ],
       [ row_description(:repayment_frequency_id), @loan.repayment_frequency.try(:name) ],

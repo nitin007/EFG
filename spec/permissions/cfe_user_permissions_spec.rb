@@ -208,7 +208,7 @@ describe CfeUserPermissions do
   end
 
   context 'DataCorrection' do
-    it { refute user.can_create?(DataCorrection) }
+    it { assert user.can_create?(DataCorrection) }
     it { refute user.can_update?(DataCorrection) }
     it { refute user.can_view?(DataCorrection) }
   end

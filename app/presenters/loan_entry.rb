@@ -3,8 +3,6 @@ class LoanEntry
   include LoanStateTransition
   include SharedLoanValidations
 
-  attr_accessible :postcode
-
   transition from: [Loan::Eligible, Loan::Incomplete], to: Loan::Completed, event: LoanEvent::Complete
 
   attribute :lender, read_only: true
@@ -32,7 +30,7 @@ class LoanEntry
   attribute :trading_name
   attribute :legal_form_id
   attribute :company_registration
-  attribute :postcode, read_only: true
+  attribute :postcode
   attribute :sortcode
   attribute :repayment_frequency_id
   attribute :generic1
@@ -77,11 +75,6 @@ class LoanEntry
   validate :validate_eligibility
   validate :category_validations
 
-  def postcode=(str)
-    normalised = UKPostcode.new(str).norm
-    loan.postcode = normalised.empty? ? str : normalised
-  end
-
   def premium_schedule_required_for_state_aid_calculation?
     loan.rules.premium_schedule_required_for_state_aid_calculation?
   end
@@ -109,7 +102,7 @@ class LoanEntry
   end
 
   def postcode_allowed
-    errors.add(:postcode, 'is invalid') unless UKPostcode.new(postcode).full?
+    errors.add(:postcode, :invalid) unless postcode.full?
   end
 
   # Note: state aid must be recalculated if the loan term has changed

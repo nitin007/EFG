@@ -11,11 +11,8 @@ class ChangeType < StaticAssociation
     { id: '9', name: 'Data correction' },
     { id: 'a', name: 'Decrease term' },
     { id: 'b', name: 'Repayment frequency' },
+    { id: 'c', name: 'Postcode' }
   ]
-
-  def self.for_loan_change
-    all.reject { |change_type| change_type == DataCorrection }
-  end
 
   BusinessName = find('1')
   CapitalRepaymentHoliday = find('2')
@@ -28,4 +25,5 @@ class ChangeType < StaticAssociation
   DataCorrection = find('9')
   DecreaseTerm = find('a')
   RepaymentFrequency = find('b')
+  Postcode = find('c')
 end

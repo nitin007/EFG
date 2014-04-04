@@ -2,6 +2,7 @@ module CfeUserPermissions
   def can_create?(resource)
     [
       ClaimLimitsCsvExport,
+      DataCorrection,
       Invoice,
       LoanRemoveGuarantee,
       RealisationStatement,

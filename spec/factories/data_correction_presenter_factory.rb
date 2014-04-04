@@ -18,6 +18,10 @@ FactoryGirl.define do
       association :loan, factory: [:loan, :guaranteed, :demanded]
     end
 
+    factory :postcode_data_correction, class: PostcodeDataCorrection do
+      postcode 'EC1A 9PN'
+    end
+
     factory :sortcode_data_correction, class: SortcodeDataCorrection do
       sortcode '123456'
     end
