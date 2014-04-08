@@ -6,7 +6,12 @@
   <div class="alert alert-warning" style="color: black;">
     <h2>System-wide password reset</h2>
     <p>
-      Following a security vulnerability in TLS (the mechanism which allows https websites), we have taken the proactive measure of requiring all users to reset their password. There is no evidence that any data has been compromised from this website, but sensible security policies mean that we should assume the worst and take appropriate measures.
+    If you haven’t changed your password since 8pm on Thursday 10 April 2014 you must
+    <%= link_to "click here", new_password_path(:user) %>
+    to request a password reset.
+    </p>
+    <p>
+    The Enterprise Finance Guarantee password policy is that you must change your password at least once every 90 days.
     </p>
   </div>
 
