@@ -4,8 +4,9 @@
 
 <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
   <div class="alert alert-warning" style="color: black;">
+    <h2>System-wide password reset</h2>
     <p>
-      From 6 March 2013 we have changed the Enterprise Finance Guarantee password policy. You must now change your password at least once every 90 days.
+      Following a security vulnerability in TLS (the mechanism which allows https websites), we have taken the proactive measure of requiring all users to reset their password. There is no evidence that any data has been compromised from this website, but sensible security policies mean that we should assume the worst and take appropriate measures.
     </p>
   </div>
 
