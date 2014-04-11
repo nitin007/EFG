@@ -32,3 +32,7 @@ class AssignLendingLimitsToPhases < ActiveRecord::Migration
   def down
   end
 end
+
+class Phase < ActiveRecord::Base
+
+end
