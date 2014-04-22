@@ -9,9 +9,11 @@ describe LoanIneligibilityReason do
       loan_ineligibility_reason.should be_valid
     end
 
-    it 'requires a loan_id' do
-      loan_ineligibility_reason.loan_id = nil
-      loan_ineligibility_reason.should_not be_valid
+    it 'strictly requires a loan_id' do
+      expect {
+        loan_ineligibility_reason.loan_id = nil
+        loan_ineligibility_reason.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
     it 'requires a reason' do

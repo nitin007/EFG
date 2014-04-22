@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140326154940) do
+ActiveRecord::Schema.define(:version => 20140422123040) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -154,7 +154,7 @@ ActiveRecord::Schema.define(:version => 20140326154940) do
   add_index "lending_limits", ["phase_id"], :name => "index_lending_limits_on_phase_id"
 
   create_table "loan_ineligibility_reasons", :force => true do |t|
-    t.integer  "loan_id"
+    t.integer  "loan_id",                            :null => false
     t.text     "reason"
     t.integer  "sequence",            :default => 0, :null => false
     t.datetime "ar_timestamp"
