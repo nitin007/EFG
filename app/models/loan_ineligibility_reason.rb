@@ -4,6 +4,6 @@ class LoanIneligibilityReason < ActiveRecord::Base
 
   validates_presence_of :loan_id, :reason
 
-  attr_accessible :loan_id, :reason
+  attr_accessible :reason
 
 end
