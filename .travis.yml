@@ -23,7 +23,6 @@ rvm:
 branches:
   except:
     - master
-    - premium-schedule-refactor
     - release
 notifications:
   email: false
