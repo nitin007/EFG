@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140423104418) do
+ActiveRecord::Schema.define(:version => 20140423114402) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -299,7 +299,7 @@ ActiveRecord::Schema.define(:version => 20140423104418) do
     t.boolean  "signed_direct_debit_received"
     t.boolean  "first_pp_received"
     t.date     "maturity_date"
-    t.string   "state"
+    t.string   "state",                                                                                                :null => false
     t.integer  "legal_form_id"
     t.integer  "repayment_frequency_id"
     t.date     "cancelled_on"
