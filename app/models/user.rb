@@ -1,5 +1,3 @@
-require 'password_migration'
-
 class User < ActiveRecord::Base
   include Canable::Cans
 
@@ -125,7 +123,5 @@ class User < ActiveRecord::Base
   def update_stats
     EFG.stats_collector.increment("users.created")
   end
-
-  include PasswordMigration
 
 end
