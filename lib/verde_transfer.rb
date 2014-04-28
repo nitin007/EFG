@@ -21,7 +21,7 @@ class VerdeTransfer
   end
 
   def system_user
-    @system_user ||= SystemUser.first
+    @system_user ||= SystemUser.first!
   end
 
   def transfer_loan(loan)
