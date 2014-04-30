@@ -101,7 +101,8 @@ class ClaimLimitCalculator
       .where(loan_scheme: Loan::EFG_SCHEME)
       .where(state: ClaimLimitStates)
       .where("loan_modifications.type = 'InitialDrawChange' OR
-              loan_modifications.change_type_id = ?", ChangeType::RecordAgreedDraw.id)
+              loan_modifications.change_type_id IN (?)",
+              [ ChangeType::RecordAgreedDraw.id, ChangeType::ReprofileDraws.id ])
       .where(lending_limits: { phase_id: phase.id })
   end
 

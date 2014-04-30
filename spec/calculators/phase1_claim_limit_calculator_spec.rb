@@ -11,11 +11,17 @@ describe "Claim Limit Phase 1" do
   let(:loan_amount) { Money.new(50_000_00) }
 
   let!(:guaranteed_loan) { FactoryGirl.create(:loan, :guaranteed, lender: lender, lending_limit: lending_limit1, amount: loan_amount) }
+
   let!(:lender_demand_loan) { FactoryGirl.create(:loan, :guaranteed, :lender_demand, lender: lender, lending_limit: lending_limit1, amount: loan_amount) }
+
   let!(:demanded_loan) { FactoryGirl.create(:loan, :guaranteed, :demanded, lender: lender, lending_limit: lending_limit1, amount: loan_amount) }
+
   let!(:settled_loan) { FactoryGirl.create(:loan, :guaranteed, :settled, lender: lender, lending_limit: lending_limit2, amount: loan_amount) }
+
   let!(:recovered_loan) { FactoryGirl.create(:loan, :guaranteed, :recovered, lender: lender, lending_limit: lending_limit2, amount: loan_amount) }
+
   let!(:realised_loan) { FactoryGirl.create(:loan, :guaranteed, :realised, lender: lender, lending_limit: lending_limit2, amount: loan_amount) }
+
   let!(:excluded_loan) { FactoryGirl.create(:loan, :offered, lender: lender, lending_limit: lending_limit2, amount: loan_amount) }
 
   let!(:pre_claim_realisation) { FactoryGirl.create(:loan_realisation, :pre, realised_loan: settled_loan, realised_amount: Money.new(1_000_00)) }
@@ -23,9 +29,16 @@ describe "Claim Limit Phase 1" do
   let(:claim_limit) { Phase1ClaimLimitCalculator.new(lender) }
 
   before do
-    [guaranteed_loan, lender_demand_loan, demanded_loan, settled_loan, recovered_loan, realised_loan].each do |loan|
+    [lender_demand_loan, demanded_loan, settled_loan, recovered_loan, realised_loan].each do |loan|
       loan.initial_draw_change.update_attribute(:amount_drawn, loan_amount)
     end
+
+    # agreed draw and reprofile draw loan changes should be included in calculation
+    guaranteed_loan.initial_draw_change.update_attribute(:amount_drawn, Money.new(30_000_00))
+
+    FactoryGirl.create(:loan_change, loan: guaranteed_loan, amount_drawn: Money.new(10_000_00))
+
+    FactoryGirl.create(:loan_change, loan: guaranteed_loan, amount_drawn: Money.new(10_000_00), change_type: ChangeType::ReprofileDraws)
   end
 
   describe "#total_amount" do
