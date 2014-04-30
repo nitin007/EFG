@@ -9,13 +9,12 @@
 # entirely.
 
 if ENV['EFG_HOST'] == 'www.sflg.gov.uk'
-
   require 'verde_transfer'
 
   old_lender = Lender.find(19)
   new_lender = Lender.find(39)
 
-  loan_references = [
+  loans = [
     '103772',
     '8P2DNHC+01',
     'P3GZ5L3+01',
@@ -45,8 +44,9 @@ if ENV['EFG_HOST'] == 'www.sflg.gov.uk'
     'RAQ8VYZ+01',
     '5ZCGETP+01',
     'QQP5REU+01',
-  ]
+  ].map { |reference|
+    old_lender.loans.where(reference: reference).first!
+  }
 
-  VerdeTransfer.run(new_lender, old_lender, loan_references)
-
+  VerdeTransfer.run(loans, new_lender)
 end

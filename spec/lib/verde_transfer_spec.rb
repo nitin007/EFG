@@ -14,23 +14,15 @@ describe VerdeTransfer do
     let(:loan_2) { FactoryGirl.create(:loan, lender: original_lender, lending_limit: original_lending_limit_1) }
     let(:loan_3) { FactoryGirl.create(:loan, lender: original_lender, lending_limit: original_lending_limit_2) }
     let(:loan_4) { FactoryGirl.create(:loan, lender: original_lender, lending_limit: nil) }
-    let(:loans_references) { [loan_1, loan_2, loan_3, loan_4].map(&:reference) }
+    let(:loans) { [loan_1, loan_2, loan_3, loan_4] }
 
     before do
       # TODO: Loan factory doesn't allow a nil lending_limit.
       loan_4.update_column(:lending_limit_id, nil)
     end
 
-    context 'dealing with unknown loans' do
-      it do
-        expect {
-          VerdeTransfer.run(original_lender, new_lender, ['aaa'])
-        }.to raise_error(ActiveRecord::RecordNotFound)
-      end
-    end
-
     context "transferring loans" do
-      before { VerdeTransfer.run(original_lender, new_lender, loans_references) }
+      before { VerdeTransfer.run(loans, new_lender) }
 
       shared_examples "transferred loan" do
         subject { loan }
@@ -72,7 +64,7 @@ describe VerdeTransfer do
 
     context 'lending limits' do
       before do
-        VerdeTransfer.run(original_lender, new_lender, loans_references)
+        VerdeTransfer.run(loans, new_lender)
 
         loan_1.reload
         loan_2.reload

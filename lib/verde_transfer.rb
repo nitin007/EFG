@@ -1,12 +1,11 @@
 class VerdeTransfer
-  def self.run(old_lender, new_lender, loan_references)
-    self.new(old_lender, new_lender, loan_references).run
+  def self.run(loans, new_lender)
+    self.new(loans, new_lender).run
   end
 
-  def initialize(old_lender, new_lender, loan_references)
-    @old_lender = old_lender
+  def initialize(loans, new_lender)
+    @loans = loans
     @new_lender = new_lender
-    @loan_references = loan_references
   end
 
   def run
@@ -17,23 +16,17 @@ class VerdeTransfer
 
   private
 
-  def lending_limit(loan)
+  def new_lending_limit(loan)
     new_lender.lending_limits.where(name: loan.lending_limit.name).first
   end
 
-  def loans
-    @loans ||= loan_references.map { |reference|
-      old_lender.loans.where(reference: reference).first!
-    }
-  end
-
   def system_user
-    @system_user ||= SystemUser.first
+    @system_user ||= SystemUser.first!
   end
 
   def transfer_loan(loan)
     loan.lender = new_lender
-    loan.lending_limit = lending_limit(loan) if loan.lending_limit
+    loan.lending_limit = new_lending_limit(loan) if loan.lending_limit
     loan.modified_by = system_user
 
     loan.state_changes.create!(
@@ -46,5 +39,5 @@ class VerdeTransfer
     loan.save!
   end
 
-  attr_reader :old_lender, :new_lender, :loan_references
+  attr_reader :loans, :new_lender
 end
