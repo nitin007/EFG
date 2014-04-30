@@ -26,7 +26,7 @@ class Phase6StateAidCalculator
     end
 
     def repayment_duration
-      loan.repayment_duration.total_months
+      loan.repayment_duration.try(:total_months) || 0
     end
 
     def max_repayment_duration
