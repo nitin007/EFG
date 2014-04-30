@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140423114402) do
+ActiveRecord::Schema.define(:version => 20140423121354) do
 
   create_table "admin_audits", :force => true do |t|
     t.string   "auditable_type",        :null => false
@@ -388,6 +388,16 @@ ActiveRecord::Schema.define(:version => 20140423114402) do
   add_index "loans", ["lending_limit_id"], :name => "index_loans_on_lending_limit_id"
   add_index "loans", ["reference"], :name => "index_loans_on_reference", :unique => true
   add_index "loans", ["state"], :name => "index_loans_on_state"
+
+  create_table "old_passwords", :force => true do |t|
+    t.string   "encrypted_password"
+    t.string   "password_salt"
+    t.string   "password_archivable_type", :null => false
+    t.integer  "password_archivable_id",   :null => false
+    t.datetime "created_at"
+  end
+
+  add_index "old_passwords", ["password_archivable_type", "password_archivable_id"], :name => "index_password_archivable"
 
   create_table "premium_schedules", :force => true do |t|
     t.integer  "loan_id",                                                                                         :null => false

@@ -42,11 +42,10 @@ describe 'password policy' do
         submit_sign_in_form(current_user.username, current_user.password)
         page.should have_content(I18n.t('devise.password_expired.change_required'))
 
-        # this test also captures that we have no password history policy at the moment.
-        # if that changes, then this spec will start failing :)
+        # We have a password history policy now :)
         fill_in 'user_current_password', with: current_user.password
-        fill_in 'user_password', with: current_user.password
-        fill_in 'user_password_confirmation', with: current_user.password
+        fill_in 'user_password', with: current_user.password + 'foo'
+        fill_in 'user_password_confirmation', with: current_user.password + 'foo'
         click_button 'Change Password'
 
         page.should have_content(I18n.t('devise.password_expired.updated'))

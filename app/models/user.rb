@@ -1,5 +1,3 @@
-require 'password_migration'
-
 class User < ActiveRecord::Base
   include Canable::Cans
 
@@ -31,7 +29,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :recoverable, :trackable,
          :timeoutable, :authenticatable, :encryptable,        # devise core model extensions
          :strengthened, # in EFG/lib/devise/models/strengthened.rb
-         :password_expirable # devise_security_extension
+         :password_expirable, # devise_security_extension
+         :password_archivable # devise_security_extension
 
   after_create :update_stats
 
@@ -125,7 +124,5 @@ class User < ActiveRecord::Base
   def update_stats
     EFG.stats_collector.increment("users.created")
   end
-
-  include PasswordMigration
 
 end
