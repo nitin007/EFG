@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Phase6StateAidCalculator do
-
   let(:state_aid_calculator) { Phase6StateAidCalculator.new(loan) }
+  subject { state_aid_calculator.state_aid_eur }
 
   context "4 year loan" do
     let(:loan) {
@@ -13,9 +13,7 @@ describe Phase6StateAidCalculator do
       )
     }
 
-    it 'calculates state aid in EUR' do
-      state_aid_calculator.state_aid_eur.should == Money.new(96_595_20, 'EUR')
-    end
+    it { should == Money.new(96_595_20, 'EUR') }
   end
 
   context "8 year loan" do
@@ -27,9 +25,7 @@ describe Phase6StateAidCalculator do
       )
     }
 
-    it 'calculates state aid in EUR' do
-      state_aid_calculator.state_aid_eur.should == Money.new(64_396_80, 'EUR')
-    end
+    it { should == Money.new(64_396_80, 'EUR') }
   end
 
   context "10 year loan" do
@@ -41,8 +37,6 @@ describe Phase6StateAidCalculator do
       )
     }
 
-    it 'calculates state aid in EUR' do
-      state_aid_calculator.state_aid_eur.should == Money.new(32_198_41, 'EUR')
-    end
+    it { should == Money.new(32_198_41, 'EUR') }
   end
 end
