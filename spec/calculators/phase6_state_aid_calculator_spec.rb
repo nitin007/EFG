@@ -39,4 +39,16 @@ describe Phase6StateAidCalculator do
 
     it { should == Money.new(32_198_41, 'EUR') }
   end
+
+  context 'nil amount' do
+    let(:loan) {
+      double(:loan,
+        amount: nil,
+        repayment_duration: MonthDuration.new(48),
+        euro_conversion_rate: BigDecimal.new('1.20744')
+      )
+    }
+
+    it { should == Money.new(0, 'EUR') }
+  end
 end

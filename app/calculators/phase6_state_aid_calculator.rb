@@ -18,7 +18,7 @@ class Phase6StateAidCalculator
 
   private
     def amount
-      loan.amount
+      loan.amount || Money.new(0)
     end
 
     def max_loan_amount
