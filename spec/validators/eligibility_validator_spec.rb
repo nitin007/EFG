@@ -78,6 +78,12 @@ describe EligibilityValidator do
     it { should_not be_valid }
   end
 
+  context 'when the trading_date is nil' do
+    let(:trading_date) { nil }
+
+    it { should_not be_valid }
+  end
+
   context 'when the trading_date is more than 6 months in the future' do
     let(:trading_date) { 6.months.from_now.advance(days: 1) }
 

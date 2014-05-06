@@ -98,6 +98,11 @@ describe LoanEntry do
       loan_entry.should_not be_valid
     end
 
+    it 'should be invalid when the trading date is blank' do
+      loan_entry.trading_date = ''
+      loan_entry.should_not be_valid
+    end
+
     LegalForm.all.select { |l| l.requires_company_registration == true }.each do |legal_form|
       context "when legal_form is #{legal_form.name}" do
         it "should be invalid without company registration number" do
