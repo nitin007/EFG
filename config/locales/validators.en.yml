@@ -18,6 +18,8 @@ en:
         invalid: A new charge may not not be taken over a principal private residence in connection with providing an EFG-backed facility.
       sic_code:
         invalid: "SIC code is ineligible. The SIC code is used to classify business activities. While businesses in the majority of sectors are eligible there are a small number of exclusions, usually due to either UK or EU regulations."
+      trading_date:
+        invalid: must be within the next 6 months
       reason_id:
         invalid: The loan purpose is not eligible for funds. The Enterprise Finance Guarantee is governed by the Industrial Development Act (IDA) of 1982 and is also subject to European Union State Aid regulations. While most business purposes are eligible there are certain exclusions.
     phase6_amount:
