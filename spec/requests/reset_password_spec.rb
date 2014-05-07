@@ -2,10 +2,14 @@ require 'spec_helper'
 
 describe 'Resetting password' do
 
-  let(:user) {
+  let(:reset_password_token) { Devise.token_generator.generate(User, :reset_password_token) }
+  let(:raw_reset_password_token) { reset_password_token[0] }
+  let(:encrypted_reset_password_token) { reset_password_token[1] }
+
+  let!(:user) {
     FactoryGirl.create(
       :lender_user,
-      reset_password_token: 'abc123',
+      reset_password_token: encrypted_reset_password_token,
       reset_password_sent_at: 1.minute.ago
     )
   }
@@ -78,7 +82,7 @@ describe 'Resetting password' do
   private
 
   def open_reset_password_page(params = {})
-    visit edit_user_password_path({ reset_password_token: user.reset_password_token }.merge(params))
+    visit edit_user_password_path({ reset_password_token: raw_reset_password_token }.merge(params))
   end
 
   def submit_change_password_form(new_password = 'new-password-W1bbL3')

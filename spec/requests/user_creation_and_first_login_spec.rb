@@ -8,6 +8,12 @@ describe 'User creation and first login' do
 
   before { login_as(cfe_admin, scope: :user) }
 
+  let!(:reset_password_token) { Devise.token_generator.generate(User, :reset_password_token) }
+  let(:raw_reset_password_token) { reset_password_token[0] }
+  let(:encrypted_reset_password_token) { reset_password_token[1] }
+
+  before { Devise.token_generator.stub(:generate).and_return(reset_password_token) }
+
   it do
     # cfe admin creates new lender admin
     navigate_cfe_admin_to_lender_admins_for_lender lender
@@ -42,7 +48,7 @@ describe 'User creation and first login' do
     page.should have_content('Invalid username or password')
 
     # newly created lender admin sets password
-    visit edit_user_password_path(reset_password_token: lender_admin.reset_password_token)
+    visit edit_user_password_path(reset_password_token: raw_reset_password_token)
 
     # check validation
     click_button 'Change Password'
