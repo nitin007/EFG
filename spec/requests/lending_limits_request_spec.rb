@@ -30,7 +30,7 @@ describe 'LendingLimits' do
     it do
       choose_radio_button :allocation_type_id, LendingLimitType::Annual.id
       fill_in :name, 'This year'
-      select :phase_id, 'Phase 1'
+      select :phase_id, 'Phase 1 (FY 2009/10)'
       fill_in :starts_on, '1/1/12'
       fill_in :ends_on, '31/12/12'
       fill_in :allocation, '5000000'
@@ -70,7 +70,7 @@ describe 'LendingLimits' do
       page.should_not have_selector('#lending_limit_starts_on')
 
       fill_in :name, 'Updated'
-      select :phase_id, 'Phase 1'
+      select :phase_id, 'Phase 1 (FY 2009/10)'
       fill_in :allocation, '9999.99'
       click_button 'Update Lending Limit'
 
