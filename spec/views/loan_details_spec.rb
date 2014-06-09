@@ -93,7 +93,7 @@ describe 'loans/details' do
   end
 
   context "with a guaranteed loan" do
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
+    let!(:loan) { FactoryGirl.create(:loan, :guaranteed) }
 
     it_behaves_like 'rendered loan_details' do
       let(:visible_details) { %w(loan_guarantee.received_declaration) }
@@ -101,7 +101,7 @@ describe 'loans/details' do
 
     context 'without an initial_draw_change' do
       before do
-        loan.loan_modifications.delete_all
+        LoanModification.delete_all
       end
 
       it 'does not blow up' do
