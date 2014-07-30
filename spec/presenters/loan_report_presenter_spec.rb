@@ -4,7 +4,8 @@ require 'csv'
 describe LoanReportPresenter do
 
   describe "#initialize" do
-    let(:user) { double('user') }
+    let(:lender) { double(Lender, id: 89) }
+    let(:user) { double('user', lender: lender, lender_ids: [lender.id]) }
 
     it "should not allow unsupported attributes" do
       expect {
@@ -56,6 +57,9 @@ describe LoanReportPresenter do
     end
 
     it 'should be invalid without lender IDs' do
+      user = FactoryGirl.create(:cfe_user)
+      loan_report_presenter = LoanReportPresenter.new(user, report_attributes)
+
       loan_report_presenter.lender_ids = nil
       loan_report_presenter.should_not be_valid
     end

@@ -29,7 +29,8 @@ class LoanReportPresenter
   format :last_modified_start_date, with: QuickDateFormatter
   format :last_modified_end_date, with: QuickDateFormatter
 
-  validates_presence_of :lender_ids, :loan_types
+  validates_presence_of :lender_ids, allow_blank: false
+  validates_presence_of :loan_types
   validates_numericality_of :created_by_id, allow_blank: true
   validate :loan_types_are_allowed
   validate :loan_states_are_allowed
@@ -54,7 +55,7 @@ class LoanReportPresenter
     LoanReport.new.tap do |report|
       report.states = self.states
       report.loan_types = self.loan_types
-      report.lender_ids = filter_lender_ids(self.lender_ids)
+      report.lender_ids = self.lender_ids
       report.created_by_id = self.created_by_id
       report.facility_letter_start_date = self.facility_letter_start_date
       report.facility_letter_end_date = self.facility_letter_end_date
@@ -82,7 +83,7 @@ class LoanReportPresenter
   end
 
   def lender_ids=(lender_ids)
-    @lender_ids = filter_blank_multi_select(lender_ids)
+    @lender_ids = filter_lender_ids(lender_ids)
   end
 
   def loan_types=(type_ids)
@@ -128,8 +129,16 @@ class LoanReportPresenter
   # User's that can choose a lender are restricted to lender's they can access.
   # User's that can't choose a lender have it set to their list of lenders.
   def filter_lender_ids(lender_ids)
-    if has_lender_selection? && lender_ids.present?
-      user.lender_ids & lender_ids.map(&:to_i)
+    lender_ids = filter_blank_multi_select(lender_ids)
+
+    if has_lender_selection?
+      if lender_ids && lender_ids.any?
+        if lender_ids.include?(LenderSelectInput::AllOption.id)
+          user.lender_ids
+        else
+          user.lender_ids & lender_ids.map(&:to_i)
+        end
+      end
     else
       user.lender_ids
     end

@@ -95,6 +95,18 @@ describe 'Loan report' do
       page.response_headers['Content-Type'].should include('text/csv')
     end
 
+    it "should allow selection of 'All' lenders" do
+      fill_in_valid_details
+
+      within('.control-group.lender_select') do
+        check 'All'
+      end
+
+      click_button "Submit"
+
+      page.should have_content "Data extract found 3 rows"
+    end
+
     it "should not show created by form field" do
       page.should_not have_css("#loan_report_created_by_id option")
     end
