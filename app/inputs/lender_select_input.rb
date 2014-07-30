@@ -5,7 +5,7 @@ class LenderSelectInput < SimpleForm::Inputs::Base
     output = ActiveSupport::SafeBuffer.new
 
     output << '<label class="checkbox">'.html_safe
-    output << template.check_box_tag("#{object_name}[#{attribute_name}][]", AllOption.id, all_selected)
+    output << template.check_box_tag("#{object_name}[#{attribute_name}][]", AllOption.id, all_selected, {data: {behaviour: 'all-option'}})
     output << AllOption.name
     output << '</label>'.html_safe
 
