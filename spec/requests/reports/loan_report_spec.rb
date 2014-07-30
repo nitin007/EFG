@@ -50,6 +50,11 @@ describe 'Loan report' do
       page.should have_content "Data extract found 1 row"
     end
 
+    it "shouldn't show lender selection'" do
+      navigate_to_loan_report_form
+      page.should_not have_css('label[for=loan_report_lender_ids]')
+    end
+
     context 'with "EFG only" loan scheme access' do
       before(:each) do
         lender.loan_scheme = Lender::EFG_SCHEME
@@ -75,8 +80,12 @@ describe 'Loan report' do
 
     it "should output a CSV report for a selection of lenders" do
       fill_in_valid_details
-      select loan1.lender.name, from: 'loan_report_lender_ids'
-      select loan3.lender.name, from: 'loan_report_lender_ids'
+
+      within('.control-group.lender_select') do
+        check loan1.lender.name
+        check loan3.lender.name
+      end
+
       click_button "Submit"
 
       page.should have_content "Data extract found 2 rows"
@@ -93,9 +102,9 @@ describe 'Loan report' do
     it "should show validation errors" do
       click_button "Submit"
 
-      # 2 errors - empty states multi-select, no loan type selected
-      page.should have_css('.control-group.select.required.error #loan_report_lender_ids')
-      page.should have_css('.control-group.check_boxes.required.error .help-inline')
+      # 2 errors - no lender selected, no loan type selected
+      page.should have_css('label[for=loan_report_lender_ids] + .controls .help-inline')
+      page.should have_css('input[name="loan_report[loan_types][]"] + .help-inline')
     end
 
   end
