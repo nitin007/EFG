@@ -18,7 +18,9 @@ class Phase6Rules < Phase5Rules
     3 => BigDecimal.new('2.0'),
     4 => BigDecimal.new('2.0'),
     5 => BigDecimal.new('2.0'),
-    6 => BigDecimal.new('1.3')
+    6 => BigDecimal.new('1.3'),
+    7 => BigDecimal.new('2.0'),
+    8 => BigDecimal.new('1.3'),
   }
 
   def self.claim_limit_calculator
