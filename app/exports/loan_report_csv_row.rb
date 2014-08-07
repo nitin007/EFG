@@ -86,7 +86,9 @@ class LoanReportCsvRow
       row['lender_reference'],
       Money.new(row['settled_amount'] || 0).to_s,
       Money.new(row['cumulative_pre_claim_limit_realised_amount'] || 0).to_s,
-      Money.new(row['cumulative_post_claim_limit_realised_amount'] || 0).to_s
+      Money.new(row['cumulative_post_claim_limit_realised_amount'] || 0).to_s,
+      scheme_name(row['loan_scheme'], row['loan_source']),
+      phase_name(row['lending_limit_phase_id']),
     ]
   end
 
@@ -96,5 +98,13 @@ class LoanReportCsvRow
 
   def boolean_as_text(bool)
     bool ? 'Yes' : 'No'
+  end
+
+  def scheme_name(scheme, source)
+    LoanTypes.find(scheme, source).name
+  end
+
+  def phase_name(phase_id)
+    Phase.find(phase_id).try(:name)
   end
 end

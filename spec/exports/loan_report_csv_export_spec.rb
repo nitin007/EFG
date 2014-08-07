@@ -38,7 +38,8 @@ describe LoanReportCsvExport do
     let(:lending_limit) {
       FactoryGirl.create(:lending_limit,
         lender: lender,
-        name: 'lending limit'
+        name: 'lending limit',
+        phase_id: 5
       )
     }
     let!(:loan_realisation_1) {
@@ -240,7 +241,9 @@ describe LoanReportCsvExport do
           :loan_lender_reference,
           :settled_amount,
           :cumulative_pre_claim_limit_realised_amount,
-          :cumulative_post_claim_limit_realised_amount
+          :cumulative_post_claim_limit_realised_amount,
+          :scheme,
+          :phase,
         ].map {|h| t(h) }
     end
 
@@ -326,6 +329,8 @@ describe LoanReportCsvExport do
       row[t(:settled_amount)].should == '1000.00'
       row[t(:cumulative_pre_claim_limit_realised_amount)].should == '3000.00'
       row[t(:cumulative_post_claim_limit_realised_amount)].should == '2000.00'
+      row[t(:scheme)].should == 'EFG'
+      row[t(:phase)].should == 'Phase 5'
     end
 
     context "without guarantee rate on loan" do

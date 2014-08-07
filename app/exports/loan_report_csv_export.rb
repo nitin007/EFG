@@ -85,7 +85,9 @@ class LoanReportCsvExport < BaseCsvExport
       :loan_lender_reference,
       :settled_amount,
       :cumulative_pre_claim_limit_realised_amount,
-      :cumulative_post_claim_limit_realised_amount
+      :cumulative_post_claim_limit_realised_amount,
+      :scheme,
+      :phase
     ]
   end
 
@@ -105,7 +107,7 @@ class LoanReportCsvExport < BaseCsvExport
 
   def each_record(&block)
     # Eager load the records so we can create the lookup for the loan_security_types.
-    @records.find_in_batches do |batch|
+    @records.preload(:lending_limit).find_in_batches do |batch|
       loan_ids = batch.map {|row| row['id']}
       loan_securities_lookup = loan_security_types_lookup_for_loan_ids(loan_ids)
 
