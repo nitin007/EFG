@@ -38,7 +38,6 @@ group :assets do
 end
 
 group :development do
-  gem 'debugger', '1.6.1'
   gem 'guard-rspec', '0.7.2'
   gem 'powder', '0.1.8'
 end
