@@ -15,7 +15,6 @@
  *= require eligibility_check_form
  *= require forms
  *= require header
- *= require lender_select_input
  *= require loan_alerts
  *= require loan_guarantee_form
  *= require loans

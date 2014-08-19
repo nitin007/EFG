@@ -27,7 +27,7 @@
   <%= f.input :states, as: :select, collection: loan_state_options(LoanReportPresenter::ALLOWED_LOAN_STATES), input_html: { multiple: true } %>
 
   <% if @loan_report.has_lender_selection? %>
-    <%= f.input :lender_ids, as: :lender_select, collection: @loan_report.allowed_lenders.order_by_name %>
+    <%= f.input :lender_ids, as: :select, collection: @loan_report.allowed_lenders.order_by_name.unshift(LoanReportPresenter::ALL_LENDERS_OPTION), input_html: { multiple: true } %>
   <% else %>
     <%= hidden_field_tag 'loan_report[lender_ids][]', current_lender.id %>
   <% end %>

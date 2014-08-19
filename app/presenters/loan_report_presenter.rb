@@ -20,6 +20,7 @@ class LoanReportPresenter
 
   ALLOWED_LOAN_STATES = Loan::States.sort.freeze
   ALLOWED_LOAN_TYPES = LoanTypes::ALL.freeze
+  ALL_LENDERS_OPTION = OpenStruct.new(id: 'ALL', name: 'All').freeze
   LOAN_TYPES_BY_ID = LoanTypes::ALL.index_by(&:id)
 
   format :facility_letter_start_date, with: QuickDateFormatter
@@ -29,8 +30,7 @@ class LoanReportPresenter
   format :last_modified_start_date, with: QuickDateFormatter
   format :last_modified_end_date, with: QuickDateFormatter
 
-  validates_presence_of :lender_ids, allow_blank: false
-  validates_presence_of :loan_types
+  validates_presence_of :lender_ids, :loan_types
   validates_numericality_of :created_by_id, allow_blank: true
   validate :loan_types_are_allowed
   validate :loan_states_are_allowed
@@ -55,7 +55,7 @@ class LoanReportPresenter
     LoanReport.new.tap do |report|
       report.states = self.states
       report.loan_types = self.loan_types
-      report.lender_ids = self.lender_ids
+      report.lender_ids = filter_lender_ids(self.lender_ids)
       report.created_by_id = self.created_by_id
       report.facility_letter_start_date = self.facility_letter_start_date
       report.facility_letter_end_date = self.facility_letter_end_date
@@ -133,7 +133,7 @@ class LoanReportPresenter
 
     if has_lender_selection?
       if lender_ids && lender_ids.any?
-        if lender_ids.include?(LenderSelectInput::AllOption.id)
+        if lender_ids.include?(ALL_LENDERS_OPTION.id)
           user.lender_ids
         else
           user.lender_ids & lender_ids.map(&:to_i)

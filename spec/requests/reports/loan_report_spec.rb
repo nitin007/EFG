@@ -81,10 +81,8 @@ describe 'Loan report' do
     it "should output a CSV report for a selection of lenders" do
       fill_in_valid_details
 
-      within('.control-group.lender_select') do
-        check loan1.lender.name
-        check loan3.lender.name
-      end
+      select loan1.lender.name, from: "loan_report[lender_ids][]"
+      select loan3.lender.name, from: "loan_report[lender_ids][]"
 
       click_button "Submit"
 
@@ -98,10 +96,7 @@ describe 'Loan report' do
     it "should allow selection of 'All' lenders" do
       fill_in_valid_details
 
-      within('.control-group.lender_select') do
-        check 'All'
-      end
-
+      select 'All', from: "loan_report[lender_ids][]"
       click_button "Submit"
 
       page.should have_content "Data extract found 3 rows"
