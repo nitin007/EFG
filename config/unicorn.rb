@@ -3,7 +3,7 @@ if File.exist?("/etc/govuk/unicorn.rb")
   self.instance_eval(File.read("/etc/govuk/unicorn.rb"))
 
   # EFG lives in its own little world - it has a server all to itself.
-  worker_processes 4
+  worker_processes 3
 
   # Currently we have some reports on the request thread that take a long-time
   # to generate. Change the timeout for a worker to finish the response from
