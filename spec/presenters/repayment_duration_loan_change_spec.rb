@@ -219,6 +219,8 @@ describe RepaymentDurationLoanChange do
         Timecop.freeze(2013, 3, 1)
       end
 
+      after { Timecop.return }
+
       let(:loan_change) { loan.loan_changes.last! }
 
       it 'creates a LoanChange and updates the loan' do
