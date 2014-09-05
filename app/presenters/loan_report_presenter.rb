@@ -20,6 +20,7 @@ class LoanReportPresenter
 
   ALLOWED_LOAN_STATES = Loan::States.sort.freeze
   ALLOWED_LOAN_TYPES = LoanTypes::ALL.freeze
+  ALL_LENDERS_OPTION = OpenStruct.new(id: 'ALL', name: 'All').freeze
   LOAN_TYPES_BY_ID = LoanTypes::ALL.index_by(&:id)
 
   format :facility_letter_start_date, with: QuickDateFormatter
@@ -82,7 +83,7 @@ class LoanReportPresenter
   end
 
   def lender_ids=(lender_ids)
-    @lender_ids = filter_blank_multi_select(lender_ids)
+    @lender_ids = filter_lender_ids(lender_ids)
   end
 
   def loan_types=(type_ids)
@@ -128,8 +129,16 @@ class LoanReportPresenter
   # User's that can choose a lender are restricted to lender's they can access.
   # User's that can't choose a lender have it set to their list of lenders.
   def filter_lender_ids(lender_ids)
-    if has_lender_selection? && lender_ids.present?
-      user.lender_ids & lender_ids.map(&:to_i)
+    lender_ids = filter_blank_multi_select(lender_ids)
+
+    if has_lender_selection?
+      if lender_ids && lender_ids.any?
+        if lender_ids.include?(ALL_LENDERS_OPTION.id)
+          user.lender_ids
+        else
+          user.lender_ids & lender_ids.map(&:to_i)
+        end
+      end
     else
       user.lender_ids
     end
