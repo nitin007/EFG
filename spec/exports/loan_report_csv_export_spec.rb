@@ -330,7 +330,7 @@ describe LoanReportCsvExport do
       row[t(:cumulative_pre_claim_limit_realised_amount)].should == '3000.00'
       row[t(:cumulative_post_claim_limit_realised_amount)].should == '2000.00'
       row[t(:scheme)].should == 'EFG'
-      row[t(:phase)].should == 'Phase 5'
+      row[t(:phase)].should == 'Phase 5 (FY 2013/14)'
     end
 
     context "without guarantee rate on loan" do
