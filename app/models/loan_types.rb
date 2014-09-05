@@ -7,4 +7,8 @@ module LoanTypes
   EFG = LoanType.new('efg', 'EFG', Loan::EFG_SCHEME, Loan::SFLG_SOURCE)
 
   ALL = [LEGACY_SFLG, NEW_SFLG, EFG]
+
+  def self.find(loan_scheme, loan_source)
+    ALL.detect {|type| type.scheme == loan_scheme && type.source == loan_source}
+  end
 end

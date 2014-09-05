@@ -82,6 +82,8 @@ en:
       settled_amount: Settled amount
       cumulative_pre_claim_limit_realised_amount: Cumulative Value of All Pre-Claim Limit Realisations
       cumulative_post_claim_limit_realised_amount: Cumulative Value of All Post-Claim Limit Realisations
+      scheme: Scheme
+      phase: Phase
 
     loan_audit_report:
       loan_reference: Loan reference
