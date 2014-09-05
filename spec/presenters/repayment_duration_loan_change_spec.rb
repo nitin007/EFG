@@ -216,16 +216,14 @@ describe RepaymentDurationLoanChange do
     context 'success' do
       before do
         loan.initial_draw_change.update_column :date_of_change, Date.new(2010, 3, 2)
+        Timecop.freeze(2013, 3, 1)
       end
 
       let(:loan_change) { loan.loan_changes.last! }
 
       it 'creates a LoanChange and updates the loan' do
         presenter.added_months = 3
-
-        Timecop.freeze(2013, 3, 1) do
-          presenter.save.should == true
-        end
+        presenter.save.should == true
 
         loan_change.old_maturity_date.should == Date.new(2015, 3, 2)
         loan_change.maturity_date.should == Date.new(2015, 6, 2)
