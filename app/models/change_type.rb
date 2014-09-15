@@ -11,7 +11,8 @@ class ChangeType < StaticAssociation
     { id: '9', name: 'Data correction' },
     { id: 'a', name: 'Decrease term' },
     { id: 'b', name: 'Repayment frequency' },
-    { id: 'c', name: 'Postcode' }
+    { id: 'c', name: 'Postcode' },
+    { id: 'd', name: 'Lender Reference' }
   ]
 
   BusinessName = find('1')
@@ -26,4 +27,5 @@ class ChangeType < StaticAssociation
   DecreaseTerm = find('a')
   RepaymentFrequency = find('b')
   Postcode = find('c')
+  LenderReference = find('d')
 end

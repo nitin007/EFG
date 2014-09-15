@@ -18,6 +18,10 @@ FactoryGirl.define do
       association :loan, factory: [:loan, :guaranteed, :demanded]
     end
 
+    factory :lender_reference_data_correction, class: LenderReferenceDataCorrection do
+      lender_reference 'New Lender Reference'
+    end
+
     factory :postcode_data_correction, class: PostcodeDataCorrection do
       postcode 'EC1A 9PN'
     end
