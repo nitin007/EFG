@@ -11,6 +11,7 @@ class LoanGuarantee
   attribute :signed_direct_debit_received
   attribute :first_pp_received
   attribute :repayment_duration, read_only: true
+  attribute :lender_reference
 
   attr_reader :initial_draw_date
   attr_accessible :initial_draw_date
