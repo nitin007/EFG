@@ -56,10 +56,6 @@ en:
         fourth_draw_amount: What is the amount of the additional draw? (Fourth tranche)
         fourth_draw_months: What is the number of months (from next (or subsequent) quarterly Premium collection point) to fourth tranche drawdown?
 
-      data_correction:
-        business_name: 'What is the new business name?'
-        sortcode: 'Correct Branch Sort Code'
-
       loan_eligibility_check:
         <<: *loan
 
