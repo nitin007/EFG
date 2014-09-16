@@ -45,19 +45,27 @@ class LoanModification < ActiveRecord::Base
   end
 
   def changes
-    attributes.select { |key, value|
-      key[0..3] == 'old_' && value.present?
-    }.keys.map { |name|
-      old_name = name.sub(/_id$/, '')
-      new_name = old_name.slice(4..-1)
+    change_attribute_names = attribute_names.select {|attribute, _| attribute.match(/^old_/) }
 
-      {
-        old_attribute: old_name,
-        old_value: self.send(old_name),
-        attribute: new_name,
-        value: self.send(new_name)
-      }
-    }
+    change_attribute_names.inject([]) do |memo, old_attribute_name|
+      new_attribute_name = old_attribute_name.sub(/^old_/, '')
+      old_value = attributes[old_attribute_name]
+      new_value = attributes[new_attribute_name]
+
+      if old_value.present? || new_value.present?
+        old_attribute_name = old_attribute_name.sub(/_id$/, '')
+        new_attribute_name = new_attribute_name.sub(/_id$/, '')
+
+        memo << {
+          old_attribute: old_attribute_name,
+          old_value: self.public_send(old_attribute_name),
+          attribute: new_attribute_name,
+          value: self.public_send(new_attribute_name),
+        }
+      end
+
+      memo
+    end
   end
 
   private

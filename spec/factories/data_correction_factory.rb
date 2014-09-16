@@ -5,6 +5,5 @@ FactoryGirl.define do
     change_type ChangeType::DataCorrection
     date_of_change { Date.current }
     modified_date { Date.current }
-    sortcode '666666'
   end
 end
