@@ -9,6 +9,10 @@ class LoanChangePresenter
 
       attr_accessible  :initial_capital_repayment_holiday
     end
+
+    def includes_capital_repayment_fields?
+      true
+    end
   end
 
   module TrancheDrawdownsFields
@@ -25,6 +29,10 @@ class LoanChangePresenter
       attr_accessible :second_draw_amount, :second_draw_months,
         :third_draw_amount, :third_draw_months, :fourth_draw_amount,
         :fourth_draw_months
+    end
+
+    def includes_tranche_drawdown_fields?
+      true
     end
   end
 
@@ -64,6 +72,14 @@ class LoanChangePresenter
 
   def date_of_change=(value)
     @date_of_change = QuickDateFormatter.parse(value)
+  end
+
+  def includes_capital_repayment_fields?
+    false
+  end
+
+  def includes_tranche_drawdown_fields?
+    false
   end
 
   def loan_change
