@@ -10,7 +10,6 @@ module ActiveModel
         @record, @attribute, @value = record, attribute, value
 
         @email = Mail::Address.new(value)
-        @tree  = email.__send__(:tree)
 
         add_error unless valid?
       rescue Mail::Field::ParseError
@@ -28,7 +27,7 @@ module ActiveModel
       end
 
       def domain_has_more_than_one_atom?
-        tree.domain.dot_atom_text.elements.length > 1
+        email.domain.split('.').length > 1
       end
 
       def add_error
