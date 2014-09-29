@@ -24,6 +24,10 @@
 
   <%= f.input :initial_draw_amount, as: :currency, disabled: true, hint: "To change the initial draw amount, you must #{link_to 'update the premium schedule', edit_loan_premium_schedule_path(f.object.loan, redirect: 'loan_guarantee')}." %>
 
+  <hr>
+
+  <%= f.input :lender_reference %>
+
   <div class="form-actions">
     <%= f.button :submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' } %>
   </div>
