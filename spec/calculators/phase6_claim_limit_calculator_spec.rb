@@ -19,6 +19,7 @@ describe 'Claim Limit Phase 6' do
   let!(:excluded_loan) { FactoryGirl.create(:loan, :offered, lender: lender, lending_limit: lending_limit2, amount: loan_amount) }
 
   let!(:pre_claim_realisation) { FactoryGirl.create(:loan_realisation, :pre, realised_loan: settled_loan, realised_amount: Money.new(1_000_00)) }
+  let!(:post_claim_realisation) { FactoryGirl.create(:loan_realisation, :post, realised_loan: settled_loan, realised_amount: Money.new(1_000_00)) }
 
   let(:claim_limit) { Phase6ClaimLimitCalculator.new(lender) }
 

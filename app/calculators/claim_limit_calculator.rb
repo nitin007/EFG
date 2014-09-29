@@ -67,6 +67,7 @@ class ClaimLimitCalculator
         .where(loan_scheme: Loan::EFG_SCHEME)
         .where(state: SettledStates)
         .where(lending_limits: { phase_id: phase.id })
+        .where(loan_realisations: { post_claim_limit: false })
         .sum(:realised_amount)
 
       Money.new(amount)
