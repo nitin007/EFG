@@ -1,3 +1,5 @@
+Dotenv.load!(Rails.root.join('.env.test'))
+
 EFG::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
