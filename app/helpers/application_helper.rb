@@ -45,9 +45,8 @@ module ApplicationHelper
   def google_analytics
     return unless Rails.env.production?
 
-    account, domain = Plek.current.environment == "preview" ?
-      ['UA-34504094-2', 'preview.alphagov.co.uk'] :
-      ['UA-34504094-1', 'production.alphagov.co.uk']
+    account = ENV['EFG_GOOGLE_ANALYTICS_ACCOUNT']
+    domain = ENV['EFG_GOOGLE_ANALYTICS_DOMAIN']
 
     user_type   = current_user ? current_user.type : nil
     lender_name = %w(LenderAdmin LenderUser).include?(user_type) ? current_lender.name : nil
