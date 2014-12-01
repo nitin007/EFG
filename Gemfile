@@ -8,6 +8,7 @@ gem 'canable', '0.3.0'
 gem 'devise', '3.2.4'
 gem "devise-encryptable", "0.1.2"
 gem "devise_security_extension", "0.7.2"
+gem "dotenv-rails", "1.0.2"
 gem 'exception_notification', '3.0.1'
 gem 'jquery-rails', "2.2.1"
 gem 'less-rails', '2.2.6'
