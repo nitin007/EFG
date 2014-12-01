@@ -1,6 +1,6 @@
 unless Rails.env.development? or Rails.env.test?
   Rails.application.config.middleware.use ExceptionNotifier,
-    :email_prefix => "[#{Rails.application.to_s.split('::').first}] (#{Plek.current.environment})",
-    :sender_address => %{"Winston Smith-Churchill" <winston@alphagov.co.uk>},
-    :exception_recipients => %w{govuk-exceptions@digital.cabinet-office.gov.uk}
+    :email_prefix => "[#{Rails.application.to_s.split('::').first}][#{ENV['EFG_ENVIRONMENT']}]",
+    :sender_address => ENV['EFG_MAIL_FROM_ADDRESS'],
+    :exception_recipients => [ENV['EFG_EXCEPTION_MAILER_TO_ADDRESS']]
 end
