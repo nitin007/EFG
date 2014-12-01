@@ -71,7 +71,7 @@ EFG::Application.configure do
   config.lograge.enabled = true
 
   config.action_mailer.default_url_options = {
-    :host => ENV["EFG_HOST"] || URI.parse(Plek.current.find('efg')).host
+    :host => ENV["EFG_HOST"]
   }
 
   config.action_mailer.smtp_settings = {
