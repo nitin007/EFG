@@ -71,5 +71,6 @@ EFG::Application.configure do
     :host => ENV["EFG_HOST"]
   }
 
+  require Rails.root.join('config', 'initializers', 'amazon_ses')
   config.action_mailer.delivery_method = :ses
 end
