@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file.
 
 EFG::Application.config.session_store :cookie_store, {
-  :secure => Rails.env.production?,
+  :secure => true,
   :key => '_EFG_session'
 }
 # Use the database for sessions instead of the cookie-based default,
