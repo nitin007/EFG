@@ -5,10 +5,10 @@ gem "builder", '3.1.4'
 gem 'aws-ses', :require => 'aws/ses' # Needed by exception_notification
 gem 'bootstrap-will_paginate', '0.0.10'
 gem 'canable', '0.3.0'
-gem 'devise', '3.2.4'
-gem "devise-encryptable", "0.1.2"
+gem 'devise', '3.4.1'
+gem "devise-encryptable", "0.2.0"
 gem 'protected_attributes'
-gem "devise_security_extension", "0.7.2"
+gem "devise_security_extension", git: 'https://github.com/phatworx/devise_security_extension.git'
 gem 'exception_notification', '4.0.1'
 gem 'jquery-rails', "2.2.1"
 gem 'less-rails', '2.2.6'
