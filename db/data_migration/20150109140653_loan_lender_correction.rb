@@ -10,5 +10,7 @@
 
 new_lender = Lender.find_by_organisation_reference_code('VR')
 loan = Loan.find_by_reference('Y6YPPMX+01')
-loan.lender = new_lender
-loan.save!
+if new_lender and loan
+  loan.lender = new_lender
+  loan.save!
+end
