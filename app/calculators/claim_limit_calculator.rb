@@ -20,6 +20,16 @@ class ClaimLimitCalculator
     Loan::Recovered,
   ].freeze
 
+  ChangeTypesWithDraws = [
+    ChangeType::CapitalRepaymentHoliday,
+    ChangeType::DecreaseTerm,
+    ChangeType::ExtendTerm,
+    ChangeType::LumpSumRepayment,
+    ChangeType::RecordAgreedDraw,
+    ChangeType::ReprofileDraws,
+    ChangeType::RepaymentFrequency
+  ].freeze
+
   attr_reader :lender
 
   def initialize(lender)
@@ -103,7 +113,7 @@ class ClaimLimitCalculator
       .where(state: ClaimLimitStates)
       .where("loan_modifications.type = 'InitialDrawChange' OR
               loan_modifications.change_type_id IN (?)",
-              [ ChangeType::RecordAgreedDraw.id, ChangeType::ReprofileDraws.id ])
+              ChangeTypesWithDraws.collect(&:id))
       .where(lending_limits: { phase_id: phase.id })
   end
 
