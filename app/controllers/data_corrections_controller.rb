@@ -5,6 +5,7 @@ class DataCorrectionsController < ApplicationController
     'lender_reference' => LenderReferenceDataCorrection,
     'postcode' => PostcodeDataCorrection,
     'sortcode' => SortcodeDataCorrection,
+    'trading_date' => TradingDateDataCorrection,
     'trading_name' => TradingNameDataCorrection,
   }
 
