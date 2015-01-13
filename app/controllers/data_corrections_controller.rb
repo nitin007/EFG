@@ -1,6 +1,7 @@
 class DataCorrectionsController < ApplicationController
   TYPES = {
     'business_name' => BusinessNameDataCorrection,
+    'company_registration' => CompanyRegistrationDataCorrection,
     'demanded_amount' => DemandedAmountDataCorrection,
     'lender_reference' => LenderReferenceDataCorrection,
     'postcode' => PostcodeDataCorrection,

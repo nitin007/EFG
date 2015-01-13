@@ -13,6 +13,10 @@ FactoryGirl.define do
       business_name 'New Business Name'
     end
 
+    factory :company_registration_data_correction, class: CompanyRegistrationDataCorrection do
+      company_registration '987654'
+    end
+
     factory :trading_name_data_correction, class: TradingNameDataCorrection do
       trading_name 'New Trading Name'
     end
