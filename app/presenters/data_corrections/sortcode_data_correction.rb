@@ -9,6 +9,7 @@ class SortcodeDataCorrection < DataCorrectionPresenter
 
   private
     def update_data_correction
+      data_correction.change_type = ChangeType::Sortcode
       data_correction.sortcode = sortcode
       data_correction.old_sortcode = loan.sortcode
     end
