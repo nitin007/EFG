@@ -13,6 +13,10 @@ FactoryGirl.define do
       business_name 'New Business Name'
     end
 
+    factory :trading_name_data_correction, class: TradingNameDataCorrection do
+      trading_name 'New Trading Name'
+    end
+
     factory :demanded_amount_data_correction, class: DemandedAmountDataCorrection do
       demanded_amount Money.new(1_000_00)
       association :loan, factory: [:loan, :guaranteed, :demanded]

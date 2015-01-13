@@ -4,7 +4,8 @@ class DataCorrectionsController < ApplicationController
     'demanded_amount' => DemandedAmountDataCorrection,
     'lender_reference' => LenderReferenceDataCorrection,
     'postcode' => PostcodeDataCorrection,
-    'sortcode' => SortcodeDataCorrection
+    'sortcode' => SortcodeDataCorrection,
+    'trading_name' => TradingNameDataCorrection,
   }
 
   before_filter :verify_create_permission
