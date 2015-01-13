@@ -157,7 +157,7 @@ describe 'Loan lifecycle' do
     current_url.should == loan_url(loan)
 
     click_link 'Loan Changes'
-    click_link 'Data correction'
+    click_link 'Sortcode'
 
     page.should have_content('03-12-45')
     page.should have_content('654321')
