@@ -2,7 +2,6 @@ class DemandedAmountDataCorrection < DataCorrectionPresenter
   attr_reader :demanded_amount, :demanded_interest
   attr_accessible :demanded_amount, :demanded_interest
 
-  before_save :update_data_correction
   before_save :update_loan
 
   validate :ensure_loan_is_demanded
@@ -23,6 +22,10 @@ class DemandedAmountDataCorrection < DataCorrectionPresenter
       !loan.efg_loan?
     end
 
+    def change_type
+      ChangeType::DataCorrection
+    end
+
     def ensure_loan_is_demanded
       if loan.state != Loan::Demanded
         raise ActiveModel::StrictValidationFailed
@@ -33,15 +36,12 @@ class DemandedAmountDataCorrection < DataCorrectionPresenter
       errors.add(:base, :change_required) unless demanded_amount || demanded_interest
     end
 
-    def update_data_correction
-      if demanded_amount
-        data_correction.dti_demand_out_amount = demanded_amount
-        data_correction.old_dti_demand_out_amount = loan.dti_demand_outstanding
-      end
-
-      if can_correct_interest? && demanded_interest
-        data_correction.dti_demand_interest = demanded_interest
-        data_correction.old_dti_demand_interest = loan.dti_interest
+    def formatted_value(key, value)
+        binding.pry
+      if key == 'dti_demand_outstanding'
+        Money.new(value)
+      else
+        value
       end
     end
 

@@ -14,23 +14,15 @@ class LoanModification < ActiveRecord::Base
   format :amount, with: MoneyFormatter.new
   format :amount_drawn, with: MoneyFormatter.new
   format :date_of_change, with: QuickDateFormatter
-  format :dti_demand_interest, with: MoneyFormatter.new
-  format :dti_demand_out_amount, with: MoneyFormatter.new
-  format :facility_letter_date, with: QuickDateFormatter
   format :initial_draw_amount, with: MoneyFormatter.new
   format :initial_draw_date, with: QuickDateFormatter
   format :lump_sum_repayment, with: MoneyFormatter.new
   format :maturity_date, with: QuickDateFormatter
   format :modified_date, with: QuickDateFormatter
   format :old_amount, with: MoneyFormatter.new
-  format :old_dti_demand_interest, with: MoneyFormatter.new
-  format :old_dti_demand_out_amount, with: MoneyFormatter.new
-  format :old_facility_letter_date, with: QuickDateFormatter
   format :old_initial_draw_amount, with: MoneyFormatter.new
   format :old_initial_draw_date, with: QuickDateFormatter
   format :old_maturity_date, with: QuickDateFormatter
-  format :trading_date, with: QuickDateFormatter
-  format :old_trading_date, with: QuickDateFormatter
 
   scope :desc, -> { order('date_of_change DESC, id DESC') }
 

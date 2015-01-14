@@ -10,7 +10,7 @@ describe 'LoanModifications' do
 
   before do
     FactoryGirl.create(:loan_change, loan: loan, change_type: ChangeType::ExtendTerm, repayment_duration: 63, old_repayment_duration: 60)
-    FactoryGirl.create(:data_correction, loan: loan, sortcode: '654321', old_sortcode: '123456')
+    FactoryGirl.create(:data_correction, loan: loan, data_correction_changes: { sortcode: ['123456', '654321'] })
     FactoryGirl.create(:loan_change, loan: loan, change_type: ChangeType::LumpSumRepayment, lump_sum_repayment: Money.new(1_234_56))
   end
 
@@ -71,7 +71,11 @@ describe 'LoanModifications' do
     it 'includes new and old values for a LendingLimit DataCorrection' do
       old_lending_limit = loan.lending_limit
       lending_limit = FactoryGirl.create(:lending_limit, lender: loan.lender, name: 'new lending limit')
-      FactoryGirl.create(:data_correction, loan: loan, old_lending_limit_id: old_lending_limit.id, lending_limit_id: lending_limit.id)
+      FactoryGirl.create(:data_correction, {
+          loan: loan,
+          data_correction_changes: { lending_limit_id: [ old_lending_limit.id, lending_limit.id ] }
+        }
+      )
 
       click_link 'Loan Changes'
       page.all('table tbody a').first.click

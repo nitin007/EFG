@@ -76,10 +76,9 @@ describe DemandedAmountDataCorrection do
 
           data_correction = loan.data_corrections.last!
           data_correction.created_by.should == user
-          data_correction.dti_demand_out_amount.should == Money.new(1_234_56)
-          data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
-          data_correction.dti_demand_interest.should be_nil
-          data_correction.old_dti_demand_interest.should be_nil
+          data_correction.dti_demand_outstanding.should == Money.new(1_234_56)
+          data_correction.old_dti_demand_outstanding.should == Money.new(1_000_00)
+          data_correction.data_correction_changes.should_not have_key('dti_interest')
 
           loan.reload
           loan.dti_demand_outstanding.should == Money.new(1_234_56)
@@ -110,10 +109,10 @@ describe DemandedAmountDataCorrection do
           presenter.save.should == true
 
           data_correction = loan.data_corrections.last!
-          data_correction.dti_demand_out_amount.should == Money.new(1_234_56)
-          data_correction.old_dti_demand_out_amount.should == Money.new(1_000_00)
-          data_correction.dti_demand_interest.should == Money.new(123_45)
-          data_correction.old_dti_demand_interest.should == Money.new(100_00)
+          data_correction.dti_demand_outstanding.should == Money.new(1_234_56)
+          data_correction.old_dti_demand_outstanding.should == Money.new(1_000_00)
+          data_correction.dti_interest.should == Money.new(123_45)
+          data_correction.old_dti_interest.should == Money.new(100_00)
 
           loan.reload
           loan.dti_demand_outstanding.should == Money.new(1_234_56)

@@ -2,7 +2,6 @@ module BasicDataCorrectable
   extend ActiveSupport::Concern
 
   included do
-    before_save :update_data_correction
     before_save :update_loan
 
     cattr_accessor :attribute_name
@@ -21,13 +20,11 @@ module BasicDataCorrectable
     end
   end
 
-  private
-
-  def update_data_correction
-    data_correction.change_type = change_type_class
-    data_correction.public_send("#{attribute_name}=", attribute_value)
-    data_correction.public_send("old_#{attribute_name}=", loan.public_send(attribute_name))
+  def change_type
+    "ChangeType::#{attribute_name.to_s.classify}".constantize
   end
+
+  private
 
   def update_loan
     loan.public_send("#{attribute_name}=", attribute_value)
@@ -39,10 +36,6 @@ module BasicDataCorrectable
 
   def attribute_value
     public_send(attribute_name)
-  end
-
-  def change_type_class
-    "ChangeType::#{attribute_name.to_s.classify}".constantize
   end
 
 end

@@ -261,7 +261,7 @@ describe 'Loan lifecycle' do
     # Loan Change
     reprofile_draws(loan)
 
-    # Loan Data Correction - loan amount
+    # Loan Data Correction - sort code
     make_loan_data_correction(loan)
 
     # Demand to Borrower 1
