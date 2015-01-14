@@ -9,13 +9,15 @@ module BasicDataCorrectable
   end
 
   module ClassMethods
-    def data_corrects(attribute_name)
+    def data_corrects(attribute_name, opts = {})
       self.attribute_name = attribute_name
 
       attr_accessor attribute_name
       attr_accessible attribute_name
 
-      validates attribute_name, presence: true
+      unless opts[:skip_validation]
+        validates attribute_name, presence: true
+      end
     end
   end
 

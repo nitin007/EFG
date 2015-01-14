@@ -28,12 +28,15 @@ shared_examples_for 'a basic data correction' do |attribute, input_value, new_va
   end
 end
 
-shared_examples_for 'a basic data correction presenter' do |attribute, input_value, new_value = nil|
+shared_examples_for 'a basic data correction presenter' do |attribute, input_value, new_value = nil, loan_attrs = {}|
   let(:factory_name) { "#{attribute}_data_correction" }
+  let(:user) { FactoryGirl.create(:lender_user) }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed, loan_attrs) }
+  let(:presenter) { FactoryGirl.build(factory_name, created_by: user, loan: loan) }
   let(:expected_new_value) { new_value || input_value }
 
   describe 'validations' do
-    let(:presenter) { FactoryGirl.build(factory_name) }
+    let(:presenter) { FactoryGirl.build(factory_name, loan: loan) }
 
     it 'has a valid factory' do
       presenter.should be_valid
@@ -46,9 +49,6 @@ shared_examples_for 'a basic data correction presenter' do |attribute, input_val
   end
 
   describe '#save' do
-    let(:user) { FactoryGirl.create(:lender_user) }
-    let(:loan) { FactoryGirl.create(:loan, :guaranteed) }
-    let(:presenter) { FactoryGirl.build(factory_name, created_by: user, loan: loan) }
     let!(:old_value) { loan.public_send(attribute) }
 
     context 'success' do
