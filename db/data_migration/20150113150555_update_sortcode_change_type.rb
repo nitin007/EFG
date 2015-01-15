@@ -55,10 +55,6 @@ scope = fields.inject(scope) do |memo, field|
 end
 
 scope.each_with_index do |loan_modification, index|
-  puts index + 1
-  puts loan_modification.inspect
   loan_modification.change_type = ChangeType::Sortcode
   loan_modification.save!
-  puts loan_modification.change_type
-  puts '----------'
 end
