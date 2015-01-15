@@ -11,10 +11,15 @@ class DataCorrection < LoanModification
     trading_date: SerializedDateFormatter,
   }
 
-  belongs_to :old_lending_limit, class_name: 'LendingLimit'
-  belongs_to :lending_limit
-
   serialize :data_correction_changes, JSON
+
+  def old_lending_limit_id
+    lending_limit(:first)
+  end
+
+  def lending_limit_id
+    lending_limit(:last)
+  end
 
   def data_correction_changes=(changes)
     changes.each do |(key, values)|
@@ -50,6 +55,11 @@ class DataCorrection < LoanModification
   end
 
   private
+
+  def lending_limit(first_or_last)
+    limit_id = data_correction_changes['lending_limit_id'].try(first_or_last)
+    LendingLimit.find_by_id(limit_id)
+  end
 
   def correction_details
     corrections = (read_attribute(:data_correction_changes) || {})

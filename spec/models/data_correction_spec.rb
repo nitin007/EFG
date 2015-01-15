@@ -38,5 +38,27 @@ describe DataCorrection do
       end
     end
 
+    describe "data correction with lending limit change" do
+      let(:lender) { loan.lender }
+      let(:lending_limit_1) { FactoryGirl.create(:lending_limit, lender: lender) }
+      let(:lending_limit_2) { FactoryGirl.create(:lending_limit, lender: lender) }
+      let(:data_correction_changes) {
+        { lending_limit_id: [lending_limit_1.id, lending_limit_2.id] }
+      }
+      let(:data_correction) {
+        FactoryGirl.create(:data_correction,
+          loan: loan,
+          data_correction_changes: data_correction_changes)
+      }
+
+      it "should return the old and new lending limits" do
+        data_correction.changes.should == [{
+          old_attribute: 'old_lending_limit',
+          old_value: lending_limit_1,
+          attribute: 'lending_limit',
+          value: lending_limit_2
+        }]
+      end
+    end
   end
 end
