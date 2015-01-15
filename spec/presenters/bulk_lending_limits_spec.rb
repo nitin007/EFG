@@ -147,7 +147,7 @@ describe BulkLendingLimits do
     let(:phase) { Phase.find(5) }
     let(:user) { FactoryGirl.create(:cfe_admin) }
 
-    before { AdminAudit.stub!(:log) }
+    before { AdminAudit.stub(:log) }
 
     let(:bulk_lending_limits) do
       bulk_lending_limits = BulkLendingLimits.new(attributes)
@@ -170,7 +170,7 @@ describe BulkLendingLimits do
       end
 
       lending_limits.map(&:lender).should =~ [lender2, lender3]
-      lending_limits.count(&:active?).should == 1
+      lending_limits.to_a.count(&:active?).should == 1
     end
 
     it "should create lending limits for selected lenders only" do

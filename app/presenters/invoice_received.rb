@@ -1,5 +1,3 @@
-require 'active_model/model'
-
 class InvoiceReceived
   PERIOD_COVERED_QUARTERS = Invoice::PERIOD_COVERED_QUARTERS
 
@@ -23,10 +21,6 @@ class InvoiceReceived
     if loans.none? {|loan| loan.settled? }
       errors.add(:base, 'No loans were selected.')
     end
-  end
-
-  def self.name
-    Invoice.name
   end
 
   def lender_id

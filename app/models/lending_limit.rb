@@ -20,9 +20,7 @@ class LendingLimit < ActiveRecord::Base
 
   has_many :loans
 
-  has_many :loans_using_lending_limit,
-           class_name: "Loan",
-           conditions: ["loans.state IN (?)", USAGE_LOAN_STATES]
+  has_many :loans_using_lending_limit, -> { where("loans.state IN (?)", USAGE_LOAN_STATES) }, class_name: "Loan"
 
   validates_presence_of :lender_id, strict: true
   validates_presence_of :allocation, :name, :ends_on, :starts_on
@@ -36,16 +34,15 @@ class LendingLimit < ActiveRecord::Base
   format :ends_on, with: QuickDateFormatter
   format :starts_on, with: QuickDateFormatter
 
-  default_scope order('ends_on DESC, allocation_type_id DESC')
+  default_scope { order('ends_on DESC, allocation_type_id DESC') }
+  scope :active, -> { where(active: true) }
 
   delegate :euro_conversion_rate, to: :phase
-
-  scope :active, where(active: true)
 
   def self.current
     today = Date.current
 
-    scoped.where("starts_on <= ? AND ends_on >= ?", today, today)
+    where("starts_on <= ? AND ends_on >= ?", today, today)
   end
 
   def allocation_type

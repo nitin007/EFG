@@ -5,7 +5,7 @@ class Recovery < ActiveRecord::Base
   belongs_to :created_by, class_name: 'User'
   belongs_to :realisation_statement
 
-  scope :realised, where(realise_flag: true)
+  scope :realised, -> { where(realise_flag: true) }
 
   before_save :set_seq, on: :create
 
@@ -15,9 +15,7 @@ class Recovery < ActiveRecord::Base
 
   validate :validate_scheme_fields
   validate do
-    return unless recovered_on && loan
-
-    if recovered_on < loan.settled_on
+    if loan && recovered_on && recovered_on < loan.settled_on
       errors.add(:recovered_on, 'must not be before the loan was settled')
     end
   end
