@@ -41,6 +41,10 @@ fields = [
   :_legacy_old_lender_reference,
   :_legacy_old_trading_name,
   :_legacy_trading_name,
+  :_legacy_trading_date,
+  :_legacy_old_trading_date,
+  :_legacy_company_registration,
+  :_legacy_old_company_registration,
 ]
 
 scope = LoanModification.where(change_type_id: ChangeType::DataCorrection.id).
