@@ -39,6 +39,5 @@ class CreateDataCorrectionsTable < ActiveRecord::Migration
 
   def down
     drop_table :data_corrections
-    # TODO: make data reversible, maybe...
   end
 end

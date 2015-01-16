@@ -18,7 +18,8 @@ class DeleteRedundantLoanChanges < ActiveRecord::Migration
       old_repayment_frequency_id: nil,
     }
 
-    LoanChange.where(conditions).delete_all
+    LoanModification.where(type: ['LoanChange', 'DataCorrection']).where(conditions).
+      delete_all
   end
 
   def down
