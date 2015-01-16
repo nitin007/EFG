@@ -215,7 +215,6 @@ ActiveRecord::Schema.define(version: 20150114124146) do
     t.date     "_legacy_old_trading_date"
     t.string   "_legacy_company_registration"
     t.string   "_legacy_old_company_registration"
-    t.text     "data_correction_changes"
   end
 
   add_index "loan_modifications", ["loan_id", "seq"], name: "index_loan_changes_on_loan_id_and_seq", unique: true, using: :btree

@@ -1,7 +1,5 @@
-class AddDataCorrectionsChangesToLoanModifications < ActiveRecord::Migration
+class RenameDataCorrectionColumnsOnLoanModifications < ActiveRecord::Migration
   def up
-    add_column :loan_modifications, :data_correction_changes, :text
-
     # data correction column names should match their loan counterparts
     rename_column :loan_modifications, :dti_demand_out_amount, :dti_demand_outstanding
     rename_column :loan_modifications, :old_dti_demand_out_amount, :old_dti_demand_outstanding
@@ -37,8 +35,6 @@ class AddDataCorrectionsChangesToLoanModifications < ActiveRecord::Migration
   end
 
   def down
-    remove_column :loan_modifications, :data_correction_changes
-
     [
       :_legacy_business_name,
       :_legacy_old_business_name,
