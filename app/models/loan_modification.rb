@@ -1,7 +1,6 @@
 class LoanModification < ActiveRecord::Base
   include FormatterConcern
-
-  before_validation :set_seq, on: :create
+  include Sequenceable
 
   belongs_to :created_by, class_name: 'User'
   belongs_to :loan
@@ -61,9 +60,4 @@ class LoanModification < ActiveRecord::Base
       memo
     end
   end
-
-  private
-    def set_seq
-      self.seq = (LoanModification.where(loan_id: loan_id).maximum(:seq) || -1) + 1
-    end
 end

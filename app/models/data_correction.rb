@@ -1,5 +1,6 @@
 class DataCorrection < ActiveRecord::Base
   include FormatterConcern
+  include Sequenceable
 
   Formatters = {
     dti_demand_outstanding: MoneyFormatter.new,
@@ -11,7 +12,23 @@ class DataCorrection < ActiveRecord::Base
     trading_date: SerializedDateFormatter,
   }
 
+  belongs_to :created_by, class_name: 'User'
+  belongs_to :loan
+
+  validates_presence_of :loan, strict: true
+  validates_presence_of :created_by, strict: true
+  validates_presence_of :date_of_change
+  validates_presence_of :modified_date, strict: true
+
   serialize :data_correction_changes, JSON
+
+  def change_type
+    ChangeType.find(change_type_id)
+  end
+
+  def change_type=(change_type)
+    self.change_type_id = change_type.id
+  end
 
   def old_lending_limit_id
     lending_limit(:first)

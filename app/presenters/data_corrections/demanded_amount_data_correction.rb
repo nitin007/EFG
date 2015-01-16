@@ -37,7 +37,6 @@ class DemandedAmountDataCorrection < DataCorrectionPresenter
     end
 
     def formatted_value(key, value)
-        binding.pry
       if key == 'dti_demand_outstanding'
         Money.new(value)
       else
