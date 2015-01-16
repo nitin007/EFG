@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150114124146) do
+ActiveRecord::Schema.define(version: 20150116154740) do
 
   create_table "admin_audits", force: true do |t|
     t.string   "auditable_type",        null: false
@@ -29,6 +29,40 @@ ActiveRecord::Schema.define(version: 20150114124146) do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
   end
+
+  create_table "data_corrections", force: true do |t|
+    t.integer  "loan_id",                                                  null: false
+    t.integer  "created_by_id",                                            null: false
+    t.string   "change_type_id",                                           null: false
+    t.string   "oid"
+    t.integer  "seq",                                          default: 0, null: false
+    t.date     "date_of_change",                                           null: false
+    t.date     "modified_date",                                            null: false
+    t.string   "modified_user"
+    t.datetime "ar_timestamp"
+    t.datetime "ar_insert_timestamp"
+    t.text     "data_correction_changes"
+    t.string   "_legacy_business_name"
+    t.string   "_legacy_old_business_name"
+    t.date     "_legacy_facility_letter_date"
+    t.date     "_legacy_old_facility_letter_date"
+    t.string   "_legacy_sortcode"
+    t.string   "_legacy_old_sortcode"
+    t.integer  "_legacy_dti_demand_outstanding",     limit: 8
+    t.integer  "_legacy_old_dti_demand_outstanding", limit: 8
+    t.integer  "_legacy_dti_interest",               limit: 8
+    t.integer  "_legacy_old_dti_interest",           limit: 8
+    t.integer  "_legacy_lending_limit_id"
+    t.integer  "_legacy_old_lending_limit_id"
+    t.string   "_legacy_postcode"
+    t.string   "_legacy_old_postcode"
+    t.string   "_legacy_lender_reference"
+    t.string   "_legacy_old_lender_reference"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "data_corrections", ["loan_id", "seq"], name: "index_data_corrections_on_loan_id_and_seq", unique: true, using: :btree
 
   create_table "data_migration_records", force: true do |t|
     t.string   "version"
@@ -166,38 +200,26 @@ ActiveRecord::Schema.define(version: 20150114124146) do
   add_index "loan_ineligibility_reasons", ["loan_id"], name: "index_loan_ineligibility_reasons_on_loan_id", using: :btree
 
   create_table "loan_modifications", force: true do |t|
-    t.integer  "loan_id",                                                  null: false
-    t.integer  "created_by_id",                                            null: false
+    t.integer  "loan_id",                                                null: false
+    t.integer  "created_by_id",                                          null: false
     t.string   "oid"
-    t.integer  "seq",                                          default: 0, null: false
-    t.date     "date_of_change",                                           null: false
+    t.integer  "seq",                                        default: 0, null: false
+    t.date     "date_of_change",                                         null: false
     t.date     "maturity_date"
     t.date     "old_maturity_date"
-    t.string   "_legacy_business_name"
-    t.string   "_legacy_old_business_name"
-    t.integer  "lump_sum_repayment",                 limit: 8
-    t.integer  "amount_drawn",                       limit: 8
-    t.date     "modified_date",                                            null: false
+    t.integer  "lump_sum_repayment",               limit: 8
+    t.integer  "amount_drawn",                     limit: 8
+    t.date     "modified_date",                                          null: false
     t.string   "modified_user"
     t.string   "change_type_id"
     t.datetime "ar_timestamp"
     t.datetime "ar_insert_timestamp"
-    t.integer  "amount",                             limit: 8
-    t.integer  "old_amount",                         limit: 8
-    t.date     "_legacy_facility_letter_date"
-    t.date     "_legacy_old_facility_letter_date"
+    t.integer  "amount",                           limit: 8
+    t.integer  "old_amount",                       limit: 8
     t.date     "initial_draw_date"
     t.date     "old_initial_draw_date"
-    t.integer  "initial_draw_amount",                limit: 8
-    t.integer  "old_initial_draw_amount",            limit: 8
-    t.string   "_legacy_sortcode"
-    t.string   "_legacy_old_sortcode"
-    t.integer  "_legacy_dti_demand_outstanding",     limit: 8
-    t.integer  "_legacy_old_dti_demand_outstanding", limit: 8
-    t.integer  "_legacy_dti_interest",               limit: 8
-    t.integer  "_legacy_old_dti_interest",           limit: 8
-    t.integer  "_legacy_lending_limit_id"
-    t.integer  "_legacy_old_lending_limit_id"
+    t.integer  "initial_draw_amount",              limit: 8
+    t.integer  "old_initial_draw_amount",          limit: 8
     t.integer  "repayment_duration"
     t.integer  "old_repayment_duration"
     t.datetime "created_at",                                               null: false
@@ -205,10 +227,6 @@ ActiveRecord::Schema.define(version: 20150114124146) do
     t.string   "type"
     t.integer  "repayment_frequency_id"
     t.integer  "old_repayment_frequency_id"
-    t.string   "_legacy_postcode"
-    t.string   "_legacy_old_postcode"
-    t.string   "_legacy_lender_reference"
-    t.string   "_legacy_old_lender_reference"
     t.string   "_legacy_old_trading_name"
     t.string   "_legacy_trading_name"
     t.date     "_legacy_trading_date"

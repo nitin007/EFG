@@ -11,20 +11,6 @@
 # Set the correct change type on sort code data corrections
 # but only if they don't have any other data corrections
 fields = [
-  :maturity_date,
-  :old_maturity_date,
-  :lump_sum_repayment,
-  :amount_drawn,
-  :amount,
-  :old_amount,
-  :initial_draw_date,
-  :old_initial_draw_date,
-  :initial_draw_amount,
-  :old_initial_draw_amount,
-  :repayment_duration,
-  :old_repayment_duration,
-  :repayment_frequency_id,
-  :old_repayment_frequency_id,
   :_legacy_business_name,
   :_legacy_old_business_name,
   :_legacy_facility_letter_date,
@@ -47,14 +33,13 @@ fields = [
   :_legacy_old_company_registration,
 ]
 
-scope = LoanModification.where(change_type_id: ChangeType::DataCorrection.id).
-          where('_legacy_sortcode is not null OR _legacy_old_sortcode is not null')
+scope = DataCorrection.where('_legacy_sortcode is not null OR _legacy_old_sortcode is not null')
 
 scope = fields.inject(scope) do |memo, field|
   memo.where("#{field} is null")
 end
 
-scope.each_with_index do |loan_modification, index|
-  loan_modification.change_type = ChangeType::Sortcode
-  loan_modification.save!
+scope.each_with_index do |data_correction, index|
+  data_correction.change_type = ChangeType::Sortcode
+  data_correction.save!
 end

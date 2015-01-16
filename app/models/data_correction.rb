@@ -1,4 +1,4 @@
-class DataCorrection < LoanModification
+class DataCorrection < ActiveRecord::Base
   include FormatterConcern
 
   Formatters = {
