@@ -34,28 +34,4 @@ class LoanModification < ActiveRecord::Base
   def change_type_name
     change_type.name
   end
-
-  def changes
-    change_attribute_names = attribute_names.select {|attribute, _| attribute.match(/^old_/) }
-
-    change_attribute_names.inject([]) do |memo, old_attribute_name|
-      new_attribute_name = old_attribute_name.sub(/^old_/, '')
-      old_value = attributes[old_attribute_name]
-      new_value = attributes[new_attribute_name]
-
-      if old_value.present? || new_value.present?
-        old_attribute_name = old_attribute_name.sub(/_id$/, '')
-        new_attribute_name = new_attribute_name.sub(/_id$/, '')
-
-        memo << {
-          old_attribute: old_attribute_name,
-          old_value: self.public_send(old_attribute_name),
-          attribute: new_attribute_name,
-          value: self.public_send(new_attribute_name),
-        }
-      end
-
-      memo
-    end
-  end
 end

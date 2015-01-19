@@ -24,6 +24,25 @@ class LoanAmendmentPresenter < SimpleDelegator
     super(amendment)
   end
 
+  def changes
+    changeable_attribute_names.map do |old_attribute_name|
+      old_attribute_name = old_attribute_name.sub(/_id$/, '')
+      new_attribute_name = old_attribute_name.sub(/^old_/, '')
+
+      old_value = amendment.public_send(old_attribute_name)
+      new_value = amendment.public_send(new_attribute_name)
+
+      if old_value.present? || new_value.present?
+        OpenStruct.new(
+          attribute: new_attribute_name,
+          value: new_value,
+          old_attribute: old_attribute_name,
+          old_value: old_value
+        )
+      end
+    end.compact
+  end
+
   def date_link
     link_to date_of_change.to_s(:screen), amendment_path
   end
@@ -44,6 +63,17 @@ class LoanAmendmentPresenter < SimpleDelegator
 
   def amendment_path
     Rails.application.routes.url_helpers.loan_loan_amendment_path(loan, self, type: amendment_type)
+  end
+
+  def changeable_attribute_names
+    case amendment
+    when DataCorrection
+      data_correction_changes.keys.map { |attr_name| "old_#{attr_name}" }
+    when LoanChange
+      attribute_names.select { |attribute| attribute.match(/^old_/) }
+    else
+      []
+    end
   end
 
   def get_amendment

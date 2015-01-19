@@ -34,12 +34,12 @@ class DataCorrection < ActiveRecord::Base
     change_type.name
   end
 
-  def old_lending_limit_id
-    lending_limit(:first)
+  def old_lending_limit
+    get_lending_limit(:first)
   end
 
-  def lending_limit_id
-    lending_limit(:last)
+  def lending_limit
+    get_lending_limit(:last)
   end
 
   def data_correction_changes=(changes)
@@ -54,30 +54,9 @@ class DataCorrection < ActiveRecord::Base
     @corrections ||= correction_details
   end
 
-  def old_repayment_frequency
-    RepaymentFrequency.find(old_repayment_frequency_id)
-  end
-
-  def repayment_frequency
-    RepaymentFrequency.find(repayment_frequency_id)
-  end
-
-  def changes
-    data_correction_changes.map do |attribute_name, changes|
-      new_attribute_name = attribute_name.sub(/_id$/, '')
-      old_attribute_name = "old_#{new_attribute_name}"
-      {
-        old_attribute: old_attribute_name,
-        old_value: self.public_send("old_#{attribute_name}"),
-        attribute: new_attribute_name,
-        value: self.public_send(attribute_name),
-      }
-    end
-  end
-
   private
 
-  def lending_limit(first_or_last)
+  def get_lending_limit(first_or_last)
     limit_id = data_correction_changes['lending_limit_id'].try(first_or_last)
     LendingLimit.find_by_id(limit_id)
   end

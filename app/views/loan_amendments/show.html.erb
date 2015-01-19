@@ -23,10 +23,10 @@
 
     <% @loan_amendment.changes.each do |change| %>
       <tr>
-        <th><%= change[:old_attribute].humanize %></th>
-        <td><%= format_amendment_value change[:old_value] %></td>
-        <th><%= change[:attribute].humanize %></th>
-        <td><%= format_amendment_value change[:value] %></td>
+        <th><%= change.old_attribute.try(:humanize) %></th>
+        <td><%= format_amendment_value(change.old_value) %></td>
+        <th><%= change.attribute.try(:humanize) %></th>
+        <td><%= format_amendment_value(change.value) %></td>
       </tr>
     <% end %>
 
