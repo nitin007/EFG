@@ -30,14 +30,14 @@
       </tr>
     <% end %>
 
-    <% if @loan_modification.amount_drawn %>
+    <% if @loan_modification.respond_to?(:amount_drawn) && @loan_modification.amount_drawn %>
       <tr>
         <th>Amount drawn</th>
         <td colspan="3"><%= @loan_modification.amount_drawn.format %></td>
       </tr>
     <% end %>
 
-    <% if @loan_modification.lump_sum_repayment %>
+    <% if @loan_modification.respond_to?(:lump_sum_repayment) && @loan_modification.lump_sum_repayment %>
       <tr>
         <th>Lump sum repayment</th>
         <td colspan="3"><%= @loan_modification.lump_sum_repayment.format %></td>

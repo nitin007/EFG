@@ -28,8 +28,9 @@
     <tbody>
       <% @loan_modifications.each do |loan_modification| %>
         <tr>
-          <td><%= link_to loan_modification.date_of_change.to_s(:screen), loan_loan_modification_path(@loan, loan_modification) %></td>
-          <td><%= link_to loan_modification.change_type_name, loan_loan_modification_path(@loan, loan_modification) %></td>
+          <td><%= link_to loan_modification.date_of_change.to_s(:screen), loan_loan_modification_path(@loan, loan_modification, type: loan_amendment_type_param(loan_modification)) %></td>
+
+          <td><%= link_to loan_modification.change_type_name, loan_loan_modification_path(@loan, loan_modification, type: loan_amendment_type_param(loan_modification)) %></td>
         </tr>
       <% end %>
     </tbody>

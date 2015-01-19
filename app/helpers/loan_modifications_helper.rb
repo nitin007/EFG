@@ -13,4 +13,8 @@ module LoanModificationsHelper
       value
     end
   end
+
+  def loan_amendment_type_param(loan_amendment)
+    loan_amendment.class.base_class.name.tableize
+  end
 end

@@ -78,7 +78,7 @@ describe 'LoanModifications' do
       )
 
       click_link 'Loan Changes'
-      page.all('table tbody a').first.click
+      page.all('table tbody a', text: 'Data correction').last.click
 
       page.should have_content(old_lending_limit.name)
       page.should have_content('new lending limit')
