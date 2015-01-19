@@ -16,39 +16,39 @@
   <tbody>
     <tr>
       <th>Change date</th>
-      <td><%= @loan_modification.date_of_change.to_s(:screen) %></td>
+      <td><%= @loan_amendment.date_of_change.to_s(:screen) %></td>
       <th>Change type</th>
-      <td><%= @loan_modification.change_type_name %></td>
+      <td><%= @loan_amendment.change_type_name %></td>
     </tr>
 
-    <% @loan_modification.changes.each do |change| %>
+    <% @loan_amendment.changes.each do |change| %>
       <tr>
         <th><%= change[:old_attribute].humanize %></th>
-        <td><%= format_modification_value change[:old_value] %></td>
+        <td><%= format_amendment_value change[:old_value] %></td>
         <th><%= change[:attribute].humanize %></th>
-        <td><%= format_modification_value change[:value] %></td>
+        <td><%= format_amendment_value change[:value] %></td>
       </tr>
     <% end %>
 
-    <% if @loan_modification.respond_to?(:amount_drawn) && @loan_modification.amount_drawn %>
+    <% if @loan_amendment.respond_to?(:amount_drawn) && @loan_amendment.amount_drawn %>
       <tr>
         <th>Amount drawn</th>
-        <td colspan="3"><%= @loan_modification.amount_drawn.format %></td>
+        <td colspan="3"><%= @loan_amendment.amount_drawn.format %></td>
       </tr>
     <% end %>
 
-    <% if @loan_modification.respond_to?(:lump_sum_repayment) && @loan_modification.lump_sum_repayment %>
+    <% if @loan_amendment.respond_to?(:lump_sum_repayment) && @loan_amendment.lump_sum_repayment %>
       <tr>
         <th>Lump sum repayment</th>
-        <td colspan="3"><%= @loan_modification.lump_sum_repayment.format %></td>
+        <td colspan="3"><%= @loan_amendment.lump_sum_repayment.format %></td>
       </tr>
     <% end %>
 
     <tr>
       <th>Modified on</th>
-      <td><%= @loan_modification.modified_date.to_s(:screen) %></td>
+      <td><%= @loan_amendment.modified_date.to_s(:screen) %></td>
       <th>Modified by</th>
-      <td><%= @loan_modification.created_by.name %></td>
+      <td><%= @loan_amendment.created_by.name %></td>
     </tr>
   </tbody>
 </table>

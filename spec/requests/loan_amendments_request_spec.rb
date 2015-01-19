@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'LoanModifications' do
+describe 'Loan Amendments' do
   let(:current_user) { FactoryGirl.create(:lender_user) }
   before { login_as(current_user, scope: :user) }
 
@@ -20,7 +20,7 @@ describe 'LoanModifications' do
       click_link 'Loan Changes'
     end
 
-    it 'includes all LoanModifications' do
+    it 'includes all loan amendments' do
       page.all('table tbody tr').length.should == 4
 
       page.should have_content('Initial draw and guarantee')

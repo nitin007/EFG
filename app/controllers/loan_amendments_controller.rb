@@ -1,13 +1,13 @@
-class LoanModificationsController < ApplicationController
+class LoanAmendmentsController < ApplicationController
   before_filter :verify_view_permission
   before_filter :load_loan
 
   def index
-    @loan_modifications = loan_modifications_and_data_corrections
+    @loan_amendments = get_loan_amendments
   end
 
   def show
-    @loan_modification = get_loan_modification
+    @loan_amendment = get_loan_amendment
   end
 
   private
@@ -15,14 +15,14 @@ class LoanModificationsController < ApplicationController
       @loan = current_lender.loans.find(params[:loan_id])
     end
 
-    def loan_modifications_and_data_corrections
+    def get_loan_amendments
       loan_modifications = @loan.loan_modifications.to_a
       data_corrections = @loan.data_corrections.to_a
 
       loan_modifications.concat(data_corrections).sort_by(&:date_of_change)
     end
 
-    def get_loan_modification
+    def get_loan_amendment
       unless [
         'data_corrections',
         'loan_modifications',
