@@ -2,12 +2,12 @@ class DemandedAmountDataCorrection < DataCorrectionPresenter
   attr_reader :demanded_amount, :demanded_interest
   attr_accessible :demanded_amount, :demanded_interest
 
-  before_save :update_loan
-
   validate :ensure_loan_is_demanded
   validate :ensure_value_entered
   validate :validate_demanded_amount
   validate :validate_demanded_interest
+
+  before_save :calculate_dti_amount_claimed
 
   def demanded_amount=(value)
     @demanded_amount = value.present? ? Money.parse(value) : nil
@@ -18,6 +18,11 @@ class DemandedAmountDataCorrection < DataCorrectionPresenter
   end
 
   private
+
+    def calculate_dti_amount_claimed
+      loan.calculate_dti_amount_claimed
+    end
+
     def can_correct_interest?
       !loan.efg_loan?
     end
@@ -36,24 +41,15 @@ class DemandedAmountDataCorrection < DataCorrectionPresenter
       errors.add(:base, :change_required) unless demanded_amount || demanded_interest
     end
 
-    def formatted_value(key, value)
-      if key == 'dti_demand_outstanding'
-        Money.new(value)
-      else
-        value
-      end
-    end
-
     def update_loan
       loan.dti_demand_outstanding = demanded_amount if demanded_amount
       loan.dti_interest = demanded_interest if can_correct_interest? && demanded_interest
-      loan.calculate_dti_amount_claimed
     end
 
     def validate_demanded_amount
       return unless demanded_amount
 
-      if demanded_amount == loan.dti_demand_outstanding
+      if demanded_amount == Money.new(loan.dti_demand_outstanding_was)
         errors.add(:demanded_amount, :must_have_changed)
       elsif demanded_amount < Money.new(0)
         errors.add(:demanded_amount, :must_not_be_negative)
@@ -65,7 +61,7 @@ class DemandedAmountDataCorrection < DataCorrectionPresenter
     def validate_demanded_interest
       return unless demanded_interest
 
-      if demanded_interest == loan.dti_interest
+      if demanded_interest == Money.new(loan.dti_interest_was)
         errors.add(:demanded_interest, :must_have_changed)
       elsif demanded_interest < Money.new(0)
         errors.add(:demanded_interest, :must_not_be_negative)

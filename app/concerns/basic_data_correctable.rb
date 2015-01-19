@@ -2,8 +2,6 @@ module BasicDataCorrectable
   extend ActiveSupport::Concern
 
   included do
-    before_save :update_loan
-
     cattr_accessor :attribute_name
   end
 

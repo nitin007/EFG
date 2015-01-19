@@ -46,6 +46,11 @@ shared_examples_for 'a basic data correction presenter' do |attribute, input_val
       presenter.public_send("#{attribute}=", '')
       presenter.should_not be_valid
     end
+
+    it "new #{attribute} value must not be the same as old value" do
+      presenter.public_send("#{attribute}=", loan.public_send(attribute))
+      presenter.should_not be_valid
+    end
   end
 
   describe '#save' do

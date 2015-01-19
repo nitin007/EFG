@@ -26,7 +26,8 @@ FactoryGirl.define do
     end
 
     factory :demanded_amount_data_correction, class: DemandedAmountDataCorrection do
-      demanded_amount Money.new(1_000_00)
+      demanded_amount Money.new(1_500_00)
+      demanded_interest Money.new(425_00)
       association :loan, factory: [:loan, :guaranteed, :demanded]
     end
 
