@@ -17,6 +17,10 @@ FactoryGirl.define do
       company_registration '987654'
     end
 
+    factory :generic_fields_data_correction, class: GenericFieldsDataCorrection do
+      generic1 "first"
+    end
+
     factory :trading_name_data_correction, class: TradingNameDataCorrection do
       trading_name 'New Trading Name'
     end

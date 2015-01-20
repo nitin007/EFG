@@ -3,6 +3,7 @@ class DataCorrectionsController < ApplicationController
     'business_name' => BusinessNameDataCorrection,
     'company_registration' => CompanyRegistrationDataCorrection,
     'demanded_amount' => DemandedAmountDataCorrection,
+    'generic_fields' => GenericFieldsDataCorrection,
     'lender_reference' => LenderReferenceDataCorrection,
     'postcode' => PostcodeDataCorrection,
     'sortcode' => SortcodeDataCorrection,
