@@ -25,12 +25,6 @@ fields = [
   :_legacy_old_postcode,
   :_legacy_lender_reference,
   :_legacy_old_lender_reference,
-  :_legacy_old_trading_name,
-  :_legacy_trading_name,
-  :_legacy_trading_date,
-  :_legacy_old_trading_date,
-  :_legacy_company_registration,
-  :_legacy_old_company_registration,
 ]
 
 scope = DataCorrection.where('_legacy_sortcode is not null OR _legacy_old_sortcode is not null')
