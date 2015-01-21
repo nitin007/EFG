@@ -8,8 +8,8 @@ class LegalForm < StaticAssociation
     {id: 6, name: 'Other', requires_company_registration: false},
   ]
 
-  def self.company_registration_required?(loan)
-    loan.legal_form_id && LegalForm.find(loan.legal_form_id).requires_company_registration
+  def self.company_registration_required?(id)
+    LegalForm.find(id).requires_company_registration
   end
 
   SoleTrader = find(1)

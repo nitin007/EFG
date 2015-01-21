@@ -60,7 +60,7 @@ class LoanEntry
   validates_presence_of :business_name, :fees, :interest_rate,
     :interest_rate_type_id, :legal_form_id, :repayment_frequency_id
   validates_presence_of :state_aid
-  validates_presence_of :company_registration, if: ->(loan_entry) { LegalForm.company_registration_required?(loan_entry) }
+  validates_presence_of :company_registration, if: ->(loan_entry) { loan_entry.legal_form_id.present? && LegalForm.company_registration_required?(loan_entry.legal_form_id) }
   validate :postcode_allowed
   validate :state_aid_calculated
   validate :state_aid_within_sic_threshold, if: :state_aid
