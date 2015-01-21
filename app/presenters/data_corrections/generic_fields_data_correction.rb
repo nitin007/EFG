@@ -9,11 +9,11 @@ class GenericFieldsDataCorrection < DataCorrectionPresenter
 private
 
   def update_loan
-    loan.generic1 = generic1 if generic1
-    loan.generic2 = generic2 if generic2
-    loan.generic3 = generic3 if generic3
-    loan.generic4 = generic4 if generic4
-    loan.generic5 = generic5 if generic5
+    loan.generic1 = generic1
+    loan.generic2 = generic2
+    loan.generic3 = generic3
+    loan.generic4 = generic4
+    loan.generic5 = generic5
   end
 
 end
