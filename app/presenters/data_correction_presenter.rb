@@ -36,7 +36,7 @@ class DataCorrectionPresenter
 
     loan.transaction do
       run_callbacks :save do
-        data_correction.change_type = change_type || ChangeType::DataCorrection
+        data_correction.change_type = change_type
         data_correction.created_by = created_by
         data_correction.date_of_change = Date.current
         data_correction.modified_date = Date.current
