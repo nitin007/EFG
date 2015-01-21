@@ -2,10 +2,11 @@ module BasicDataCorrectable
   extend ActiveSupport::Concern
 
   module ClassMethods
-    attr_reader :attribute_name
+    attr_reader :attribute_name, :change_type
 
     def data_corrects(attribute_name, opts = {})
       @attribute_name = attribute_name
+      @change_type = "ChangeType::#{attribute_name.to_s.classify}".constantize
 
       attr_accessor attribute_name
       attr_accessible attribute_name
@@ -16,11 +17,11 @@ module BasicDataCorrectable
     end
   end
 
-  def change_type
-    "ChangeType::#{attribute_name.to_s.classify}".constantize
-  end
-
   private
+
+  def change_type
+    self.class.change_type
+  end
 
   def update_loan
     loan.public_send("#{attribute_name}=", attribute_value)
