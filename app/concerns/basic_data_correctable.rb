@@ -1,13 +1,11 @@
 module BasicDataCorrectable
   extend ActiveSupport::Concern
 
-  included do
-    cattr_accessor :attribute_name
-  end
-
   module ClassMethods
+    attr_reader :attribute_name
+
     def data_corrects(attribute_name, opts = {})
-      self.attribute_name = attribute_name
+      @attribute_name = attribute_name
 
       attr_accessor attribute_name
       attr_accessible attribute_name
