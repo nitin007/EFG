@@ -33,7 +33,7 @@ scope = fields.inject(scope) do |memo, field|
   memo.where("#{field} is null")
 end
 
-scope.each_with_index do |data_correction, index|
+scope.each do |data_correction|
   data_correction.change_type = ChangeType::Sortcode
   data_correction.save!
 end
