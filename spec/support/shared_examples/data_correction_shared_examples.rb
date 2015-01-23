@@ -1,7 +1,7 @@
 shared_examples_for 'a basic data correction' do |attribute, input_value, new_value = nil|
   include DataCorrectionSpecHelper
 
-  let(:loan) { FactoryGirl.create(:loan, :guaranteed, lender: current_user.lender) }
+  let(:loan) { FactoryGirl.create(:loan, :guaranteed, legal_form_id: 4, lender: current_user.lender) }
   let!(:old_value) { loan.public_send(attribute) }
   let(:expected_new_value) { new_value || input_value }
 
@@ -25,6 +25,13 @@ shared_examples_for 'a basic data correction' do |attribute, input_value, new_va
     loan.reload
     loan.public_send(attribute).should == expected_new_value
     loan.modified_by.should == current_user
+  end
+
+  it 'with no input' do
+    click_button 'Submit'
+
+    loan.reload
+    loan.modified_by.should_not eql(current_user)
   end
 end
 
@@ -83,6 +90,4 @@ shared_examples_for 'a basic data correction presenter' do |attribute, input_val
       end
     end
   end
-
 end
-
