@@ -73,7 +73,8 @@ class DataCorrection < ActiveRecord::Base
 
   def method_missing(method, *args, &block)
     is_old = !!(method =~ /^old_/)
-    change_key = method.to_s.gsub(/^old_/, '')
+    change_key = method.to_s.sub(/^old_/, '')
+
     if data_correction_changes.try(:has_key?, change_key)
       values = data_correction_changes[change_key]
       is_old ? values.first : values.last
