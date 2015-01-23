@@ -1,4 +1,15 @@
 class LoanAmendmentPresenter < SimpleDelegator
+  class Change
+    attr_reader :attribute, :old_attribute, :old_value, :value
+
+    def initialize(attributes)
+      @attribute = attributes.fetch(:attribute)
+      @value = attributes.fetch(:value)
+      @old_attribute = attributes.fetch(:old_attribute)
+      @old_value = attributes.fetch(:old_value)
+    end
+  end
+
   include ActionView::Helpers::UrlHelper
 
   AmendmentTypes = %w(data_corrections loan_modifications).freeze
@@ -33,7 +44,7 @@ class LoanAmendmentPresenter < SimpleDelegator
       new_value = amendment.public_send(new_attribute_name)
 
       if old_value.present? || new_value.present?
-        OpenStruct.new(
+        Change.new(
           attribute: new_attribute_name,
           value: new_value,
           old_attribute: old_attribute_name,
