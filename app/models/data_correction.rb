@@ -75,7 +75,7 @@ class DataCorrection < ActiveRecord::Base
     is_old = !!(method =~ /^old_/)
     change_key = method.to_s.sub(/^old_/, '')
 
-    if data_correction_changes.try(:has_key?, change_key)
+    if data_correction_changes.has_key?(change_key)
       values = data_correction_changes[change_key]
       is_old ? values.first : values.last
     else
