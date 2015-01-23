@@ -7,7 +7,6 @@ class DataCorrection < ActiveRecord::Base
     dti_interest: MoneyFormatter.new,
     dti_amount_claimed: MoneyFormatter.new,
     facility_letter_date: SerializedDateFormatter,
-    facility_letter_date: SerializedDateFormatter,
     postcode: PostcodeFormatter,
     trading_date: SerializedDateFormatter,
   }
