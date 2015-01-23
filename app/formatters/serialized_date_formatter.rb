@@ -1,6 +1,7 @@
 class SerializedDateFormatter
   def self.format(value)
-    Date.parse(value)
+    Date.parse(value) if value
+  rescue ArgumentError
   end
 
   def self.parse(value)

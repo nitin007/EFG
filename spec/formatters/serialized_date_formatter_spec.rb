@@ -13,6 +13,16 @@ describe SerializedDateFormatter do
       let(:input) { '11/1/11' }
       it { should eql(Date.new(2011, 1, 11)) }
     end
+
+    context 'with a blank input' do
+      let(:input) { '' }
+      it { should be_nil }
+    end
+
+    context 'with a nil input' do
+      let(:input) { nil }
+      it { should be_nil }
+    end
   end
 
   describe '::parse' do
@@ -26,6 +36,16 @@ describe SerializedDateFormatter do
     context 'with input dd/mm/yy' do
       let(:input) { '11/1/11' }
       it { should eql('2011-01-11') }
+    end
+
+    context 'with a blank input' do
+      let(:input) { '' }
+      it { should eql('') }
+    end
+
+    context 'with a nil input' do
+      let(:input) { nil }
+      it { should eql('') }
     end
   end
 end
