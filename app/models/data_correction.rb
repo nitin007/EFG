@@ -65,9 +65,11 @@ class DataCorrection < ActiveRecord::Base
     corrections = (read_attribute(:data_correction_changes) || {})
     corrections.each_with_object({}) do |(key, values), memo|
       formatter = Formatters.fetch(key.to_sym, DefaultFormatter)
-      memo[key] = []
-      memo[key][0] = formatter.format(values.first)
-      memo[key][1] = formatter.format(values.last)
+
+      memo[key] = [
+        formatter.format(values.first),
+        formatter.format(values.last)
+      ]
     end
   end
 
