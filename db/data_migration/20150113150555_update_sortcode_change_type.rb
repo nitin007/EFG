@@ -34,6 +34,5 @@ scope = fields.inject(scope) do |memo, field|
 end
 
 scope.each do |data_correction|
-  data_correction.change_type = ChangeType::Sortcode
-  data_correction.save!
+  data_correction.update_column(:change_type_id, ChangeType::Sortcode.id)
 end
