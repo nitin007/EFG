@@ -15,6 +15,7 @@ class DataCorrection < ActiveRecord::Base
   belongs_to :loan
 
   validates_presence_of :loan, strict: true
+  validates_presence_of :change_type_id, strict: true
   validates_presence_of :created_by, strict: true
   validates_presence_of :date_of_change
   validates_presence_of :modified_date, strict: true
