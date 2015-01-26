@@ -18,16 +18,31 @@ describe ClaimLimitsReportsController do
 
       before do
         sign_in(current_user)
-        dispatch
       end
 
-      it "renders CSV loan data" do
-        response.content_type.should == 'text/csv'
+      context do
+        before do
+          dispatch
+        end
+
+        it "renders CSV loan data" do
+          response.content_type.should == 'text/csv'
+        end
+
+        it "sets filename for CSV" do
+          expected_filename = "lender_claim_limits_#{Date.current.strftime('%Y-%m-%d')}.csv"
+          response.headers['Content-Disposition'].should include(%Q(filename="#{expected_filename}"))
+        end
       end
 
-      it "sets filename for CSV" do
-        expected_filename = "lender_claim_limits_#{Date.current.strftime('%Y-%m-%d')}.csv"
-        response.headers['Content-Disposition'].should include(%Q(filename="#{expected_filename}"))
+      context "with active and inactive lenders" do
+        let!(:active_lender) { FactoryGirl.create(:lender) }
+        let!(:inactive_lender) { FactoryGirl.create(:lender, :disabled) }
+
+        it "includes all lenders in report" do
+          ClaimLimitCalculator.should_receive(:all_with_amount).with([active_lender, inactive_lender])
+          dispatch
+        end
       end
     end
   end
