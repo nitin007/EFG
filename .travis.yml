@@ -4,6 +4,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq wbritish
   - cp config/database.travis.yml config/database.yml
+  - export TZ=Europe/London
 before_script:
   - bundle exec rake db:create
   - bundle exec rake db:schema:load
@@ -19,7 +20,7 @@ cache: bundler
 script:
   - PARALLEL_TEST_PROCESSORS=8 bundle exec rake
 rvm:
-  - 2.1
+  - 2.1.4
 branches:
   except:
     - master

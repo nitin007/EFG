@@ -1,5 +1,3 @@
-require 'active_model/model'
-
 class RealisationStatementReceived
   PERIOD_COVERED_QUARTERS = RealisationStatement::PERIOD_COVERED_QUARTERS
 
@@ -26,10 +24,6 @@ class RealisationStatementReceived
     if realised_recoveries.none?
       errors.add(:base, 'No recoveries were selected.')
     end
-  end
-
-  def self.name
-    RealisationStatement.name
   end
 
   def lender_id
