@@ -14,7 +14,7 @@ class ClaimLimitsReportsController < ApplicationController
   private
 
   def calculators
-    lenders = current_user.lenders.active
+    lenders = current_user.lenders
     ClaimLimitCalculator.all_with_amount(lenders)
   end
 

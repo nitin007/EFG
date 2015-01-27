@@ -10,6 +10,10 @@ FactoryGirl.define do
     primary_contact_email 'bob@example.com'
     allow_alert_process true
 
+    trait :disabled do
+      disabled true
+    end
+
     trait :with_lending_limit do
       after :create do |lender|
         FactoryGirl.create(:lending_limit, lender: lender)
