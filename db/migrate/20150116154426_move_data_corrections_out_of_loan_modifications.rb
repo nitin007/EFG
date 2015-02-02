@@ -54,79 +54,101 @@ class MoveDataCorrectionsOutOfLoanModifications < ActiveRecord::Migration
 
   GENERIC_DATA_CORRECTION_CHANGE_TYPE_ID = '9'
 
+  QUERY_LIMIT = 1000
+
   def up
     conditions = DATA_CORRECTION_LEGACY_COLUMNS.map do |column|
       "#{column} IS NOT NULL"
     end.join(" OR ")
 
-    loan_modifications = execute("
-      SELECT #{DATA_CORRECTION_COLUMNS.join(',')}
-        FROM loan_modifications
+    total_loan_modifications = execute("
+      SELECT count(*) FROM loan_modifications
        WHERE #{conditions}
          AND type IN ('DataCorrection', 'LoanChange')
-    ")
+    ").first.first
 
-    values = []
+    # keep the query size down
+    (0..total_loan_modifications).step(QUERY_LIMIT) do |offset|
 
-    loan_modifications.each(as: :hash) do |mod|
+      loan_modifications = execute("
+        SELECT #{DATA_CORRECTION_COLUMNS.join(',')}
+          FROM loan_modifications
+         WHERE #{conditions}
+           AND type IN ('DataCorrection', 'LoanChange')
+         LIMIT #{QUERY_LIMIT} OFFSET #{offset}
+      ")
 
-      row_values = mod.each_with_object([]) do |(key, value), memo|
-        if key == 'change_type_id'
-          value = correct_change_type_id(mod)
+      values = []
+
+      loan_modifications.each(as: :hash) do |mod|
+        row_values = mod.each_with_object([]) do |(key, value), memo|
+          if key == 'change_type_id'
+            value = correct_change_type_id(mod)
+          end
+
+          memo << format_value(value)
         end
 
-        memo << format_value(value)
+        row_values << build_changes_json(mod)
+
+        values << "(#{row_values.join(",")})"
       end
 
-      row_values << build_changes_json(mod)
-
-      values << "(#{row_values.join(",")})"
+      execute("
+        INSERT INTO data_corrections (#{DATA_CORRECTION_COLUMNS.join(',')}, data_correction_changes)
+        VALUES #{values.join(",")}
+      ")
     end
-
-    execute("
-      INSERT INTO data_corrections (#{DATA_CORRECTION_COLUMNS.join(',')}, data_correction_changes)
-      VALUES #{values.join(",")}
-    ")
   end
 
   def down
-    data_corrections = execute("SELECT #{DATA_CORRECTION_COLUMNS.join(',')} FROM data_corrections")
+    total_data_corrections = execute("SELECT count(*) FROM data_corrections").first.first
 
-    values = []
-    max_sequences = {}
+    (0..total_data_corrections).step(QUERY_LIMIT) do |offset|
+      data_corrections = execute("
+        SELECT #{DATA_CORRECTION_COLUMNS.join(',')}
+          FROM data_corrections
+         LIMIT #{QUERY_LIMIT} OFFSET #{offset}
+      ")
 
-    data_corrections.each(as: :hash) do |data_correction|
-      loan_id = data_correction['loan_id']
+      break if data_corrections.size == 0
 
-      # ensure load_id and seq are unique to satisfy index
-      unless max_sequences.has_key?(loan_id)
-        max_sequence_result = execute("
-          SELECT MAX(seq)
-          FROM loan_modifications
-          WHERE loan_id = #{loan_id}
-        ")
-        max_sequences[loan_id] = max_sequence_result.first.first
-      end
+      values = []
+      max_sequences = {}
 
-      row_values = data_correction.each_with_object([]) do |(key, value), memo|
-        if key == 'seq'
-          max_sequences[loan_id] += 1
-          value = max_sequences[loan_id]
+      data_corrections.each(as: :hash) do |data_correction|
+        loan_id = data_correction['loan_id']
+
+        # ensure load_id and seq are unique to satisfy index
+        unless max_sequences.has_key?(loan_id)
+          max_sequence_result = execute("
+            SELECT MAX(seq)
+            FROM loan_modifications
+            WHERE loan_id = #{loan_id}
+          ")
+          max_sequences[loan_id] = max_sequence_result.first.first
         end
 
-        memo << format_value(value)
+        row_values = data_correction.each_with_object([]) do |(key, value), memo|
+          if key == 'seq'
+            max_sequences[loan_id] += 1
+            value = max_sequences[loan_id]
+          end
+
+          memo << format_value(value)
+        end
+
+        # for type column
+        row_values << format_value('DataCorrection')
+
+        values << "(#{row_values.join(",")})"
       end
 
-      # for type column
-      row_values << format_value('DataCorrection')
-
-      values << "(#{row_values.join(",")})"
+      execute("
+        INSERT INTO loan_modifications (#{DATA_CORRECTION_COLUMNS.join(',')}, type)
+        VALUES #{values.join(",")}
+      ")
     end
-
-    execute("
-      INSERT INTO loan_modifications (#{DATA_CORRECTION_COLUMNS.join(',')}, type)
-      VALUES #{values.join(",")}
-    ")
   end
 
   private
