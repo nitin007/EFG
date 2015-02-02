@@ -50,7 +50,7 @@ class MoveDataCorrectionsOutOfLoanModifications < ActiveRecord::Migration
       populated_columns = mod.select { |key, value| value.present? }
 
       populated_columns = populated_columns.each_with_object({}) do |(key, value), memo|
-        memo[key] = value.is_a?(Date) || value.is_a?(Time) ? value.to_s(:db) : ActiveRecord::Base.connection.quote(value.to_s)
+        memo[key] = value.is_a?(Date) || value.is_a?(Time) ? ActiveRecord::Base.connection.quote(value.to_s(:db)) : ActiveRecord::Base.connection.quote(value.to_s)
       end
 
       execute("
@@ -72,7 +72,7 @@ class MoveDataCorrectionsOutOfLoanModifications < ActiveRecord::Migration
       populated_columns = populated_columns.each_with_object({}) do |(key, value), memo|
         # ensure load_id and seq are unique to satisfy index
         value = max_sequence + 1 if key == 'seq'
-        memo[key] = value.is_a?(Date) || value.is_a?(Time) ? value.to_s(:db) : ActiveRecord::Base.connection.quote(value.to_s)
+        memo[key] = value.is_a?(Date) || value.is_a?(Time) ? ActiveRecord::Base.connection.quote(value.to_s(:db)) : ActiveRecord::Base.connection.quote(value.to_s)
       end
 
       execute("
