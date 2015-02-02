@@ -306,13 +306,13 @@ describe Loan do
         FactoryGirl.create(:realisation_adjustment, loan: loan, amount: Money.new(10_000_00))
         FactoryGirl.create(:realisation_adjustment, loan: loan, amount: Money.new(5_000_00))
 
-        loan.cumulative_realisation_adjustments_amount.should == Money.new(15_000_00)
+        expect(loan.cumulative_realisation_adjustments_amount).to eq(Money.new(15_000_00))
       end
     end
 
     context "without adjustments" do
       it "returns zero" do
-        loan.cumulative_realisation_adjustments_amount.should == Money.new(0)
+        expect(loan.cumulative_realisation_adjustments_amount).to eq(Money.new(0))
       end
     end
   end
@@ -326,7 +326,7 @@ describe Loan do
     end
 
     it 'sums all loan realisations' do
-      loan.cumulative_realised_amount.should == Money.new(802_35)
+      expect(loan.cumulative_realised_amount).to eq(Money.new(802_35))
     end
 
     context "with realisation adjustments" do
@@ -334,7 +334,7 @@ describe Loan do
         FactoryGirl.create(:realisation_adjustment, loan: loan, amount: Money.new(35))
         FactoryGirl.create(:realisation_adjustment, loan: loan, amount: Money.new(2_00))
 
-        loan.cumulative_realised_amount.should == Money.new(800_00)
+        expect(loan.cumulative_realised_amount).to eq(Money.new(800_00))
       end
     end
   end

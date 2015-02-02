@@ -17,20 +17,20 @@ describe 'making a realisation adjustment' do
     click_button 'Submit'
 
     click_link 'Loan Details'
-    page.should have_detail_row('Cumulative Value of All Pre-Claim Limit Realisations', '£10,000.00')
-    page.should have_detail_row('Cumulative Value of Realisation Adjustments', '£1,000.00')
-    page.should have_detail_row('Cumulative Value of All Realisations', '£9,000.00')
+    expect(page).to have_detail_row('Cumulative Value of All Pre-Claim Limit Realisations', '£10,000.00')
+    expect(page).to have_detail_row('Cumulative Value of Realisation Adjustments', '£1,000.00')
+    expect(page).to have_detail_row('Cumulative Value of All Realisations', '£9,000.00')
   end
 
   it "does not continue with invalid values" do
     visit new_loan_realisation_adjustment_path(loan)
 
-    loan.state.should == Loan::Realised
+    expect(loan.state).to eq(Loan::Realised)
     expect {
       click_button 'Submit'
       loan.reload
     }.to_not change(loan, :state)
 
-    current_path.should == "/loans/#{loan.id}/realisation_adjustments"
+    expect(current_path).to eq("/loans/#{loan.id}/realisation_adjustments")
   end
 end

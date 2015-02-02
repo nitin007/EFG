@@ -24,20 +24,20 @@ describe RealisationAdjustment do
 
     it 'requires an amount' do
       realisation_adjustment.amount = nil
-      realisation_adjustment.should_not be_valid
+      expect(realisation_adjustment).not_to be_valid
     end
 
     it 'requires an amount greater than 0' do
       realisation_adjustment.amount = Money.new(0)
-      realisation_adjustment.should_not be_valid
+      expect(realisation_adjustment).not_to be_valid
 
       realisation_adjustment.amount = Money.new(-10)
-      realisation_adjustment.should_not be_valid
+      expect(realisation_adjustment).not_to be_valid
     end
 
     it 'requires date' do
       realisation_adjustment.date = ''
-      realisation_adjustment.should_not be_valid
+      expect(realisation_adjustment).not_to be_valid
     end
   end
 end
