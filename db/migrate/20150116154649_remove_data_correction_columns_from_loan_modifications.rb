@@ -20,11 +20,13 @@ class RemoveDataCorrectionColumnsFromLoanModifications < ActiveRecord::Migration
   }
 
   def up
-    DataCorrectionLegacyColumns.keys.each do |column_name|
-      remove_column :loan_modifications, column_name
+    drop_statements = DataCorrectionLegacyColumns.keys.map do |column_name|
+      "DROP COLUMN #{column_name}"
     end
 
-    LoanModification.where(type: ['DataCorrection']).update_all(type: 'LoanChange')
+    execute("ALTER TABLE loan_modifications #{drop_statements.join(',')}")
+
+    execute("UPDATE loan_modifications SET type ='LoanChange' WHERE type = 'DataCorrection'")
   end
 
   def down

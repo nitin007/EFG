@@ -23,12 +23,6 @@ class RenameDataCorrectionColumnsOnLoanModifications < ActiveRecord::Migration
       :old_postcode,
       :lender_reference,
       :old_lender_reference,
-      :old_trading_name,
-      :trading_name,
-      :trading_date,
-      :old_trading_date,
-      :company_registration,
-      :old_company_registration,
     ].each do |column_name|
       rename_column :loan_modifications, column_name, "_legacy_#{column_name}"
     end
@@ -52,12 +46,6 @@ class RenameDataCorrectionColumnsOnLoanModifications < ActiveRecord::Migration
       :_legacy_old_postcode,
       :_legacy_lender_reference,
       :_legacy_old_lender_reference,
-      :_legacy_old_trading_name,
-      :_legacy_trading_name,
-      :_legacy_trading_date,
-      :_legacy_old_trading_date,
-      :_legacy_company_registration,
-      :_legacy_old_company_registration,
     ].each do |column_name|
       rename_column :loan_modifications, column_name, column_name.to_s.gsub(/^_legacy_/, '')
     end
