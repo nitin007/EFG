@@ -45,6 +45,15 @@ class MoveDataCorrectionsOutOfLoanModifications < ActiveRecord::Migration
     'updated_at',
   ].concat(DATA_CORRECTION_LEGACY_COLUMNS)
 
+  DATA_CORRECTION_CHANGE_TYPES = {
+    'business_name' => '1',
+    'postcode' => 'c',
+    'lender_reference' => 'd',
+    'sortcode' => 'f',
+  }
+
+  GENERIC_DATA_CORRECTION_CHANGE_TYPE_ID = '9'
+
   def up
     conditions = DATA_CORRECTION_LEGACY_COLUMNS.map do |column|
       "#{column} IS NOT NULL"
@@ -60,7 +69,15 @@ class MoveDataCorrectionsOutOfLoanModifications < ActiveRecord::Migration
     values = []
 
     loan_modifications.each(as: :hash) do |mod|
-      row_values = mod.values.map { |value| format_value(value) }
+
+      row_values = mod.each_with_object([]) do |(key, value), memo|
+        if key == 'change_type_id'
+          value = correct_change_type_id(mod)
+        end
+
+        memo << format_value(value)
+      end
+
       row_values << build_changes_json(mod)
 
       values << "(#{row_values.join(",")})"
@@ -124,6 +141,26 @@ class MoveDataCorrectionsOutOfLoanModifications < ActiveRecord::Migration
     if extracted_changes.any?
       ActiveRecord::Base.connection.quote(ActiveSupport::JSON.encode(extracted_changes))
     end
+  end
+
+  # If the loan modification changes only one attribute
+  # and there is a specific change type for that attribute, then use it
+  # otherwise use the generic data correction change type
+  def correct_change_type_id(loan_modification)
+    DATA_CORRECTION_CHANGE_TYPES.each do |column, change_type_id|
+      old_column_name = "_legacy_old_#{column}"
+      new_column_name = "_legacy_#{column}"
+
+      if loan_modification.fetch(old_column_name) || loan_modification.fetch(new_column_name)
+        other_data_correction_columns = DATA_CORRECTION_LEGACY_COLUMNS - [ old_column_name, new_column_name]
+
+        if other_data_correction_columns.all? { |c| loan_modification[c].blank? }
+          return change_type_id
+        end
+      end
+    end
+
+    GENERIC_DATA_CORRECTION_CHANGE_TYPE_ID
   end
 
   def format_value(value)
