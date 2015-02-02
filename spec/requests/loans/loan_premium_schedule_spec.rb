@@ -1,5 +1,5 @@
 # encoding: utf-8
-require 'spec_helper'
+require 'rails_helper'
 
 shared_examples_for 'a premium schedule viewer' do
   let(:lender) { FactoryGirl.create(:lender) }

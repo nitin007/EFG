@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'loan demand to borrower' do
   let(:current_lender) { FactoryGirl.create(:lender) }

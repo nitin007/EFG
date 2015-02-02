@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'eligibility checks' do
   let(:lender) { FactoryGirl.create(:lender, :with_lending_limit) }

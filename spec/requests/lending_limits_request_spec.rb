@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'LendingLimits' do
   let(:current_user) { FactoryGirl.create(:cfe_admin) }
