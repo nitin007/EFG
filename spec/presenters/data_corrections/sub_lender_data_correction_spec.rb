@@ -12,14 +12,14 @@ describe SubLenderDataCorrection do
 
     it "must have a sub-lender" do
       data_correction.sub_lender = nil
-      data_correction.should_not be_valid
-      data_correction.should have(1).error_on(:sub_lender)
+      expect(data_correction).not_to be_valid
+      expect(data_correction).to have(1).error_on(:sub_lender)
     end
 
     it "must have an allowed sub-lender" do
       data_correction.sub_lender = "not a valid sub lender for this lender"
-      data_correction.should_not be_valid
-      data_correction.should have(1).error_on(:sub_lender)
+      expect(data_correction).not_to be_valid
+      expect(data_correction).to have(1).error_on(:sub_lender)
     end
   end
 
@@ -28,8 +28,8 @@ describe SubLenderDataCorrection do
 
     it "must have a blank sub_lender" do
       data_correction.sub_lender = 'ACME Sub-lender'
-      data_correction.should_not be_valid
-      data_correction.should have(1).error_on(:sub_lender)
+      expect(data_correction).not_to be_valid
+      expect(data_correction).to have(1).error_on(:sub_lender)
     end
   end
 end

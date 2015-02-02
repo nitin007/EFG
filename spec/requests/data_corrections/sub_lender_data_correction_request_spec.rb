@@ -18,23 +18,23 @@ describe 'Sub Lender Data Correction' do
 
     it do
       click_button 'Submit'
-      page.should have_content "old sub-lender"
-      page.should have_content "a sub-lender must be chosen"
+      expect(page).to have_content "old sub-lender"
+      expect(page).to have_content "a sub-lender must be chosen"
 
       select new_value, from: 'data_correction_sub_lender'
       click_button 'Submit'
 
       data_correction = loan.data_corrections.last!
-      data_correction.change_type.should == ChangeType::SubLender
-      data_correction.created_by.should == current_user
-      data_correction.date_of_change.should == Date.current
-      data_correction.modified_date.should == Date.current
-      data_correction.old_sub_lender.should == old_value
-      data_correction.sub_lender.should == new_value
+      expect(data_correction.change_type).to eql(ChangeType::SubLender)
+      expect(data_correction.created_by).to eql(current_user)
+      expect(data_correction.date_of_change).to eql(Date.current)
+      expect(data_correction.modified_date).to eql(Date.current)
+      expect(data_correction.old_sub_lender).to eql(old_value)
+      expect(data_correction.sub_lender).to eql(new_value)
 
       loan.reload
-      loan.sub_lender.should == new_value
-      loan.modified_by.should == current_user
+      expect(loan.sub_lender).to eql(new_value)
+      expect(loan.modified_by).to eql(current_user)
     end
   end
 
@@ -42,7 +42,7 @@ describe 'Sub Lender Data Correction' do
     context "and loan has no existing sub-lender value" do
       it "does not show link to Sub-lender data correction" do
         visit_data_corrections
-        page.should_not have_css('a', text: 'Sub-lender')
+        expect(page).to_not have_css('a', text: 'Sub-lender')
       end
     end
 
@@ -53,7 +53,7 @@ describe 'Sub Lender Data Correction' do
 
       it "shows link to Sub-lender data correction" do
         visit_data_corrections
-        page.should have_css('a', text: 'Sub-lender')
+        expect(page).to have_css('a', text: 'Sub-lender')
       end
     end
   end

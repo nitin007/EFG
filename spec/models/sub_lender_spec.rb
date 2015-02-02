@@ -6,7 +6,7 @@ describe SubLender do
     let(:sub_lender) { FactoryGirl.build(:sub_lender) }
 
     it 'has a valid Factory' do
-      sub_lender.should be_valid
+      expect(sub_lender).to be_valid
     end
 
     it 'strictly requires a lender' do
@@ -18,7 +18,7 @@ describe SubLender do
 
     it 'requires a name' do
       sub_lender.name = ''
-      sub_lender.should_not be_valid
+      expect(sub_lender).not_to be_valid
     end
   end
 

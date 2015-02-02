@@ -85,7 +85,7 @@ shared_examples_for 'a loan transfer' do
       end
 
       it 'should create new loan with no value for sub-lender' do
-        new_loan.sub_lender.should be_blank
+        expect(new_loan.sub_lender).to be_blank
       end
 
       it 'should create new loan with no value for generic fields' do

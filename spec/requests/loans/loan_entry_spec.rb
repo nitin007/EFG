@@ -197,14 +197,14 @@ describe 'loan entry' do
 
       click_button 'Submit'
 
-      page.should have_content("a sub-lender must be chosen")
+      expect(page).to have_content("a sub-lender must be chosen")
       select "ACME sublender", from: "Sub-lender"
 
       click_button "Submit"
-      current_path.should == complete_loan_entry_path(loan)
+      expect(current_path).to eql(complete_loan_entry_path(loan))
 
       loan.reload
-      loan.sub_lender.should == "ACME sublender"
+      expect(loan.sub_lender).to eql("ACME sublender")
     end
   end
 

@@ -40,7 +40,7 @@ describe 'Transferred loan entry' do
     loan.lender_reference.should == 'lenderref1'
     loan.repayment_frequency_id.should == 3
     loan.repayment_duration.should == MonthDuration.new(18)
-    loan.sub_lender.should == "ACME sublender"
+    expect(loan.sub_lender).to eql("ACME sublender")
     loan.generic1.should == 'Generic 1'
     loan.generic2.should == 'Generic 2'
     loan.generic3.should == 'Generic 3'
@@ -57,9 +57,9 @@ describe 'Transferred loan entry' do
       click_button 'Submit'
     }.not_to change(loan, :state)
 
-    page.should have_content "must be accepted"
-    page.should have_content "must be calculated"
-    page.should have_content "a sub-lender must be chosen"
+    expect(page).to have_content "must be accepted"
+    expect(page).to have_content "must be calculated"
+    expect(page).to have_content "a sub-lender must be chosen"
   end
 
 end

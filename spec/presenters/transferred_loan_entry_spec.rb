@@ -52,14 +52,14 @@ describe TransferredLoanEntry do
 
       it "must have a sub-lender" do
         transferred_loan_entry.sub_lender = nil
-        transferred_loan_entry.should_not be_valid
-        transferred_loan_entry.should have(1).error_on(:sub_lender)
+        expect(transferred_loan_entry).not_to be_valid
+        expect(transferred_loan_entry).to have(1).error_on(:sub_lender)
       end
 
       it "must have an allowed sub-lender" do
         transferred_loan_entry.sub_lender = "not a valid sub lender for this lender"
-        transferred_loan_entry.should_not be_valid
-        transferred_loan_entry.should have(1).error_on(:sub_lender)
+        expect(transferred_loan_entry).not_to be_valid
+        expect(transferred_loan_entry).to have(1).error_on(:sub_lender)
       end
     end
 

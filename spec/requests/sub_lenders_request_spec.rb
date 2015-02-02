@@ -22,8 +22,8 @@ describe 'Sub-lenders' do
 
       click_button 'Create Sub-lender'
 
-      page.should have_content("can't be blank")
-      lender.sub_lenders.count.should be_zero
+      expect(page).to have_content("can't be blank")
+      expect(lender.sub_lenders.count).to be_zero
     end
 
     it 'adds sub-lender' do
@@ -31,16 +31,16 @@ describe 'Sub-lenders' do
 
       click_button 'Create Sub-lender'
 
-      current_path.should == lender_sub_lenders_path(lender)
+      expect(current_path).to eql(lender_sub_lenders_path(lender))
 
       sub_lender = lender.sub_lenders.last
-      sub_lender.name.should == 'EMCA'
+      expect(sub_lender.name).to eql('EMCA')
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::SubLenderCreated
-      admin_audit.auditable.should == sub_lender
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eql(AdminAudit::SubLenderCreated)
+      expect(admin_audit.auditable).to eql(sub_lender)
+      expect(admin_audit.modified_by).to eql(current_user)
+      expect(admin_audit.modified_on).to eql(Date.current)
     end
   end
 
@@ -57,8 +57,8 @@ describe 'Sub-lenders' do
 
       click_button 'Update Sub-lender'
 
-      page.should have_content("can't be blank")
-      lender.sub_lenders.first.name.should == 'EMCA'
+      expect(page).to have_content("can't be blank")
+      expect(lender.sub_lenders.first.name).to eql('EMCA')
     end
 
     it 'changes the sub-lender' do
@@ -66,16 +66,16 @@ describe 'Sub-lenders' do
 
       click_button 'Update Sub-lender'
 
-      current_path.should == lender_sub_lenders_path(lender)
+      expect(current_path).to eql(lender_sub_lenders_path(lender))
 
       sub_lender.reload
-      sub_lender.name.should == 'Foo'
+      expect(sub_lender.name).to eql('Foo')
 
       admin_audit = AdminAudit.last!
-      admin_audit.action.should == AdminAudit::SubLenderEdited
-      admin_audit.auditable.should == sub_lender
-      admin_audit.modified_by.should == current_user
-      admin_audit.modified_on.should == Date.current
+      expect(admin_audit.action).to eql(AdminAudit::SubLenderEdited)
+      expect(admin_audit.auditable).to eql(sub_lender)
+      expect(admin_audit.modified_by).to eql(current_user)
+      expect(admin_audit.modified_on).to eql(Date.current)
     end
   end
 
@@ -88,7 +88,7 @@ describe 'Sub-lenders' do
 
     it do
       click_link 'Delete'
-      page.should_not have_content sub_lender.name
+      expect(page).to_not have_content sub_lender.name
     end
   end
 

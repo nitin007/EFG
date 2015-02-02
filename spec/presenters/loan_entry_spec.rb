@@ -367,14 +367,14 @@ describe LoanEntry do
 
       it "must have a sub-lender" do
         loan_entry.sub_lender = nil
-        loan_entry.should_not be_valid
-        loan_entry.should have(1).error_on(:sub_lender)
+        expect(loan_entry).not_to be_valid
+        expect(loan_entry).to have(1).error_on(:sub_lender)
       end
 
       it "must have an allowed sub-lender" do
         loan_entry.sub_lender = "not a valid sub lender for this lender"
-        loan_entry.should_not be_valid
-        loan_entry.should have(1).error_on(:sub_lender)
+        expect(loan_entry).not_to be_valid
+        expect(loan_entry).to have(1).error_on(:sub_lender)
       end
     end
 
