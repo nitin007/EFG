@@ -55,7 +55,7 @@ class MoveDataCorrectionsOutOfLoanModifications < ActiveRecord::Migration
 
       execute("
         INSERT INTO data_corrections (#{populated_columns.keys.join(',')})
-        VALUES ('#{populated_columns.values.join(",")}')
+        VALUES (#{populated_columns.values.join(",")})
       ")
     end
   end
@@ -77,7 +77,7 @@ class MoveDataCorrectionsOutOfLoanModifications < ActiveRecord::Migration
 
       execute("
         INSERT INTO loan_modifications (type, #{populated_columns.keys.join(',')})
-        VALUES ('DataCorrection','#{populated_columns.values.join(",")}')
+        VALUES ('DataCorrection',#{populated_columns.values.join(",")})
       ")
     end
   end
