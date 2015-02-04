@@ -4,7 +4,7 @@
 
 <% if current_user.can_create?(user_class) %>
   <div class="actions">
-    <%= link_to %{<i class="icon-plus"></i> New #{user_class.model_name.human}}.html_safe, url_for(action: :new), class: 'btn' %>
+    <%= link_to %{<i class="icon-plus"></i> New #{user_class.model_name.human}}.html_safe, url_for(action: :new), class: 'btn btn-default' %>
   </div>
 <% end %>
 
