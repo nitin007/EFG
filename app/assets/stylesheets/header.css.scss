@@ -1,19 +1,22 @@
 @import "variables";
 
-.navbar-container {
-  margin-bottom: 20px;
-}
+$branding_color: #fff;
+$primary_nav_background_color: #000;
+$primary_nav_link_color: #999;
 
 .navbar {
-  margin-bottom: 0;
+  &.navbar-primary {
+    background-color: $primary_nav_background_color;
+    margin-bottom: 0;
 
-  .container {
-    margin: 0 auto;
-    width: 940px;
-  }
+    .navbar-brand {
+      color: $branding_color;
+      font-family: $header_font;
+    }
 
-  a:focus {
-    outline: none;
+    .navbar-nav > li > a {
+      color: $primary_nav_link_color;
+    }
   }
 
   a.brand {
