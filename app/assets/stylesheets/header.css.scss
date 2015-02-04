@@ -19,8 +19,17 @@ $primary_nav_link_color: #999;
     }
   }
 
-  a.brand {
-    font-family: $header_font;
+  &.navbar-secondary {
+    position: relative;
+    z-index: 100;
+
+    .nav > li:first-child > a {
+      padding-left: 0;
+    }
+  }
+
+  a:focus {
+    outline: none;
   }
 
   .navbar-form {
