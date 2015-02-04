@@ -1,6 +1,6 @@
 # encoding: utf-8
 class StateAidInput < CurrencyInput
-  def input
+  def input(wrapper_options)
     options[:unit] = '€'
     input_html_options[:disabled] = true
 

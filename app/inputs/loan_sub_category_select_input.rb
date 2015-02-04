@@ -1,6 +1,6 @@
 class LoanSubCategorySelectInput < SimpleForm::Inputs::Base
-  def input
-    unless options[:loan_category_id] 
+  def input(wrapper_options)
+    unless options[:loan_category_id]
       raise ArgumentError, 'Please specify the :loan_category_id'
     end
 
@@ -8,7 +8,7 @@ class LoanSubCategorySelectInput < SimpleForm::Inputs::Base
   end
 
   private
-  
+
   def select_options
     LoanSubCategory.all.select { |s| s.loan_category_id == options[:loan_category_id] }
   end
