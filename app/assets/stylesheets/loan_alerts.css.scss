@@ -2,8 +2,6 @@
 @import "variables";
 
 .loan-alerts {
-  width: 940px;
-
   .loan-alert {
     position: relative;
     background-color: $light_grey;
@@ -99,6 +97,7 @@
 }
 
 .bar-chart {
+  width: 900px;
   margin: 0 20px;
   height: 100px;
   position: relative;
