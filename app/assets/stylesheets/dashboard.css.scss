@@ -17,17 +17,9 @@
 }
 
 .dashboard-widgets {
-  float: left;
-  width: 450px;
   margin-top: 20px;
 
-  &.primary {
-    margin-right: 40px;
-  }
-
   .widget-block {
-    float: left;
-    width: 450px;
     background-color: $beige;
     border-radius: 10px;
     @include box-shadow(1px 1px 1px #ccc);

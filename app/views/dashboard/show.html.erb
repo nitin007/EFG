@@ -65,21 +65,21 @@
     </div>
   </div>
 
-  <% unless @lending_limit_utilisations.empty? %>
-    <div class="dashboard-widgets primary">
-      <h2>Lending Limit Utilisation</h2>
-      <%= render partial: "lending_limit", collection: @lending_limit_utilisations %>
-    </div>
-  <% end %>
+  <div class="row">
+    <% unless @lending_limit_utilisations.empty? %>
+      <div class="dashboard-widgets primary col-md-6">
+        <h2>Lending Limit Utilisation</h2>
+        <%= render partial: "lending_limit", collection: @lending_limit_utilisations %>
+      </div>
+    <% end %>
 
-  <% if current_user.can_view?(ClaimLimitCalculator) %>
-    <% unless @claim_limit_calculators.empty? %>
-      <div class="dashboard-widgets secondary">
+    <% if current_user.can_view?(ClaimLimitCalculator) && @claim_limit_calculators.present? %>
+      <div class="dashboard-widgets secondary col-md-6">
         <h2>Claim Limits</h2>
         <%= render partial: "claim_limit", collection: @claim_limit_calculators %>
       </div>
     <% end %>
-  <% end %>
+  </div>
 
 </div>
 <% end %>
