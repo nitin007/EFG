@@ -56,7 +56,7 @@ Please note that all the information within Facility Entry can be revised, howev
     <% unless @transferred_loan_entry.legacy_loan? %>
       <%= simple_form_row t('simple_form.labels.loan_entry.sic_code'), @loan.sic_code %>
       <%= simple_form_row t('simple_form.labels.loan_entry.sic_desc'), @loan.sic_desc %>
-      <%= f.input :reason_id, as: :select, collection: LoanReason.active, disabled: true, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
+      <%= f.input :reason_id, as: :select, collection: LoanReason.active, disabled: true, prompt: 'Please select' %>
     <% end %>
 
     <%= f.input :state_aid, as: :state_aid %>

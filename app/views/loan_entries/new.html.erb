@@ -31,10 +31,10 @@
     <%= f.input :amount, as: :currency %>
     <%= f.input :lending_limit_id, as: :select, collection: @loan_entry.lender.lending_limits.where(id: @loan_entry.lending_limit_id) %>
     <%= f.input :repayment_duration, as: :duration %>
-    <%= f.input :repayment_frequency_id, as: :select, collection: RepaymentFrequency.selectable, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
+    <%= f.input :repayment_frequency_id, as: :select, collection: RepaymentFrequency.selectable, prompt: 'Please select' %>
     <%= simple_form_row t('simple_form.labels.loan_entry.sic_code'), @loan.sic_code %>
     <%= simple_form_row t('simple_form.labels.loan_entry.sic_desc'), @loan.sic_desc %>
-    <%= f.input :reason_id, as: :select, collection: LoanReason.active, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
+    <%= f.input :reason_id, as: :select, collection: LoanReason.active, prompt: 'Please select' %>
     <%= f.input :interest_rate_type_id, as: :radio_buttons, collection: InterestRateType.all, wrapper_html: {class: 'radio-buttons-inline'} %>
     <%= f.input :interest_rate, as: :string %>
     <%= f.input :fees, as: :currency %>
@@ -47,13 +47,13 @@
 
   <%= field_set_tag 'EFG Lending Type' do %>
 
-    <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, prompt: 'Please select', input_html: { class: 'input-xxlarge' } %>
+    <%= f.input :loan_category_id, as: :select, collection: LoanCategory.all, prompt: 'Please select' %>
 
     <% for_loan_in_categories(@loan_entry, LoanCategory::TypeB.id) do %>
       <%= f.input :loan_security_types,
                   as: :select,
                   collection: LoanSecurityType.all,
-                  input_html: { class: 'input-xxlarge', multiple: true },
+                  input_html: { multiple: true },
                   selected: @loan.loan_security_types.collect(&:id) %>
 
       <%= f.input :security_proportion, as: :percentage %>
