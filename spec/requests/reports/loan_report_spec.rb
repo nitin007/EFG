@@ -110,8 +110,8 @@ describe 'Loan report' do
       click_button "Submit"
 
       # 2 errors - no lender selected, no loan type selected
-      page.should have_css('label[for=loan_report_lender_ids] + .controls .help-inline')
-      page.should have_css('input[name="loan_report[loan_types][]"] + .help-inline')
+      page.should have_css('.loan_report_lender_ids .help-block')
+      page.should have_css('.loan_report_loan_types .help-block')
     end
 
   end
