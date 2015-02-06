@@ -2,17 +2,18 @@
   <h1>Choose a new password</h1>
 </div>
 
-<%= simple_form_for(resource, :as => resource_name, :url => [resource_name, :password_expired], :html => { :method => :put }) do |f| %>
+<%= simple_form_for(resource, :as => resource_name, :url => [resource_name, :password_expired], :html => { :method => :put }, wrapper: :vertical_form) do |f| %>
   <%= devise_error_messages! %>
 
-  <%= f.label :current_password, "Current password" %>
-  <%= f.password_field :current_password %>
+  <div class="row">
+    <div class="col-sm-3">
+      <%= f.input :current_password, label: "Current password" %>
 
-  <%= f.label :password, "New password" %>
-  <%= f.password_field :password %>
+      <%= f.input :password, label: "New password" %>
 
-  <%= f.label :password_confirmation, "Confirm new password" %>
-  <%= f.password_field :password_confirmation %>
+      <%= f.input :password_confirmation, label: "Confirm new password" %>
+    </div>
+  </div>
 
   <div class="form-actions">
     <%= f.button :submit, "Change Password", class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>

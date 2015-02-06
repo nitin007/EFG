@@ -2,9 +2,9 @@
   <% if @lending_limit.new_record? %>
     <%= f.input :allocation_type_id, as: :radio_buttons, collection: LendingLimitType.all, wrapper_html: { class: 'radio-buttons-inline' } %>
   <% else %>
-    <div class="control-group">
-      <div class="control-label"><%=t 'simple_form.labels.lending_limit.allocation_type_id' %></div>
-      <div class="controls"><%= @lending_limit.allocation_type.name %></div>
+    <div class="form-group">
+      <div class="col-sm-5"><%=t 'simple_form.labels.lending_limit.allocation_type_id' %></div>
+      <div class="col-sm-5"><%= @lending_limit.allocation_type.name %></div>
     </div>
   <% end %>
 
@@ -15,13 +15,14 @@
     <%= f.input :starts_on, as: :quick_date %>
     <%= f.input :ends_on, as: :quick_date %>
   <% else %>
-    <div class="control-group">
-      <div class="control-label"><%=t 'simple_form.labels.lending_limit.starts_on' %></div>
-      <div class="controls"><%= @lending_limit.starts_on.to_s(:screen) %></div>
+    <div class="form-group">
+      <div class="col-sm-5"><%=t 'simple_form.labels.lending_limit.starts_on' %></div>
+      <div class="col-sm-5"><%= @lending_limit.starts_on.to_s(:screen) %></div>
     </div>
-    <div class="control-group">
-      <div class="control-label"><%=t 'simple_form.labels.lending_limit.ends_on' %></div>
-      <div class="controls"><%= @lending_limit.ends_on.to_s(:screen) %></div>
+
+    <div class="form-group">
+      <div class="col-sm-5"><%=t 'simple_form.labels.lending_limit.ends_on' %></div>
+      <div class="col-sm-5"><%= @lending_limit.ends_on.to_s(:screen) %></div>
     </div>
   <% end %>
 

@@ -1,13 +1,18 @@
 <%= render "user_management/password_not_set_dialog", user: @user %>
 
-<%= simple_form_for [@user.lender, @user] do |f| %>
-  <% if @user.new_record? %>
-    <p>Lender: <%= @user.lender.name %></p>
-  <% end %>
+<%= simple_form_for [@user.lender, @user], wrapper: :vertical_form do |f| %>
 
-  <%= f.input :first_name %>
-  <%= f.input :last_name %>
-  <%= f.input :email %>
+  <div class="row">
+    <div class="col-sm-6">
+      <% if @user.new_record? %>
+        <p>Lender: <%= @user.lender.name %></p>
+      <% end %>
+
+      <%= f.input :first_name %>
+      <%= f.input :last_name %>
+      <%= f.input :email %>
+    </div>
+  </div>
 
   <div class="form-actions">
     <%= f.button :submit, class: 'btn btn-primary', value: @user.new_record? ? 'Create Lender Admin' : 'Update Lender Admin', data: { 'disable-with' => 'Submitting...' } %>

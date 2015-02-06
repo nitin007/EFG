@@ -1,16 +1,16 @@
-<%= simple_form_for @lender do |f| %>
+<%= simple_form_for @lender, wrapper: :vertical_form do |f| %>
   <div class="row">
-    <div class="span6">
+    <div class="col-sm-6">
       <%= f.input :name %>
       <%= f.input :organisation_reference_code %>
       <%= f.input :loan_scheme, as: :select, collection: [ ['EFG only', Lender::EFG_SCHEME] ], include_blank: 'All' %>
       <%= f.input :primary_contact_name %>
       <%= f.input :primary_contact_phone %>
       <%= f.input :primary_contact_email %>
-      <%= f.input :can_use_add_cap, wrapper: :checkbox %>
+      <%= f.input :can_use_add_cap, wrapper: :vertical_boolean %>
     </div>
 
-    <div class="span6">
+    <div class="col-sm-6">
       <% unless @lender.new_record? %>
         <div class="well">
           <h4>Lender logo</h4>

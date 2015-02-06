@@ -4,10 +4,14 @@
   <h1>Change Your Password</h1>
 </div>
 
-<%= simple_form_for(current_user, url: change_password_path, html: { method: :put }) do |f| %>
+<%= simple_form_for(current_user, url: change_password_path, html: { method: :put }, wrapper: :vertical_form) do |f| %>
 
-  <%= f.input :password, label: "New Password", required: true %>
-  <%= f.input :password_confirmation, label: "Confirm Your New Password", required: true %>
+  <div class="row">
+    <div class="col-sm-3">
+      <%= f.input :password, label: "New Password", required: true %>
+      <%= f.input :password_confirmation, label: "Confirm Your New Password", required: true %>
+    </div>
+  </div>
 
   <div class="form-actions">
     <%= f.button :submit, "Update Password", class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>

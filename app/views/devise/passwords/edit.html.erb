@@ -2,14 +2,18 @@
   <h1>Set Your Password</h1>
 </div>
 
-<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :put}) do |f| %>
+<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :put}, wrapper: :vertical_form) do |f| %>
   <%= f.error_notification %>
 
-  <%= f.input :reset_password_token, as: :hidden %>
-  <%= f.full_error :reset_password_token %>
+  <div class="row">
+    <div class="col-sm-3">
+      <%= f.input :reset_password_token, as: :hidden %>
+      <%= f.full_error :reset_password_token %>
 
-  <%= f.input :password, label: "New Password", required: true %>
-  <%= f.input :password_confirmation, label: "Confirm Your New Password", required: true %>
+      <%= f.input :password, label: "New Password", required: true %>
+      <%= f.input :password_confirmation, label: "Confirm Your New Password", required: true %>
+    </div>
+  </div>
 
   <div class="form-actions">
     <%= f.button :submit, "Change Password", class: 'btn btn-primary', data: { 'disable-with' => 'Submitting...' } %>

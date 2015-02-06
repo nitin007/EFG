@@ -1,9 +1,13 @@
 <%= render "user_management/password_not_set_dialog", user: @user %>
 
-<%= simple_form_for @user do |f| %>
-  <%= f.input :first_name %>
-  <%= f.input :last_name %>
-  <%= f.input :email %>
+<%= simple_form_for @user, wrapper: :vertical_form do |f| %>
+  <div class="row">
+    <div class="col-sm-6">
+      <%= f.input :first_name %>
+      <%= f.input :last_name %>
+      <%= f.input :email %>
+    </div>
+  </div>
 
   <div class="form-actions">
     <%= f.button :submit, class: 'btn btn-primary', value: @user.new_record? ? 'Create Auditor User' : 'Update Auditor User', data: { 'disable-with' => 'Submitting...' } %>
