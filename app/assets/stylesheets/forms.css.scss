@@ -9,21 +9,6 @@
   color: #333;
 }
 
-.input-group {
-  .form-control {
-    &.currency,
-    &.quick_date,
-    &.sic_code,
-    &.state_aid {
-      width: 120px;
-    }
-
-    // &.percentage  {
-    //   width: 50px;
-    // }
-  }
-}
-
 .state_aid {
   .input-group {
     float: left;
