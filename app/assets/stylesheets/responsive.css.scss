@@ -8,4 +8,25 @@ $large_devices_breakpoint: '1200px';
     float: none !important;
     padding-left: 0;
   }
+
+  .bar-chart {
+    width: auto;
+    overflow: hidden;
+  }
+
+  .loan-alerts .loan-alert ol.dates li.third {
+    display: none;
+  }
+}
+
+@media (max-width: $small_devices_breakpoint) {
+  .loan-alert {
+    .total-loans {
+      display: none;
+    }
+  }
+
+  .loan-alerts .loan-alert ol.dates li.second {
+    display: none;
+  }
 }
