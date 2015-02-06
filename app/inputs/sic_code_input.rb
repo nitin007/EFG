@@ -5,7 +5,7 @@ class SICCodeInput < SimpleForm::Inputs::Base
         attribute_name,
         options_for_select,
         input_options,
-        input_html_options
+        input_html_options.merge(style: 'width: 400px')
       ) + restricted_eligibility_message
     end
   end
