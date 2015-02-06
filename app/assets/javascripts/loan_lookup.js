@@ -11,6 +11,10 @@ $(document).ready(function() {
     minLength: 3,
     select: function(event) {
       event.target.form.submit();
+    },
+    messages: {
+      noResults: '',
+      results: ''
     }
   });
 });
