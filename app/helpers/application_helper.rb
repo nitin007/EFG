@@ -55,9 +55,9 @@ module ApplicationHelper
   end
 
   def simple_form_row(label, control, options = {})
-    content_tag :div, class: "control-group #{options[:class]}", data: options[:data] do
-      content_tag(:div, label, class: 'control-label') +
-        content_tag(:div, control, class: 'controls')
+    content_tag :div, class: "form-group #{options[:class]}", data: options[:data] do
+      content_tag(:div, label, class: 'col-sm-5') +
+        content_tag(:div, control, class: 'col-sm-5')
     end
   end
 
