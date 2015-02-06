@@ -11,9 +11,9 @@
   <hr>
 
   <%= simple_form_for @ask_an_expert, url: help_ask_an_expert_path, html: { class: 'form-horizontal form-ask-an-expert' } do |f| %>
-    <div class="control-group to">
-      <div class="control-label">To</div>
-      <div class="controls">
+    <div class="form-group to">
+      <div class="control-label col-sm-5">To</div>
+      <div class="col-sm-5">
         <% @expert_users.each do |expert_user| %>
           <span class="badge badge-info"><%= expert_user.name %></span>
         <% end %>
