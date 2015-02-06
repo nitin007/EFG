@@ -3,7 +3,7 @@ module LoanAlertsHelper
     return if priority.blank?
     secondary_class_name = case priority
     when "high"
-      'label-important'
+      'label-danger'
     when "medium"
       'label-warning'
     when "low"

@@ -26,7 +26,7 @@ class SICCodeInput < SimpleForm::Inputs::Base
   def restricted_eligibility_message
     %Q{
       <div class="sic-code-restricted-eligibility">
-        <span class="label label-important">
+        <span class="label label-danger">
           <i class="icon-exclamation-sign"></i>
           This SIC code is not eligible for public sector businesses.
           Please verify the business applying for this loan is not in
