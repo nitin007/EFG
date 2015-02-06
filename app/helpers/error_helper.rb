@@ -11,8 +11,8 @@ module ErrorHelper
   def render_attribute_errors(form, *attribute_names)
     html = attribute_names.collect do |attribute|
       if form.object.errors.include?(attribute)
-        content_tag :div, class: "control-group error" do
-          content_tag :div, class: "controls" do
+        content_tag :div, class: "form-group error" do
+          content_tag :div, class: "col-sm-12" do
             content_tag :div, class: "help-inline" do
               form.object.errors[attribute].join(', ')
             end
