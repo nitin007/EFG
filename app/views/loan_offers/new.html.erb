@@ -15,9 +15,9 @@
 
   <%= f.input :facility_letter_sent, as: :radio_buttons, wrapper_html: {class: 'radio-buttons-inline'} %>
 
-  <div class="control-group">
-    <div class="control-label">Loan lending limit details:</div>
-    <div class="controls">
+  <div class="form-group">
+    <div class="col-sm-5">Loan lending limit details:</div>
+    <div class="col-sm-5  ">
       <%= @loan_offer.lending_limit.name %>
       (<%= @loan_offer.lending_limit.starts_on.to_s(:screen) %> -
       <%= @loan_offer.lending_limit.ends_on.to_s(:screen) %>)
