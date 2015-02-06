@@ -20,6 +20,21 @@ $large_devices_breakpoint: '1200px';
 }
 
 @media (max-width: $small_devices_breakpoint) {
+
+  .page-header {
+    margin-top: 9px;
+    padding-bottom: 12px;
+    position: relative;
+    width: 100%;
+
+    #actions {
+      position: static;
+      padding-left: 0;
+      margin-top: 10px;
+      text-align: left;
+    }
+  }
+
   .loan-alert {
     .total-loans {
       display: none;
