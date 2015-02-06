@@ -20,11 +20,17 @@ body:not(.signed-in) {
   }
 }
 
-.alert.error {
-  background-color: #c20;
-  color: #fff;
-  border: 0;
-  text-shadow: 0 1px 0 #333;
+.alert {
+  &.error {
+    background-color: #c20;
+    color: #fff;
+    border: 0;
+    text-shadow: 0 1px 0 #333;
+  }
+
+  h2 {
+    margin-top: 0;
+  }
 }
 
 .center,
