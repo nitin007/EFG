@@ -27,7 +27,7 @@
   <%= google_analytics %>
 </head>
 
-<body class="<%= 'training' if training_mode? %>">
+<body class="<%= 'training' if training_mode? %> <%= 'signed-in' if signed_in? %>">
 
   <div class="navbar navbar-default navbar-static-top navbar-primary">
     <div class="container">
