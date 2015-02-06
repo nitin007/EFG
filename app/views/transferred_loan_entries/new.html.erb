@@ -36,16 +36,16 @@ Please note that all the information within Facility Entry can be revised, howev
     <%= f.input :lender_reference %>
     <%= f.input :amount, as: :currency %>
 
-    <div class='control-group string'>
-      <label class='control-label'>Guarantee Rate for this loan (%):</label>
-      <div class='controls'>
+    <div class='form-group string'>
+      <label class='col-sm-5'>Guarantee Rate for this loan (%):</label>
+      <div class='col-sm-5'>
         <%= @transferred_loan_entry.guarantee_rate %>%
       </div>
     </div>
 
-    <div class='control-group string'>
-      <label class='control-label'>Premium Rate for this loan (%):</label>
-      <div class='controls'>
+    <div class='form-group string'>
+      <label class='col-sm-5'>Premium Rate for this loan (%):</label>
+      <div class='col-sm-5'>
         <%= @transferred_loan_entry.premium_rate %>%
       </div>
     </div>
@@ -64,9 +64,9 @@ Please note that all the information within Facility Entry can be revised, howev
     <% unless @transferred_loan_entry.legacy_loan? %>
       <%= f.input :state_aid_is_valid, as: :boolean, disabled: true %>
 
-      <div class='control-group string'>
-        <label class='control-label'>Is the result for Notified Aid less than 60% for Objective 1 loans, or 40% for non-Objective 1 loans?</label>
-        <div class='controls'>
+      <div class='form-group string'>
+        <label class='col-sm-5'>Is the result for Notified Aid less than 60% for Objective 1 loans, or 40% for non-Objective 1 loans?</label>
+        <div class='col-sm-5'>
           Not Set
         </div>
       </div>
