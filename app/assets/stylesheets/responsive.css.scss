@@ -1,0 +1,11 @@
+/* Breakpoints */
+$small_devices_breakpoint: '768px';
+$medium_devices_breakpoint: '992px';
+$large_devices_breakpoint: '1200px';
+
+@media (max-width: $medium_devices_breakpoint) {
+  #loan_lookup.navbar-right {
+    float: none !important;
+    padding-left: 0;
+  }
+}
