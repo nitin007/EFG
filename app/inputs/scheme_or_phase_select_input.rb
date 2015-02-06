@@ -1,6 +1,8 @@
 class SchemeOrPhaseSelectInput < SimpleForm::Inputs::Base
   def input(wrapper_options)
-    @builder.select(attribute_name, select_options)
+    merged_input_options = merge_wrapper_options(input_html_options, wrapper_options)
+
+    @builder.select(attribute_name, select_options, input_options, merged_input_options)
   end
 
   private
