@@ -4,43 +4,45 @@
   <h1>Loan Portfolio</h1>
 </div>
 
-<table class="table table-striped table-loan-states">
-  <thead>
-    <tr>
-      <th>State</th>
-      <th class="loan-count">Legacy SFLG</th>
-      <th class="loan-count">SFLG</th>
-      <th class="loan-count">EFG</th>
-      <th class="loan-count">Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @loan_states.each do |loan_state| %>
-      <tr id="<%= loan_state.state %>_loans">
-        <th class="loan-state"><%= loan_state.state.titleize %></th>
-        <td class="loan-count">
-          <%= link_to_if(
-            loan_state.legacy_sflg_loans_count > 0,
-            loan_state.legacy_sflg_loans_count,
-            loan_state_path(loan_state.state, scheme: :legacy_sflg)
-          ) %>
-        </td>
-        <td class="loan-count">
-          <%= link_to_if(
-            loan_state.sflg_loans_count > 0,
-            loan_state.sflg_loans_count,
-            loan_state_path(loan_state.state, scheme: :sflg)
-          ) %>
-        </td>
-        <td class="loan-count">
-          <%= link_to_if(
-            loan_state.efg_loans_count > 0,
-            loan_state.efg_loans_count,
-            loan_state_path(loan_state.state, scheme: :efg)
-          ) %>
-        </td>
-        <td class="loan-count"><%= loan_state.total_loans %></td>
+<div class="table-responsive">
+  <table class="table table-striped table-loan-states">
+    <thead>
+      <tr>
+        <th>State</th>
+        <th class="loan-count">Legacy SFLG</th>
+        <th class="loan-count">SFLG</th>
+        <th class="loan-count">EFG</th>
+        <th class="loan-count">Total</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @loan_states.each do |loan_state| %>
+        <tr id="<%= loan_state.state %>_loans">
+          <th class="loan-state"><%= loan_state.state.titleize %></th>
+          <td class="loan-count">
+            <%= link_to_if(
+              loan_state.legacy_sflg_loans_count > 0,
+              loan_state.legacy_sflg_loans_count,
+              loan_state_path(loan_state.state, scheme: :legacy_sflg)
+            ) %>
+          </td>
+          <td class="loan-count">
+            <%= link_to_if(
+              loan_state.sflg_loans_count > 0,
+              loan_state.sflg_loans_count,
+              loan_state_path(loan_state.state, scheme: :sflg)
+            ) %>
+          </td>
+          <td class="loan-count">
+            <%= link_to_if(
+              loan_state.efg_loans_count > 0,
+              loan_state.efg_loans_count,
+              loan_state_path(loan_state.state, scheme: :efg)
+            ) %>
+          </td>
+          <td class="loan-count"><%= loan_state.total_loans %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

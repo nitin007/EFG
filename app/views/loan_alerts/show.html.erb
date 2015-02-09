@@ -9,28 +9,30 @@
 
 <%= other_alert_links(@alert.priority) %>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Days Remaining</th>
-      <th>Reference</th>
-      <th>Business name</th>
-      <th>Amount</th>
-      <th>Last Updated</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @alert.loans_with_days_remaining.each do |loan, days_remaining| %>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= days_remaining %></td>
-        <td><%= link_to(loan.reference, loan) %></td>
-        <td><%= link_to(loan_business_name(loan), loan) %></td>
-        <td><%= loan.amount.format %></td>
-        <td><%= loan.updated_at.strftime("%d %B %Y") %></td>
+        <th>Days Remaining</th>
+        <th>Reference</th>
+        <th>Business name</th>
+        <th>Amount</th>
+        <th>Last Updated</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @alert.loans_with_days_remaining.each do |loan, days_remaining| %>
+        <tr>
+          <td><%= days_remaining %></td>
+          <td><%= link_to(loan.reference, loan) %></td>
+          <td><%= link_to(loan_business_name(loan), loan) %></td>
+          <td><%= loan.amount.format %></td>
+          <td><%= loan.updated_at.strftime("%d %B %Y") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 <% if @alert.loans_with_days_remaining.count > 5 %>
   <%= other_alert_links(@alert.priority) %>

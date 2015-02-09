@@ -8,25 +8,27 @@
 
 <p>The following loans have been settled:</p>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Loan Reference</th>
-      <th>Lender's Reference</th>
-      <th>Business Name</th>
-      <th>Settle Date</th>
-      <th>Loan State</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @invoice.settled_loans.each do |loan| %>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= loan.reference %></td>
-        <td><%= loan.lender_reference %></td>
-        <td><%= loan.business_name %></td>
-        <td><%= @invoice.created_at.to_s(:screen) %></td>
-        <td><%= loan.state.humanize %></td>
+        <th>Loan Reference</th>
+        <th>Lender's Reference</th>
+        <th>Business Name</th>
+        <th>Settle Date</th>
+        <th>Loan State</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @invoice.settled_loans.each do |loan| %>
+        <tr>
+          <td><%= loan.reference %></td>
+          <td><%= loan.lender_reference %></td>
+          <td><%= loan.business_name %></td>
+          <td><%= @invoice.created_at.to_s(:screen) %></td>
+          <td><%= loan.state.humanize %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

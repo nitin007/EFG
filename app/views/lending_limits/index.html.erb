@@ -13,27 +13,29 @@
   <%= link_to %{<i class="icon-plus"></i> New Lending Limit}.html_safe, new_lender_lending_limit_path(@lender), class: 'btn btn-default' %>
 </div>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Lending allocation name</th>
-      <th>Lending limit type</th>
-      <th>Lending start date</th>
-      <th>Lending end date</th>
-      <th>Lending allocation</th>
-      <th>Active allocation</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @lending_limits.each do |lending_limit| %>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= link_to lending_limit.name, edit_lender_lending_limit_path(@lender, lending_limit) %></td>
-        <td><%= lending_limit.allocation_type.name %></td>
-        <td><%= lending_limit.starts_on.to_s(:screen) %></td>
-        <td><%= lending_limit.ends_on.to_s(:screen) %></td>
-        <td><%= lending_limit.allocation.format %></td>
-        <td><%=friendly_boolean lending_limit.active %></td>
+        <th>Lending allocation name</th>
+        <th>Lending limit type</th>
+        <th>Lending start date</th>
+        <th>Lending end date</th>
+        <th>Lending allocation</th>
+        <th>Active allocation</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @lending_limits.each do |lending_limit| %>
+        <tr>
+          <td><%= link_to lending_limit.name, edit_lender_lending_limit_path(@lender, lending_limit) %></td>
+          <td><%= lending_limit.allocation_type.name %></td>
+          <td><%= lending_limit.starts_on.to_s(:screen) %></td>
+          <td><%= lending_limit.ends_on.to_s(:screen) %></td>
+          <td><%= lending_limit.allocation.format %></td>
+          <td><%=friendly_boolean lending_limit.active %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

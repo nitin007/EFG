@@ -18,22 +18,24 @@
 
 <% else %>
 
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Date of Change</th>
-        <th>Summary Type</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @loan_amendments.each do |loan_amendment| %>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <td><%= loan_amendment.date_link %></td>
-
-          <td><%= loan_amendment.type_of_amendment_link %></td>
+          <th>Date of Change</th>
+          <th>Summary Type</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @loan_amendments.each do |loan_amendment| %>
+          <tr>
+            <td><%= loan_amendment.date_link %></td>
+
+            <td><%= loan_amendment.type_of_amendment_link %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 
 <% end %>

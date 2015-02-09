@@ -9,30 +9,32 @@
 <h3><%= pluralize(@results.count, "result") + " found" %></h3>
 
 <% unless @results.empty? %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Reference</th>
-        <th>Business name</th>
-        <th>Trading Name</th>
-        <th>Amount</th>
-        <th>Maturity Date</th>
-        <th>Last Updated</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @results.each do |loan| %>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
         <tr>
-          <td><%= link_to(loan.reference, loan) %></td>
-          <td><%= link_to(loan_business_name(loan), loan) %></td>
-          <td><%= loan.trading_name %></td>
-          <td><%= loan.amount.format %></td>
-          <td><%= loan.maturity_date.try(:strftime, "%d %B %Y") %></td>
-          <td><%= loan.updated_at.try(:strftime, "%d %B %Y") %></td>
+          <th>Reference</th>
+          <th>Business name</th>
+          <th>Trading Name</th>
+          <th>Amount</th>
+          <th>Maturity Date</th>
+          <th>Last Updated</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @results.each do |loan| %>
+          <tr>
+            <td><%= link_to(loan.reference, loan) %></td>
+            <td><%= link_to(loan_business_name(loan), loan) %></td>
+            <td><%= loan.trading_name %></td>
+            <td><%= loan.amount.format %></td>
+            <td><%= loan.maturity_date.try(:strftime, "%d %B %Y") %></td>
+            <td><%= loan.updated_at.try(:strftime, "%d %B %Y") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 
 <% end %>
 

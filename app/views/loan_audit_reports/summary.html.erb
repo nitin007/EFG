@@ -15,60 +15,62 @@
   <%= link_to "New criteria", new_loan_audit_report_path, class: 'btn btn-primary' %></p>
 <% end %>
 
-<table class="table table-striped report-summary">
-  <thead>
-    <tr>
-      <th class='criterion'>Criterion</th>
-      <th class='value'>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>The date of Scheme Facility Letter start date for your report</td>
-      <td><%= @loan_audit_report.facility_letter_start_date.try(:to_s, :screen) %></td>
-    </tr>
-    <tr>
-      <td>The date of Scheme Facility Letter end date for your report</td>
-      <td><%= @loan_audit_report.facility_letter_end_date.try(:to_s, :screen) %></td>
-    </tr>
-    <tr>
-      <td>The 'created' start date for your report</td>
-      <td><%= @loan_audit_report.created_at_start_date.try(:to_s, :screen) %></td>
-    </tr>
-    <tr>
-      <td>The 'created' end date for your report</td>
-      <td><%= @loan_audit_report.created_at_end_date.try(:to_s, :screen) %></td>
-    </tr>
-    <tr>
-      <td>The 'last modified' start date for your report</td>
-      <td><%= @loan_audit_report.last_modified_start_date.try(:to_s, :screen) %></td>
-    </tr>
-    <tr>
-      <td>The 'last modified' end date for your report</td>
-      <td><%= @loan_audit_report.last_modified_end_date.try(:to_s, :screen) %></td>
-    </tr>
-    <tr>
-      <td>The audit function</td>
-      <td><%= @loan_audit_report.event_name %></td>
-    </tr>
-    <tr>
-      <td>The 'last modified' start date for your report</td>
-      <td><%= @loan_audit_report.audit_records_start_date.try(:to_s, :screen) %></td>
-    </tr>
-    <tr>
-      <td>The 'last modified' end date for your report</td>
-      <td><%= @loan_audit_report.audit_records_end_date.try(:to_s, :screen) %></td>
-    </tr>
-    <tr>
-      <td>The 'loan state' for your report</td>
-      <td><%= @loan_audit_report.state.blank? ? 'All' : @loan_audit_report.state.humanize %></td>
-    </tr>
-    <tr>
-      <td>The lender organisation</td>
-      <td><%= @loan_audit_report.lender_id.blank? ? 'All' : Lender.find(@loan_audit_report.lender_id).name %></td>
-    </tr>
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-striped report-summary">
+    <thead>
+      <tr>
+        <th class='criterion'>Criterion</th>
+        <th class='value'>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>The date of Scheme Facility Letter start date for your report</td>
+        <td><%= @loan_audit_report.facility_letter_start_date.try(:to_s, :screen) %></td>
+      </tr>
+      <tr>
+        <td>The date of Scheme Facility Letter end date for your report</td>
+        <td><%= @loan_audit_report.facility_letter_end_date.try(:to_s, :screen) %></td>
+      </tr>
+      <tr>
+        <td>The 'created' start date for your report</td>
+        <td><%= @loan_audit_report.created_at_start_date.try(:to_s, :screen) %></td>
+      </tr>
+      <tr>
+        <td>The 'created' end date for your report</td>
+        <td><%= @loan_audit_report.created_at_end_date.try(:to_s, :screen) %></td>
+      </tr>
+      <tr>
+        <td>The 'last modified' start date for your report</td>
+        <td><%= @loan_audit_report.last_modified_start_date.try(:to_s, :screen) %></td>
+      </tr>
+      <tr>
+        <td>The 'last modified' end date for your report</td>
+        <td><%= @loan_audit_report.last_modified_end_date.try(:to_s, :screen) %></td>
+      </tr>
+      <tr>
+        <td>The audit function</td>
+        <td><%= @loan_audit_report.event_name %></td>
+      </tr>
+      <tr>
+        <td>The 'last modified' start date for your report</td>
+        <td><%= @loan_audit_report.audit_records_start_date.try(:to_s, :screen) %></td>
+      </tr>
+      <tr>
+        <td>The 'last modified' end date for your report</td>
+        <td><%= @loan_audit_report.audit_records_end_date.try(:to_s, :screen) %></td>
+      </tr>
+      <tr>
+        <td>The 'loan state' for your report</td>
+        <td><%= @loan_audit_report.state.blank? ? 'All' : @loan_audit_report.state.humanize %></td>
+      </tr>
+      <tr>
+        <td>The lender organisation</td>
+        <td><%= @loan_audit_report.lender_id.blank? ? 'All' : Lender.find(@loan_audit_report.lender_id).name %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <% unless @loan_audit_report.count.zero? %>
 

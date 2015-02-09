@@ -38,84 +38,88 @@
 
 <% end %>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Premium No.</th>
-      <th>Premium Amount</th>
-      <th>Premium No.</th>
-      <th>Premium Amount</th>
-  </thead>
-  <tbody>
-    <% premiums_table_rows(@premium_schedule.subsequent_premiums, @premium_schedule.reschedule?).each do |(index1, premium1), (index2, premium2)| %>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <%= premium_number_cell(index1) %>
-        <%= premium_amount_cell(premium1) %>
-        <%= premium_number_cell(index2) %>
-        <%= premium_amount_cell(premium2) %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        <th>Premium No.</th>
+        <th>Premium Amount</th>
+        <th>Premium No.</th>
+        <th>Premium Amount</th>
+    </thead>
+    <tbody>
+      <% premiums_table_rows(@premium_schedule.subsequent_premiums, @premium_schedule.reschedule?).each do |(index1, premium1), (index2, premium2)| %>
+        <tr>
+          <%= premium_number_cell(index1) %>
+          <%= premium_amount_cell(premium1) %>
+          <%= premium_number_cell(index2) %>
+          <%= premium_amount_cell(premium2) %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
 
 <h3>Schedule Based on the Following Information</h3>
 
-<table class="table table-striped">
-  <tbody>
-    <tr>
-      <th>What is the expected year of the initial draw?</th>
-      <td><%= @premium_schedule.initial_draw_year %></td>
-    </tr>
-    <tr>
-      <th>What is the date of the Premium Collection point from which this schedule applies?</th>
-      <td><%= @premium_schedule.reschedule? ? @premium_schedule.premium_cheque_month : @premium_schedule.initial_draw_date.try(:to_s, :screen) %></td>
-    </tr>
-    <% if @premium_schedule.reschedule? %>
-    <tr>
-      <th>What is the outstanding capital balance at this Premium Collection point?</th>
-      <td><%= @premium_schedule.initial_draw_amount.try(:format) %></td>
-    </tr>
-    <tr>
-      <th>What is the remaining facility term in months at this Premium Collection point?</th>
-      <td><%= @premium_schedule.repayment_duration %></td>
-    </tr>
-    <% else %>
-    <tr>
-      <th>What is the amount of the initial draw?</th>
-      <td><%= @premium_schedule.initial_draw_amount.try(:format) %></td>
-    </tr>
-    <tr>
-      <th>What is the loan term in months remaining at this Premium Collection point?</th>
-      <td><%= @premium_schedule.repayment_duration %></td>
-    </tr>
-    <% end %>
-    <tr>
-      <th>What is the length of the initial capital repayment holiday? (Months)</th>
-      <td><%= @premium_schedule.initial_capital_repayment_holiday %></td>
-    </tr>
-    <tr>
-      <th>What is the amount of the additional draw? (Second tranche)</th>
-      <td><%= @premium_schedule.second_draw_amount.try(:format) %></td>
-    </tr>
-    <tr>
-      <th>What is the number of months (from this Premium Collection point) to second tranche drawdown?</th>
-      <td><%= @premium_schedule.second_draw_months %></td>
-    </tr>
-    <tr>
-      <th>What is the amount of the additional draw? (Third tranche)</th>
-      <td><%= @premium_schedule.third_draw_amount.try(:format) %></td>
-    </tr>
-    <tr>
-      <th>What is the number of months (from this Premium Collection point) to third tranche drawdown?</th>
-      <td><%= @premium_schedule.third_draw_months %></td>
-    </tr>
-    <tr>
-      <th>What is the amount of the additional draw? (Fourth tranche)</th>
-      <td><%= @premium_schedule.fourth_draw_amount.try(:format) %></td>
-    </tr>
-    <tr>
-      <th>What is the number of months (from this Premium Collection point) to fourth tranche drawdown?</th>
-      <td><%= @premium_schedule.fourth_draw_months %></td>
-    </tr>
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <th>What is the expected year of the initial draw?</th>
+        <td><%= @premium_schedule.initial_draw_year %></td>
+      </tr>
+      <tr>
+        <th>What is the date of the Premium Collection point from which this schedule applies?</th>
+        <td><%= @premium_schedule.reschedule? ? @premium_schedule.premium_cheque_month : @premium_schedule.initial_draw_date.try(:to_s, :screen) %></td>
+      </tr>
+      <% if @premium_schedule.reschedule? %>
+      <tr>
+        <th>What is the outstanding capital balance at this Premium Collection point?</th>
+        <td><%= @premium_schedule.initial_draw_amount.try(:format) %></td>
+      </tr>
+      <tr>
+        <th>What is the remaining facility term in months at this Premium Collection point?</th>
+        <td><%= @premium_schedule.repayment_duration %></td>
+      </tr>
+      <% else %>
+      <tr>
+        <th>What is the amount of the initial draw?</th>
+        <td><%= @premium_schedule.initial_draw_amount.try(:format) %></td>
+      </tr>
+      <tr>
+        <th>What is the loan term in months remaining at this Premium Collection point?</th>
+        <td><%= @premium_schedule.repayment_duration %></td>
+      </tr>
+      <% end %>
+      <tr>
+        <th>What is the length of the initial capital repayment holiday? (Months)</th>
+        <td><%= @premium_schedule.initial_capital_repayment_holiday %></td>
+      </tr>
+      <tr>
+        <th>What is the amount of the additional draw? (Second tranche)</th>
+        <td><%= @premium_schedule.second_draw_amount.try(:format) %></td>
+      </tr>
+      <tr>
+        <th>What is the number of months (from this Premium Collection point) to second tranche drawdown?</th>
+        <td><%= @premium_schedule.second_draw_months %></td>
+      </tr>
+      <tr>
+        <th>What is the amount of the additional draw? (Third tranche)</th>
+        <td><%= @premium_schedule.third_draw_amount.try(:format) %></td>
+      </tr>
+      <tr>
+        <th>What is the number of months (from this Premium Collection point) to third tranche drawdown?</th>
+        <td><%= @premium_schedule.third_draw_months %></td>
+      </tr>
+      <tr>
+        <th>What is the amount of the additional draw? (Fourth tranche)</th>
+        <td><%= @premium_schedule.fourth_draw_amount.try(:format) %></td>
+      </tr>
+      <tr>
+        <th>What is the number of months (from this Premium Collection point) to fourth tranche drawdown?</th>
+        <td><%= @premium_schedule.fourth_draw_months %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

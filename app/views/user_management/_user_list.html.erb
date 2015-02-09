@@ -13,45 +13,47 @@
 <% if users.empty? %>
   <h2>No <%= user_class.model_name.human(count: 0) %></h2>
 <% else %>
-  <table id="user_list" class="table table-striped">
-    <thead>
-      <tr>
-        <% if user_class == LenderAdmin %><th>Lender</th><% end %>
-        <th>Name</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th class="center">Locked</th>
-        <th>Last Login</th>
-        <th>&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% users.each do |user| %>
+  <div class="table-responsive">
+    <table id="user_list" class="table table-striped">
+      <thead>
         <tr>
-          <% if user_class == LenderAdmin %><td><%= user.lender.name %></td><% end %>
-          <td>
-            <% if current_user.can_update?(user.class) %>
-              <%= link_to user.name, polymorphic_user_path(:edit, user) %>
-            <% elsif current_user.can_view?(user.class) %>
-              <%= link_to user.name, polymorphic_user_path(user) %>
-            <% else %>
-              <%= user.name %>
-            <% end %>
-          </td>
-          <td><%= user.username %></td>
-          <td><%= user.email %></td>
-          <td class="center"><%=friendly_boolean user.locked? %></td>
-          <td><%= most_recent_login_time(user) %></td>
-          <td class="options">
-            <% if current_user.can_update?(user.class) %>
-              <%= set_email_options(user) %>
-              <%= set_password_options(user) %>
-            <% end %>
-          </td>
+          <% if user_class == LenderAdmin %><th>Lender</th><% end %>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th class="center">Locked</th>
+          <th>Last Login</th>
+          <th>&nbsp;</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% users.each do |user| %>
+          <tr>
+            <% if user_class == LenderAdmin %><td><%= user.lender.name %></td><% end %>
+            <td>
+              <% if current_user.can_update?(user.class) %>
+                <%= link_to user.name, polymorphic_user_path(:edit, user) %>
+              <% elsif current_user.can_view?(user.class) %>
+                <%= link_to user.name, polymorphic_user_path(user) %>
+              <% else %>
+                <%= user.name %>
+              <% end %>
+            </td>
+            <td><%= user.username %></td>
+            <td><%= user.email %></td>
+            <td class="center"><%=friendly_boolean user.locked? %></td>
+            <td><%= most_recent_login_time(user) %></td>
+            <td class="options">
+              <% if current_user.can_update?(user.class) %>
+                <%= set_email_options(user) %>
+                <%= set_password_options(user) %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% end %>
 
 <%= will_paginate users %>

@@ -11,16 +11,18 @@
 
 <p>If there isn't an issue, then please progress as you would do ordinarily.</p>
 
-<table class="table">
-  <tr>
-    <th>Previous State Aid</th>
-    <td><%= @update_lending_limit.previous_state_aid.format %></td>
-  </tr>
-  <tr>
-    <th>New State Aid</th>
-    <td><%= @update_lending_limit.new_state_aid.format %></td>
-  </tr>
-</table>
+<div class="table-responsive">
+  <table class="table">
+    <tr>
+      <th>Previous State Aid</th>
+      <td><%= @update_lending_limit.previous_state_aid.format %></td>
+    </tr>
+    <tr>
+      <th>New State Aid</th>
+      <td><%= @update_lending_limit.new_state_aid.format %></td>
+    </tr>
+  </table>
+</div>
 
 <div class="form-actions">
   <%= link_to('Offer Scheme Facility', new_loan_offer_path(@loan), class: 'btn btn-primary') if current_user.can_create?(LoanOffer) %>

@@ -10,31 +10,33 @@
   <%= link_to %{<i class="icon-plus"></i> New Lender}.html_safe, new_lender_path, class: 'btn btn-default' %>
 </div>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Reference</th>
-      <th>Annual</th>
-      <th>Specific</th>
-      <th>Active</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @lenders.each do |lender| %>
-      <tr id="<%= dom_id(lender) %>">
-        <td><%= link_to lender.name, edit_lender_path(lender) %></td>
-        <td><%= lender.organisation_reference_code %></td>
-        <td><%= link_to lender.current_annual_lending_limit_allocation.format, lender_lending_limits_path(lender) %></td>
-        <td><%= link_to lender.current_specific_lending_limit_allocation.format, lender_lending_limits_path(lender) %></td>
-        <td><%= friendly_boolean lender.active %></td>
-        <td><%= link_to 'Expert Users', lender_lender_experts_path(lender) %></td>
-        <td><%= link_to 'Lender Admins', lender_lender_admins_path(lender) %></td>
-        <td><%= link_to 'Lending Limits', lender_lending_limits_path(lender) %></td>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Reference</th>
+        <th>Annual</th>
+        <th>Specific</th>
+        <th>Active</th>
+        <th></th>
+        <th></th>
+        <th></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @lenders.each do |lender| %>
+        <tr id="<%= dom_id(lender) %>">
+          <td><%= link_to lender.name, edit_lender_path(lender) %></td>
+          <td><%= lender.organisation_reference_code %></td>
+          <td><%= link_to lender.current_annual_lending_limit_allocation.format, lender_lending_limits_path(lender) %></td>
+          <td><%= link_to lender.current_specific_lending_limit_allocation.format, lender_lending_limits_path(lender) %></td>
+          <td><%= friendly_boolean lender.active %></td>
+          <td><%= link_to 'Expert Users', lender_lender_experts_path(lender) %></td>
+          <td><%= link_to 'Lender Admins', lender_lender_admins_path(lender) %></td>
+          <td><%= link_to 'Lending Limits', lender_lending_limits_path(lender) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

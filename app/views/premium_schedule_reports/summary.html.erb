@@ -12,48 +12,50 @@
 
 <p>Data extract found <%= pluralize @premium_schedule_report.count, 'row' %>.</p>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Criterion</th>
-      <th>Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Month of Collection</th>
-      <td><%= @premium_schedule_report.collection_month %></td>
-    </tr>
-    <tr>
-      <th>Report Start Date</th>
-      <td><%= @premium_schedule_report.start_on.try(:to_s, :screen) %></td>
-    </tr>
-    <tr>
-      <th>Report End Date</th>
-      <td><%= @premium_schedule_report.finish_on.try(:to_s, :screen) %></td>
-    </tr>
-    <tr>
-      <th>Schedule Type</th>
-      <td><%= @premium_schedule_report.schedule_type %></td>
-    </tr>
-    <tr>
-      <th>Loan Source</th>
-      <td><%= @premium_schedule_report.loan_type %></td>
-    </tr>
-    <tr>
-      <th>Loan Scheme</th>
-      <td><%= @premium_schedule_report.loan_scheme %></td>
-    </tr>
-    <tr>
-      <th>Loan Reference</th>
-      <td><%= @premium_schedule_report.loan_reference %></td>
-    </tr>
-    <tr>
-      <th>Lender</th>
-      <td><%= @premium_schedule_report.lender.name if @premium_schedule_report.lender %></td>
-    </tr>
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Criterion</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Month of Collection</th>
+        <td><%= @premium_schedule_report.collection_month %></td>
+      </tr>
+      <tr>
+        <th>Report Start Date</th>
+        <td><%= @premium_schedule_report.start_on.try(:to_s, :screen) %></td>
+      </tr>
+      <tr>
+        <th>Report End Date</th>
+        <td><%= @premium_schedule_report.finish_on.try(:to_s, :screen) %></td>
+      </tr>
+      <tr>
+        <th>Schedule Type</th>
+        <td><%= @premium_schedule_report.schedule_type %></td>
+      </tr>
+      <tr>
+        <th>Loan Source</th>
+        <td><%= @premium_schedule_report.loan_type %></td>
+      </tr>
+      <tr>
+        <th>Loan Scheme</th>
+        <td><%= @premium_schedule_report.loan_scheme %></td>
+      </tr>
+      <tr>
+        <th>Loan Reference</th>
+        <td><%= @premium_schedule_report.loan_reference %></td>
+      </tr>
+      <tr>
+        <th>Lender</th>
+        <td><%= @premium_schedule_report.lender.name if @premium_schedule_report.lender %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <%= simple_form_for @premium_schedule_report, format: 'csv', html: { class: 'csv-download' } do |f| %>
   <%= f.hidden_field :collection_month %>
