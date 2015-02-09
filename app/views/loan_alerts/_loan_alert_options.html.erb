@@ -1,0 +1,9 @@
+<div class="loan-alert-options form-actions clearfix">
+  <div class="alert-links pull-left">
+    <%= other_alert_links(priority) %>
+  </div>
+
+  <div class="export-csv pull-right">
+    <%= link_to('Export CSV', url_for(format: :csv, priority: priority), class: 'btn btn-primary') %>
+  </div>
+</div>

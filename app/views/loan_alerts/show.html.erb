@@ -7,7 +7,7 @@
 
 <p><%= t("loan_alerts.#{params[:id]}_description") %></p>
 
-<%= other_alert_links(@alert.priority) %>
+<%= render 'loan_alerts/loan_alert_options', priority: @alert.priority %>
 
 <div class="table-responsive">
   <table class="table table-striped">
@@ -35,5 +35,5 @@
 </div>
 
 <% if @alert.loans_with_days_remaining.count > 5 %>
-  <%= other_alert_links(@alert.priority) %>
+  <%= render 'loan_alerts/loan_alert_options', priority: @alert.priority %>
 <% end %>

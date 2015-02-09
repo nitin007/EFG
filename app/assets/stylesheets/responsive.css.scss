@@ -1,3 +1,5 @@
+@import "variables";
+
 /* Breakpoints */
 $small_devices_breakpoint: '768px';
 $medium_devices_breakpoint: '992px';
@@ -16,6 +18,19 @@ $large_devices_breakpoint: '1200px';
 
   .loan-alerts .loan-alert ol.dates li.third {
     display: none;
+  }
+
+  .loan-alert-options {
+    .alert-links {
+      margin-bottom: 10px;
+    }
+
+    .export-csv {
+      float: none !important;
+      clear: left;
+      padding-top: 10px;
+      border-top: 1px solid $medium_grey;
+    }
   }
 }
 
@@ -55,5 +70,17 @@ $large_devices_breakpoint: '1200px';
 
   .loan-alerts .loan-alert ol.dates li.second {
     display: none;
+  }
+
+  .loan-alert-options {
+    float: left;
+    width: 100%;
+
+    a {
+      display: inline-block;
+      float: left;
+      clear: left;
+      margin-bottom: 10px;
+    }
   }
 }
