@@ -84,6 +84,7 @@ en:
       cumulative_post_claim_limit_realised_amount: Cumulative Value of All Post-Claim Limit Realisations
       scheme: Scheme
       phase: Phase
+      sub_lender: Sub-lender
 
     loan_audit_report:
       loan_reference: Loan reference

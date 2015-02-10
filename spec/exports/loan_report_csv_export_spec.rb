@@ -152,6 +152,7 @@ describe LoanReportCsvExport do
         debtor_book_coverage: 30,
         debtor_book_topup: 5,
         lender_reference: 'lenderref1',
+        sub_lender: 'Sub-lender 1'
       )
     }
 
@@ -244,6 +245,7 @@ describe LoanReportCsvExport do
           :cumulative_post_claim_limit_realised_amount,
           :scheme,
           :phase,
+          :sub_lender,
         ].map {|h| t(h) }
     end
 
@@ -331,6 +333,7 @@ describe LoanReportCsvExport do
       row[t(:cumulative_post_claim_limit_realised_amount)].should == '2000.00'
       row[t(:scheme)].should == 'EFG'
       row[t(:phase)].should == 'Phase 5 (FY 2013/14)'
+      row[t(:sub_lender)].should == 'Sub-lender 1'
     end
 
     context "without guarantee rate on loan" do
@@ -351,7 +354,7 @@ describe LoanReportCsvExport do
       it "exports phase's premium rate" do
         row[t(:premium_rate)].should == '2.0'
       end
-    end  
+    end
   end
 
   private

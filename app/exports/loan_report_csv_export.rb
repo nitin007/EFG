@@ -87,7 +87,8 @@ class LoanReportCsvExport < BaseCsvExport
       :cumulative_pre_claim_limit_realised_amount,
       :cumulative_post_claim_limit_realised_amount,
       :scheme,
-      :phase
+      :phase,
+      :sub_lender
     ]
   end
 
