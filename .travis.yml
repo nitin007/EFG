@@ -3,6 +3,7 @@ sudo: false
 bundler_args: --without development
 before_install:
   - cp config/database.travis.yml config/database.yml
+  - export PARALLEL_TEST_PROCESSORS=8
   - export TZ=Europe/London
 before_script:
   - bundle exec rake db:create
@@ -17,7 +18,7 @@ before_script:
   - mysql -e "CREATE DATABASE efg_test8;"
 cache: bundler
 script:
-  - PARALLEL_TEST_PROCESSORS=8 bundle exec rake
+  - bundle exec rake
 rvm:
   - 2.1.4
 branches:
