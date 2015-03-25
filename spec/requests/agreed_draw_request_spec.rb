@@ -6,20 +6,23 @@ describe 'agreed draw' do
 
   let(:loan) { FactoryGirl.create(:loan, :guaranteed, amount: Money.new(100_000_00), maturity_date: Date.new(2014, 12, 25), repayment_duration: 60) }
 
-  context 'for a loan with no drawdowns' do
+  context 'where loan is fully drawn' do
     before do
-      FactoryGirl.create(:premium_schedule, loan: loan)
+      FactoryGirl.create(:premium_schedule, :with_drawdowns, loan: loan)
+      FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(90_000_00), change_type: ChangeType::RecordAgreedDraw)
+      expect(loan.amount_not_yet_drawn).to eq(0)
+      visit loan_path(loan)
     end
 
     it 'does not include the reprofile draws option' do
       visit loan_path(loan)
-      page.should_not have_content('Record Agreed Draw')
+      page.should_not have_link('Record Agreed Draw')
     end
   end
 
-  context 'for a loan with drawdowns' do
+  context 'where loan is NOT fully drawn' do
     before do
-      FactoryGirl.create(:premium_schedule, :with_drawdowns, loan: loan)
+      expect(loan.amount_not_yet_drawn).to be > 0
       visit loan_path(loan)
       click_link 'Record Agreed Draw'
     end
