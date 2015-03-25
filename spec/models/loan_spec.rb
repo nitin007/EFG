@@ -233,6 +233,17 @@ describe Loan do
     end
   end
 
+  describe '#drawable?' do
+    it 'returns true when the cumulative drawn amount equals the loan amount' do
+      FactoryGirl.create(:initial_draw_change, loan: loan, amount_drawn: Money.new(10_000_00))
+      expect(loan).to be_drawable
+      FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(2_000_00), change_type: ChangeType::RecordAgreedDraw)
+      expect(loan).to be_drawable
+      FactoryGirl.create(:loan_change, loan: loan, amount_drawn: Money.new(345_00), change_type: ChangeType::RecordAgreedDraw)
+      expect(loan).not_to be_drawable
+    end
+  end
+
   describe '#cumulative_pre_claim_limit_realised_amount' do
     context 'with loan_realisations' do
       before do
@@ -436,7 +447,7 @@ describe Loan do
       it "returns the loan's category specific guarantee rate" do
         loan.guarantee_rate.should == 75
       end
-    end  
+    end
   end
 
   describe "#premium_rate" do
