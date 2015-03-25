@@ -52,7 +52,7 @@ describe Search do
       let!(:user) { FactoryGirl.create(:lender_user, lender: lending_limit1.lender) }
 
       it "should return all of the user's lender's lending limits" do
-        search.lending_limits.should == [ lending_limit1 ]
+        search.lending_limits.should match_array [ lending_limit1 ]
       end
     end
 
@@ -60,7 +60,7 @@ describe Search do
       let(:user) { FactoryGirl.build(:auditor_user) }
 
       it "should return all lending limits when " do
-        search.lending_limits.should == [ lending_limit1, lending_limit2 ]
+        search.lending_limits.should match_array [ lending_limit1, lending_limit2 ]
       end
     end
   end
