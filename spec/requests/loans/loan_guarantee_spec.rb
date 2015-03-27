@@ -70,4 +70,23 @@ describe 'loan guarantee' do
 
     Timecop.return
   end
+
+  it 'allows you to change the initial draw amount' do
+    visit loan_path(loan)
+    click_link 'Guarantee & Initial Draw'
+
+    click_link 'update the premium schedule'
+
+    fill_in 'premium_schedule_initial_draw_amount', with: '9876.54'
+    click_button 'Submit'
+
+    fill_in_valid_loan_guarantee_details(initial_draw_date: '30/11/2012')
+    click_button 'Submit'
+
+    loan.reload
+    loan_change = loan.initial_draw_change
+
+    expect(loan.state).to eql(Loan::Guaranteed)
+    expect(loan_change.amount_drawn).to eql(Money.new(9876_54))
+  end
 end
