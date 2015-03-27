@@ -158,6 +158,10 @@ class Loan < ActiveRecord::Base
     CancelReason.find(cancelled_reason_id)
   end
 
+  def cumulative_adjusted_realised_amount
+    cumulative_realised_amount - cumulative_realisation_adjustments_amount
+  end
+
   def cumulative_drawn_amount
     Money.new(loan_modifications.sum(:amount_drawn))
   end
@@ -168,10 +172,6 @@ class Loan < ActiveRecord::Base
 
   def cumulative_recoveries_amount
     Money.new(recoveries.sum(:amount_due_to_dti))
-  end
-
-  def cumulative_realised_amount
-    Money.new(loan_realisations.sum(:realised_amount)) - cumulative_realisation_adjustments_amount
   end
 
   def cumulative_pre_claim_limit_realised_amount
@@ -320,6 +320,10 @@ class Loan < ActiveRecord::Base
   end
 
   private
+
+  def cumulative_realised_amount
+    Money.new(loan_realisations.sum(:realised_amount))
+  end
 
   def set_reference
     unless reference.present?
