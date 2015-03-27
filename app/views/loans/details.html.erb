@@ -282,7 +282,7 @@
 <% end %>
 
 <% if loan_state_history_includes?(@loan, Loan::Realised) %>
-  <h3>Realise Money</h3>
+  <h3>Realisation Summary</h3>
   <%= loan_details_table(@loan, 'simple_form.labels.loan_realise') do |table| %>
     <% # TODO: Recoveries statement reference %>
     <%= table.row 'cumulative_pre_claim_limit_realised_amount' %>
@@ -293,4 +293,25 @@
     <%= table.row 'last_realisation_amount' %>
     <%= table.row 'realised_money_date' %>
   <% end %>
+
+<% end %>
+
+<% if @loan.loan_realisations.present? %>
+  <h3>Realisations</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th><%= t 'simple_form.labels.loan_realisation.realised_on' %></th>
+        <th><%= t 'simple_form.labels.loan_realisation.realised_amount' %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @loan.loan_realisations.order(:realised_on).each do |loan_realisation| %>
+        <tr>
+          <td><%= loan_realisation.realised_on.to_s(:screen) %></td>
+          <td><%= loan_realisation.realised_amount.format %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% end %>
