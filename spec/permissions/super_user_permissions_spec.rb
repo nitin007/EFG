@@ -260,4 +260,8 @@ describe SuperUserPermissions do
     it { refute user.can_view?(SubLender) }
     it { refute user.can_destroy?(SubLender) }
   end
+
+  context 'RecoveriesReport' do
+    it { refute user.can_create?(RecoveriesReport) }
+  end
 end
