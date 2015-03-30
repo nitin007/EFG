@@ -66,7 +66,7 @@ class Lender < ActiveRecord::Base
   end
 
   def sub_lender_names
-    @sub_lender_names ||= sub_lenders.map(&:name)
+    @sub_lender_names ||= sub_lenders.pluck(:name)
   end
 
   private
