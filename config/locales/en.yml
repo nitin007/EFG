@@ -145,6 +145,8 @@ en:
               collection_month_forbidden: 'Month of collection must not be selected for schedule types "New"'
             collection_month:
               required: 'Month of collection must be selected for schedule types "All" or "Changed" if no loan reference is entered'
+        realisation_adjustment:
+          not_greater_than_adjusted_realisations: "cannot be greater than the loan's realisations"
 
   activerecord:
     models:

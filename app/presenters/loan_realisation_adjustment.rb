@@ -9,6 +9,7 @@ class LoanRealisationAdjustment
 
   validate do
     errors.add(:amount, :greater_than, count: 0) unless amount.cents > 0
+    errors.add(:amount, :not_greater_than_adjusted_realisations) if amount > loan.cumulative_adjusted_realised_amount
   end
 
   def initialize(loan, attributes = {})

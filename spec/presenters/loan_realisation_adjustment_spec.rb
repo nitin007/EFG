@@ -16,6 +16,10 @@ describe LoanRealisationAdjustment do
 
     subject { LoanRealisationAdjustment.new(loan, attributes) }
 
+    before do
+      FactoryGirl.create(:loan_realisation, realised_amount: '100.00', realised_loan: loan)
+    end
+
     context 'with valid attributes' do
       it { should be_valid }
     end
@@ -33,6 +37,11 @@ describe LoanRealisationAdjustment do
 
       context 'when zero' do
         let(:amount) { '0' }
+        it { should_not be_valid }
+      end
+
+      context 'when greater its loan realisations' do
+        let(:amount) { '100.01' }
         it { should_not be_valid }
       end
     end
