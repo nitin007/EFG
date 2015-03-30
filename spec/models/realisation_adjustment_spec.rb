@@ -8,9 +8,9 @@ describe RealisationAdjustment do
       expect(realisation_adjustment).to be_valid
     end
 
-    it 'strictly requires a loan' do
+    it 'strictly requires an amount' do
       expect {
-        realisation_adjustment.loan = nil
+        realisation_adjustment.amount = ''
         realisation_adjustment.valid?
       }.to raise_error(ActiveModel::StrictValidationFailed)
     end
@@ -22,22 +22,18 @@ describe RealisationAdjustment do
       }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
-    it 'requires an amount' do
-      realisation_adjustment.amount = nil
-      expect(realisation_adjustment).not_to be_valid
+    it 'strictly requires a date' do
+      expect {
+        realisation_adjustment.date = ''
+        realisation_adjustment.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
     end
 
-    it 'requires an amount greater than 0' do
-      realisation_adjustment.amount = Money.new(0)
-      expect(realisation_adjustment).not_to be_valid
-
-      realisation_adjustment.amount = Money.new(-10)
-      expect(realisation_adjustment).not_to be_valid
-    end
-
-    it 'requires date' do
-      realisation_adjustment.date = ''
-      expect(realisation_adjustment).not_to be_valid
+    it 'strictly requires a loan' do
+      expect {
+        realisation_adjustment.loan = nil
+        realisation_adjustment.valid?
+      }.to raise_error(ActiveModel::StrictValidationFailed)
     end
   end
 end
