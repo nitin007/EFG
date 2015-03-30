@@ -129,6 +129,7 @@ class Loan < ActiveRecord::Base
   before_create :set_reference
 
   delegate :euro_conversion_rate, :phase, to: :lending_limit
+  delegate :sub_lender_names, to: :lender
   delegate :state_aid_threshold, to: :sic
 
   def self.with_scheme(scheme)
@@ -321,10 +322,6 @@ class Loan < ActiveRecord::Base
     else
       Phase1Rules
     end
-  end
-
-  def sub_lender_names
-    lender.sub_lenders.map(&:name)
   end
 
   private
