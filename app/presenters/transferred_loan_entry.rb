@@ -43,7 +43,7 @@ class TransferredLoanEntry
   delegate :sub_lender_names, to: :lender
 
   validates_presence_of :amount, :repayment_duration, :repayment_frequency_id
-  validates_inclusion_of :sub_lender, in: :sub_lender_names, if: -> { sub_lender_names.present? }
+  validates_inclusion_of :sub_lender, in: :sub_lender_names, if: -> { sub_lender_names.any? }
   validate :repayment_frequency_allowed
 
   validate do

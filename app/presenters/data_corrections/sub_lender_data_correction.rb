@@ -18,7 +18,7 @@ class SubLenderDataCorrection < DataCorrectionPresenter
   private
 
   def lender_has_sub_lenders?
-    sub_lender_names.present?
+    sub_lender_names.any?
   end
 
   def sub_lender_is_blank
