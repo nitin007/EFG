@@ -8,8 +8,8 @@ class LoanRealisationAdjustment
   validates_presence_of :date
 
   validate do
-    errors.add(:amount, :greater_than, count: 0) unless amount.cents > 0
-    errors.add(:amount, :not_greater_than_adjusted_realisations) if amount > loan.cumulative_adjusted_realised_amount
+    errors.add(:amount, :greater_than, count: 0) unless amount && amount.cents > 0
+    errors.add(:amount, :not_greater_than_adjusted_realisations) if amount && amount > loan.cumulative_adjusted_realised_amount
   end
 
   def initialize(loan, attributes = {})
@@ -20,7 +20,7 @@ class LoanRealisationAdjustment
   end
 
   def amount=(value)
-    @amount = Money.parse(value)
+    @amount = value.present? ? Money.parse(value) : nil
   end
 
   def date=(value)
