@@ -20,6 +20,9 @@ describe 'making a realisation adjustment' do
     expect(page).to have_detail_row('Cumulative Value of All Pre-Claim Limit Realisations', '£10,000.00')
     expect(page).to have_detail_row('Cumulative Value of Realisation Adjustments', '£1,000.00')
     expect(page).to have_detail_row('Cumulative Value of All Realisations', '£9,000.00')
+
+    realisation_adjustment = loan.realisation_adjustments.first!
+    expect(realisation_adjustment.notes).to eql('Joe Bloggs informed us that this needed updating.')
   end
 
   it "does not continue with invalid values" do
