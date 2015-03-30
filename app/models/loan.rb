@@ -185,6 +185,10 @@ class Loan < ActiveRecord::Base
     cumulative_recoveries_amount - cumulative_realised_amount
   end
 
+  def drawable?
+    amount > cumulative_drawn_amount
+  end
+
   def last_realisation_amount
     loan_realisations.present? ? loan_realisations.last.realised_amount : Money.new(0)
   end
