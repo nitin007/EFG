@@ -471,8 +471,6 @@ ActiveRecord::Schema.define(version: 20150116154740) do
     t.datetime "updated_at",    null: false
   end
 
-  add_index "realisation_adjustments", ["created_by_id"], name: "index_realisation_adjustments_on_created_by_id", using: :btree
-  add_index "realisation_adjustments", ["date"], name: "index_realisation_adjustments_on_date", using: :btree
   add_index "realisation_adjustments", ["loan_id"], name: "index_realisation_adjustments_on_loan_id", using: :btree
 
   create_table "realisation_statements", force: true do |t|

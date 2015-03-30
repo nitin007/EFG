@@ -10,7 +10,5 @@ class CreateRealisationAdjustments < ActiveRecord::Migration
     end
 
     add_index :realisation_adjustments, :loan_id
-    add_index :realisation_adjustments, :date
-    add_index :realisation_adjustments, :created_by_id
   end
 end
