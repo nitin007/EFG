@@ -4,7 +4,7 @@ describe 'making a realisation adjustment' do
   let(:current_user) { FactoryGirl.create(:cfe_user) }
   before { login_as(current_user, scope: :user) }
 
-  let!(:loan) { FactoryGirl.create(:loan, :realised) }
+  let(:loan) { FactoryGirl.create(:loan, :realised) }
   let!(:realisation) { FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(10_000_00)) }
 
   it do
@@ -25,12 +25,8 @@ describe 'making a realisation adjustment' do
   it "does not continue with invalid values" do
     visit new_loan_realisation_adjustment_path(loan)
 
-    expect(loan.state).to eq(Loan::Realised)
     expect {
       click_button 'Submit'
-      loan.reload
-    }.to_not change(loan, :state)
-
-    expect(current_path).to eq("/loans/#{loan.id}/realisation_adjustments")
+    }.to_not change(RealisationAdjustment, :count)
   end
 end
