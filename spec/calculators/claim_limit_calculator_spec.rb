@@ -47,16 +47,17 @@ describe ClaimLimitCalculator do
   describe "#pre_claim_realisations_amount" do
     let(:calculator) { ClaimLimitCalculator.new(lender) }
     let(:lender) { FactoryGirl.create(:lender) }
-    let(:lending_limit) { FactoryGirl.create(:lending_limit, :phase_1, lender: lender) }
-    let(:loan1) { FactoryGirl.create(:loan, :realised, lender: lender, lending_limit: lending_limit) }
-    let(:loan2) { FactoryGirl.create(:loan, :realised, lender: lender, lending_limit: lending_limit) }
+    let(:lending_limit1) { FactoryGirl.create(:lending_limit, :phase_5, lender: lender) }
+    let(:lending_limit2) { FactoryGirl.create(:lending_limit, :phase_5, lender: lender) }
+    let(:loan1) { FactoryGirl.create(:loan, :realised, lender: lender, lending_limit: lending_limit1) }
+    let(:loan2) { FactoryGirl.create(:loan, :realised, lender: lender, lending_limit: lending_limit2) }
 
     before do
       FactoryGirl.create(:loan_realisation, realised_loan: loan1, realised_amount: Money.new(10_00))
       FactoryGirl.create(:loan_realisation, realised_loan: loan1, realised_amount: Money.new(20_00))
       FactoryGirl.create(:loan_realisation, realised_loan: loan2, realised_amount: Money.new(50_00))
 
-      calculator.stub(:phase).and_return(lending_limit.phase)
+      calculator.stub(:phase).and_return(lending_limit1.phase)
     end
 
     it "sums the pre-claim realisations" do
@@ -64,8 +65,12 @@ describe ClaimLimitCalculator do
     end
 
     context "with realisation adjustments" do
+      let(:lending_limit_from_another_phase) { FactoryGirl.create(:lending_limit, :phase_6, lender: lender) }
+      let(:loan_from_another_phase) { FactoryGirl.create(:loan, :realised, lender: lender, lending_limit: lending_limit_from_another_phase) }
+
       before do
         FactoryGirl.create(:realisation_adjustment, loan: loan1, amount: Money.new(25_00))
+        FactoryGirl.create(:realisation_adjustment, loan: loan_from_another_phase, amount: Money.new(25_00))
       end
 
       it "subtracts any realisation adjustments" do
