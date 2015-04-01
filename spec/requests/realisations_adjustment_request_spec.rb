@@ -14,6 +14,7 @@ describe 'making a realisation adjustment' do
     fill_in 'Amount', with: '1000.00'
     fill_in 'Date', with: '19/09/2014'
     fill_in 'Notes', with: 'Joe Bloggs informed us that this needed updating.'
+    check 'Post claim limit'
     click_button 'Submit'
 
     click_link 'Loan Details'
@@ -23,6 +24,7 @@ describe 'making a realisation adjustment' do
 
     realisation_adjustment = loan.realisation_adjustments.first!
     expect(realisation_adjustment.notes).to eql('Joe Bloggs informed us that this needed updating.')
+    expect(realisation_adjustment.post_claim_limit).to be_true
   end
 
   it "does not continue with invalid values" do

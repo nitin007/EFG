@@ -9,6 +9,7 @@
   <%= f.input :amount, as: :currency %>
   <%= f.input :date, as: :quick_date %>
   <%= f.input :notes, input_html: {rows: 5} %>
+  <%= f.input :post_claim_limit, as: :boolean %>
 
   <div class="form-actions">
     <%= f.button(:submit, value: 'Submit', class: 'btn-primary', data: { 'disable-with' => 'Submitting...' }) %>

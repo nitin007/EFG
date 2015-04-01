@@ -69,8 +69,9 @@ describe ClaimLimitCalculator do
       let(:loan_from_another_phase) { FactoryGirl.create(:loan, :realised, lender: lender, lending_limit: lending_limit_from_another_phase) }
 
       before do
-        FactoryGirl.create(:realisation_adjustment, loan: loan1, amount: Money.new(25_00))
-        FactoryGirl.create(:realisation_adjustment, loan: loan_from_another_phase, amount: Money.new(25_00))
+        FactoryGirl.create(:realisation_adjustment, amount: Money.new(25_00), loan: loan1, post_claim_limit: false)
+        FactoryGirl.create(:realisation_adjustment, amount: Money.new(25_00), loan: loan1, post_claim_limit: true)
+        FactoryGirl.create(:realisation_adjustment, amount: Money.new(25_00), loan: loan_from_another_phase, post_claim_limit: false)
       end
 
       it "subtracts any realisation adjustments" do

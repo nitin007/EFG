@@ -80,7 +80,7 @@ class ClaimLimitCalculator
         .where(loan_realisations: { post_claim_limit: false })
         .sum(:realised_amount)
 
-      realisation_adjustments_amount = realisation_adjustments.sum(:amount)
+      realisation_adjustments_amount = pre_claim_limit_realisation_adjustments.sum(:amount)
 
       Money.new(pre_claim_realisations_amount) - Money.new(realisation_adjustments_amount)
     end
@@ -119,9 +119,10 @@ class ClaimLimitCalculator
       .where(lending_limits: { phase_id: phase.id })
   end
 
-  def realisation_adjustments
+  def pre_claim_limit_realisation_adjustments
     RealisationAdjustment
       .joins(loan: :lending_limit)
+      .where(post_claim_limit: false)
       .where(loans: { lender_id: lender.id })
       .where(lending_limits: { phase_id: phase.id })
   end

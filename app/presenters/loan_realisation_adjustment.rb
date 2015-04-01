@@ -1,7 +1,7 @@
 class LoanRealisationAdjustment
   include ActiveModel::Validations
 
-  attr_accessor :created_by, :notes
+  attr_accessor :created_by, :notes, :post_claim_limit
   attr_reader :amount, :date
 
   validates_presence_of :amount
@@ -17,6 +17,7 @@ class LoanRealisationAdjustment
     self.amount = attributes['amount']
     self.date = attributes['date']
     self.notes = attributes['notes']
+    self.post_claim_limit = attributes['post_claim_limit']
   end
 
   def amount=(value)
@@ -35,6 +36,7 @@ class LoanRealisationAdjustment
       realisation_adjustment.created_by = created_by
       realisation_adjustment.date = date
       realisation_adjustment.notes = notes
+      realisation_adjustment.post_claim_limit = post_claim_limit
     end
   end
 
