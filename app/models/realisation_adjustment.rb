@@ -4,6 +4,9 @@ class RealisationAdjustment < ActiveRecord::Base
   belongs_to :loan
   belongs_to :created_by, class_name: 'User'
 
+  scope :pre_claim_limit, -> { where(post_claim_limit: false) }
+  scope :post_claim_limit, -> { where(post_claim_limit: true) }
+
   format :amount, with: MoneyFormatter.new
   format :date, with: QuickDateFormatter
 

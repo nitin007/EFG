@@ -321,22 +321,24 @@ describe Loan do
     end
   end
 
-  describe "#cumulative_realisation_adjustments_amount" do
+  describe 'cumulative realisation adjustment amounts' do
+    subject(:loan) { FactoryGirl.create(:loan, :realised) }
+
     context "with adjustments" do
-      before { loan.save! }
-
-      it "sums the adjustment amounts" do
-        FactoryGirl.create(:realisation_adjustment, loan: loan, amount: Money.new(10_000_00))
-        FactoryGirl.create(:realisation_adjustment, loan: loan, amount: Money.new(5_000_00))
-
-        expect(loan.cumulative_realisation_adjustments_amount).to eq(Money.new(15_000_00))
+      before do
+        FactoryGirl.create(:realisation_adjustment, amount: Money.new(10_000_00), loan: loan, post_claim_limit: false)
+        FactoryGirl.create(:realisation_adjustment, amount: Money.new(5_000_00), loan: loan, post_claim_limit: true)
       end
+
+      its(:cumulative_realisation_adjustments_amount) { should eql(Money.new(15_000_00)) }
+      its(:cumulative_pre_claim_limit_realisation_adjustments_amount) { should eql(Money.new(10_000_00)) }
+      its(:cumulative_post_claim_limit_realisation_adjustments_amount) { should eql(Money.new(5_000_00)) }
     end
 
     context "without adjustments" do
-      it "returns zero" do
-        expect(loan.cumulative_realisation_adjustments_amount).to eq(Money.new(0))
-      end
+      its(:cumulative_realisation_adjustments_amount) { should eql(Money.new(0)) }
+      its(:cumulative_pre_claim_limit_realisation_adjustments_amount) { should eql(Money.new(0)) }
+      its(:cumulative_post_claim_limit_realisation_adjustments_amount) { should eql(Money.new(0)) }
     end
   end
 

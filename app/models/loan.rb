@@ -182,6 +182,14 @@ class Loan < ActiveRecord::Base
     sum_realised_amount(loan_realisations_post_claim_limit)
   end
 
+  def cumulative_pre_claim_limit_realisation_adjustments_amount
+    Money.new(realisation_adjustments.pre_claim_limit.sum(:amount))
+  end
+
+  def cumulative_post_claim_limit_realisation_adjustments_amount
+    Money.new(realisation_adjustments.post_claim_limit.sum(:amount))
+  end
+
   def cumulative_realisation_adjustments_amount
     if realisation_adjustments.any?
       realisation_adjustments.map(&:amount).sum
