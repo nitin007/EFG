@@ -336,6 +336,8 @@ class Loan < ActiveRecord::Base
     end
   end
 
+  # Use Ruby here instead of SQL to utilise the included associations in
+  # LoanCsvExport and prevent N+1 queries.
   def sum_realised_amount(realisations)
     if realisations.any?
       realisations.map(&:realised_amount).sum
