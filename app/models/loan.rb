@@ -191,11 +191,7 @@ class Loan < ActiveRecord::Base
   end
 
   def cumulative_realisation_adjustments_amount
-    if realisation_adjustments.any?
-      realisation_adjustments.map(&:amount).sum
-    else
-      Money.new(0)
-    end
+    Money.new(realisation_adjustments.sum(:amount))
   end
 
   def cumulative_unrealised_recoveries_amount
