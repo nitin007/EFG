@@ -27,7 +27,7 @@ class Loan < ActiveRecord::Base
 
   States = [Rejected, Eligible, Cancelled, Incomplete, Completed, Offered,
     Guaranteed, LenderDemand, Repaid, NotDemanded, Demanded, AutoCancelled,
-    Removed, RepaidFromTransfer, AutoRemoved, Settled, Realised, Recovered,
+    Removed, RepaidFromTransfer, AutoRemoved, Settled, Recovered, Realised,
     IncompleteLegacy, CompleteLegacy].freeze
 
   # All new loans are in the EFG scheme
