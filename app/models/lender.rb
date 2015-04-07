@@ -12,6 +12,7 @@ class Lender < ActiveRecord::Base
   has_many :lender_users
   has_many :loans
   has_many :users, -> { where(type: %w(LenderAdmin LenderUser)) }, class_name: 'User'
+  has_many :sub_lenders
 
   attr_accessible :can_use_add_cap, :name,
     :organisation_reference_code, :primary_contact_email,
@@ -62,6 +63,10 @@ class Lender < ActiveRecord::Base
   def logo
     return nil if organisation_reference_code.blank?
     LenderLogo.new(organisation_reference_code)
+  end
+
+  def sub_lender_names
+    @sub_lender_names ||= sub_lenders.pluck(:name)
   end
 
   private
