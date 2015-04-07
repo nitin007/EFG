@@ -302,6 +302,7 @@
     <thead>
       <tr>
         <th><%= t 'simple_form.labels.loan_realisation.realised_on' %></th>
+        <th><%= t 'simple_form.labels.loan_realisation.post_claim_limit' %></th>
         <th><%= t 'simple_form.labels.loan_realisation.realised_amount' %></th>
       </tr>
     </thead>
@@ -309,6 +310,7 @@
       <% @loan.loan_realisations.order(:realised_on).each do |loan_realisation| %>
         <tr>
           <td><%= loan_realisation.realised_on.to_s(:screen) %></td>
+          <td><%= loan_realisation.post_claim_limit ? 'Yes' : 'No' %></td>
           <td><%= loan_realisation.realised_amount.format %></td>
         </tr>
       <% end %>

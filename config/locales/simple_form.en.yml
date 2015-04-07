@@ -167,6 +167,7 @@ en:
       loan_realisation:
         realised_amount: Realised Amount
         realised_on: Realised On
+        post_claim_limit: Post claim limit?
 
       loan_realise:
         realised_money_date: Most Recent Realisation Date
