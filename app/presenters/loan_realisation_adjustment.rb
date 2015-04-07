@@ -1,8 +1,8 @@
 class LoanRealisationAdjustment
   include ActiveModel::Validations
 
-  attr_accessor :created_by, :notes, :post_claim_limit
-  attr_reader :amount, :date
+  attr_accessor :created_by
+  attr_reader :amount, :date, :notes, :post_claim_limit
 
   validates_presence_of :amount
   validates_presence_of :date
@@ -18,14 +18,6 @@ class LoanRealisationAdjustment
     self.date = attributes['date']
     self.notes = attributes['notes']
     self.post_claim_limit = attributes['post_claim_limit']
-  end
-
-  def amount=(value)
-    @amount = value.present? ? Money.parse(value) : nil
-  end
-
-  def date=(value)
-    @date = QuickDateFormatter.parse(value)
   end
 
   def save
@@ -47,4 +39,13 @@ class LoanRealisationAdjustment
 
   private
     attr_reader :loan
+    attr_writer :notes, :post_claim_limit
+
+    def amount=(value)
+      @amount = value.present? ? Money.parse(value) : nil
+    end
+
+    def date=(value)
+      @date = QuickDateFormatter.parse(value)
+    end
 end
