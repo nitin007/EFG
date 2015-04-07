@@ -17,6 +17,8 @@ describe 'loans/details' do
         loan_demand_against_government.dti_demanded_on
         loan_settle_claim.settled_on
         loan_recovery.recovery_on
+        loan_realisation.realised_amount
+        loan_realisation.realised_on
         loan_realise.realised_money_date
       )
     }
@@ -185,10 +187,11 @@ describe 'loans/details' do
   end
 
   context "with a realised loan" do
-    let(:loan) { FactoryGirl.build(:loan, :realised) }
+    let(:loan) { FactoryGirl.create(:loan, :realised) }
+    let!(:loan_realisation) { FactoryGirl.create(:loan_realisation, realised_loan: loan) }
 
     it_behaves_like 'rendered loan_details' do
-      let(:visible_details) { %w(loan_realise.realised_money_date) }
+      let(:visible_details) { %w(loan_realise.realised_money_date loan_realisation.realised_amount loan_realisation.realised_on) }
     end
   end
 
