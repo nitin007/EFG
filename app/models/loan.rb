@@ -27,7 +27,7 @@ class Loan < ActiveRecord::Base
 
   States = [Rejected, Eligible, Cancelled, Incomplete, Completed, Offered,
     Guaranteed, LenderDemand, Repaid, NotDemanded, Demanded, AutoCancelled,
-    Removed, RepaidFromTransfer, AutoRemoved, Settled, Realised, Recovered,
+    Removed, RepaidFromTransfer, AutoRemoved, Settled, Recovered, Realised,
     IncompleteLegacy, CompleteLegacy].freeze
 
   # All new loans are in the EFG scheme
@@ -56,6 +56,7 @@ class Loan < ActiveRecord::Base
   has_many :loan_realisations_post_claim_limit, -> { where(post_claim_limit: true) }, class_name: 'LoanRealisation', foreign_key: 'realised_loan_id'
   has_many :loan_realisations_pre_claim_limit, -> { where(post_claim_limit: false) }, class_name: 'LoanRealisation', foreign_key: 'realised_loan_id'
   has_many :recoveries
+  has_many :realisation_adjustments
   has_many :loan_securities
   has_many :ineligibility_reasons, class_name: 'LoanIneligibilityReason'
   has_many :state_changes, -> { order(:modified_at) }, class_name: 'LoanStateChange'
@@ -157,6 +158,10 @@ class Loan < ActiveRecord::Base
     CancelReason.find(cancelled_reason_id)
   end
 
+  def cumulative_adjusted_realised_amount
+    cumulative_realised_amount - cumulative_realisation_adjustments_amount
+  end
+
   def cumulative_drawn_amount
     Money.new(loan_modifications.sum(:amount_drawn))
   end
@@ -169,16 +174,24 @@ class Loan < ActiveRecord::Base
     Money.new(recoveries.sum(:amount_due_to_dti))
   end
 
-  def cumulative_realised_amount
-    Money.new(loan_realisations.sum(:realised_amount))
-  end
-
   def cumulative_pre_claim_limit_realised_amount
     sum_realised_amount(loan_realisations_pre_claim_limit)
   end
 
   def cumulative_post_claim_limit_realised_amount
     sum_realised_amount(loan_realisations_post_claim_limit)
+  end
+
+  def cumulative_pre_claim_limit_realisation_adjustments_amount
+    Money.new(realisation_adjustments.pre_claim_limit.sum(:amount))
+  end
+
+  def cumulative_post_claim_limit_realisation_adjustments_amount
+    Money.new(realisation_adjustments.post_claim_limit.sum(:amount))
+  end
+
+  def cumulative_realisation_adjustments_amount
+    Money.new(realisation_adjustments.sum(:amount))
   end
 
   def cumulative_unrealised_recoveries_amount
@@ -312,6 +325,10 @@ class Loan < ActiveRecord::Base
 
   private
 
+  def cumulative_realised_amount
+    Money.new(loan_realisations.sum(:realised_amount))
+  end
+
   def set_reference
     unless reference.present?
       reference_string = LoanReference.generate
@@ -319,6 +336,8 @@ class Loan < ActiveRecord::Base
     end
   end
 
+  # Use Ruby here instead of SQL to utilise the included associations in
+  # LoanCsvExport and prevent N+1 queries.
   def sum_realised_amount(realisations)
     if realisations.any?
       realisations.map(&:realised_amount).sum

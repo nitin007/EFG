@@ -220,6 +220,29 @@ describe Loan do
     end
   end
 
+  describe '#cumulative_adjusted_realised_amount' do
+    let(:loan) { FactoryGirl.create(:loan, :settled, :recovered) }
+    subject { loan.cumulative_adjusted_realised_amount }
+
+    before do
+      FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(123_45))
+      FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(678_90))
+    end
+
+    context 'without realisation adjustments' do
+      it { should eq(Money.new(802_35)) }
+    end
+
+    context 'with realisation adjustments' do
+      before do
+        FactoryGirl.create(:realisation_adjustment, amount: Money.new(35), loan: loan)
+        FactoryGirl.create(:realisation_adjustment, amount: Money.new(2_00), loan: loan)
+      end
+
+      it { should eq(Money.new(800_00)) }
+    end
+  end
+
   describe '#cumulative_drawn_amount' do
     before do
       loan.save!
@@ -244,81 +267,67 @@ describe Loan do
     end
   end
 
-  describe '#cumulative_pre_claim_limit_realised_amount' do
-    context 'with loan_realisations' do
+  describe 'cumulative realised amounts' do
+    subject(:loan) { FactoryGirl.create(:loan, :realised) }
+
+    context 'with realisations' do
       before do
-        loan.save!
-
-        FactoryGirl.create(:loan_realisation, :pre,
-          realised_amount: Money.new(1_000_00),
-          realised_loan: loan
-        )
-        FactoryGirl.create(:loan_realisation, :pre,
-          realised_amount: Money.new(2_000_00),
-          realised_loan: loan
-        )
+        FactoryGirl.create(:loan_realisation, :pre, realised_amount: Money.new(1_000_00), realised_loan: loan)
+        FactoryGirl.create(:loan_realisation, :pre, realised_amount: Money.new(2_000_00), realised_loan: loan)
+        FactoryGirl.create(:loan_realisation, :post, realised_amount: Money.new(3_000_00), realised_loan: loan)
+        FactoryGirl.create(:loan_realisation, :post, realised_amount: Money.new(4_000_00), realised_loan: loan)
       end
 
-      it do
-        loan.cumulative_pre_claim_limit_realised_amount.should == Money.new(3_000_00)
-      end
+      its(:cumulative_pre_claim_limit_realised_amount) { should eql(Money.new(3_000_00)) }
+      its(:cumulative_post_claim_limit_realised_amount) { should eql(Money.new(7_000_00)) }
     end
 
-    context 'without loan_realisations' do
-      it do
-        loan.cumulative_pre_claim_limit_realised_amount.should eql Money.new(0)
-      end
+    context 'without realisations' do
+      its(:cumulative_pre_claim_limit_realised_amount) { should eql(Money.new(0)) }
+      its(:cumulative_post_claim_limit_realised_amount) { should eql(Money.new(0)) }
     end
   end
 
-  describe '#cumulative_post_claim_limit_realised_amount' do
-    context 'with loan_realisations' do
+  describe 'cumulative realisation adjustment amounts' do
+    subject(:loan) { FactoryGirl.create(:loan, :realised) }
+
+    context "with adjustments" do
       before do
-        loan.save!
-
-        FactoryGirl.create(:loan_realisation, :post,
-          realised_amount: Money.new(1_000_00),
-          realised_loan: loan
-        )
-        FactoryGirl.create(:loan_realisation, :post,
-          realised_amount: Money.new(2_000_00),
-          realised_loan: loan
-        )
+        FactoryGirl.create(:realisation_adjustment, amount: Money.new(10_000_00), loan: loan, post_claim_limit: false)
+        FactoryGirl.create(:realisation_adjustment, amount: Money.new(5_000_00), loan: loan, post_claim_limit: true)
       end
 
-      it do
-        loan.cumulative_post_claim_limit_realised_amount.should == Money.new(3_000_00)
-      end
+      its(:cumulative_realisation_adjustments_amount) { should eql(Money.new(15_000_00)) }
+      its(:cumulative_pre_claim_limit_realisation_adjustments_amount) { should eql(Money.new(10_000_00)) }
+      its(:cumulative_post_claim_limit_realisation_adjustments_amount) { should eql(Money.new(5_000_00)) }
     end
 
-    context 'without loan_realisations' do
-      it do
-        loan.cumulative_post_claim_limit_realised_amount.should eql Money.new(0)
-      end
-    end
-  end
-
-  describe '#cumulative_realised_amount' do
-    before do
-      loan.save!
-    end
-
-    it 'sums all loan realisations' do
-      FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(123_45))
-      FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(678_90))
-
-      loan.cumulative_realised_amount.should == Money.new(123_45) + Money.new(678_90)
+    context "without adjustments" do
+      its(:cumulative_realisation_adjustments_amount) { should eql(Money.new(0)) }
+      its(:cumulative_pre_claim_limit_realisation_adjustments_amount) { should eql(Money.new(0)) }
+      its(:cumulative_post_claim_limit_realisation_adjustments_amount) { should eql(Money.new(0)) }
     end
   end
 
   describe "#cumulative_unrealised_recoveries_amount" do
     let(:loan) { FactoryGirl.create(:loan, :settled, :recovered) }
+    subject { loan.cumulative_unrealised_recoveries_amount }
 
-    it 'sums all loan realisations' do
+    before do
       FactoryGirl.create(:recovery, loan: loan, amount_due_to_dti: Money.new(500_00))
       FactoryGirl.create(:loan_realisation, realised_loan: loan, realised_amount: Money.new(200_00))
+    end
 
-      loan.cumulative_unrealised_recoveries_amount.should == Money.new(300_00)
+    context 'is the difference between realisations and recoveries' do
+      it { should eql(Money.new(300_00)) }
+    end
+
+    context 'is unaffected by realisation adjustments' do
+      before do
+        FactoryGirl.create(:realisation_adjustment, amount: Money.new(100_00), loan: loan)
+      end
+
+      it { should eql(Money.new(300_00)) }
     end
   end
 
