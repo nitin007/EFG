@@ -64,16 +64,17 @@
             <% end %>
           </tbody>
           <tfoot>
+            <tr data-behaviour="preSubTotal">
+              <th colspan="7">Pre-claim Limit Realised Amount</th>
+              <td data-amount></td>
+            </tr>
+            <tr data-behaviour="postSubTotal">
+              <th colspan="7">Post-claim Limit Realised Amount</th>
+              <td data-amount></td>
+            </tr>
             <tr data-behaviour="subtotal">
-              <th colspan="7">Total Recovered Amount</th>
-              <td>
-                <div class="currency">
-                  <div class="input-prepend">
-                    <span class="add-on">£</span>
-                    <input type="text" disabled="disabled" data-amount>
-                  </div>
-                </div>
-              </td>
+              <th colspan="7">Total Realised Amount</th>
+              <td data-amount></td>
             </tr>
           </tfoot>
         </table>
