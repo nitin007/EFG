@@ -87,13 +87,9 @@ $(document).ready(function() {
     row.toggleClass('info', !!row.attr('data-selected'))
   }
 
-  $('[data-behaviour^=invoice-received-table], [data-behaviour^=recoveries-statement-table]')
+  $('[data-behaviour^=recoveries-statement-table]')
     .selectableRows()
     .subTotal()
     .bind('rowSelect', highlightRow)
 
-  $('[data-behaviour^=invoice-received-table]')
-    .on('blur', 'tbody input[type=text]', function() {
-      $(this).parents('table').trigger('recalculate')
-    })
 });
