@@ -66,9 +66,18 @@
         var formattedPreSubTotal = accounting.formatMoney(preSubTotal, '£')
         table.find('[data-behaviour^=preSubTotal] td').text(formattedPreSubTotal)
 
-        var grandTotal = $('[data-behaviour^=subtotal]').total()
+        // recalculate the grand totals for all tables
+        var postTotal = $('table tbody tr[data-selected][data-post-claim]').total()
+        var formattedPostTotal = accounting.formatMoney(postTotal, '£')
+        $('[data-behaviour^=post-total]').text(formattedPostTotal)
+
+        var grandTotal = $('table tbody tr[data-selected]').total()
         var formattedGrandTotal = accounting.formatMoney(grandTotal, '£')
         $('[data-behaviour^=grand-total]').text(formattedGrandTotal)
+
+        var preTotal = grandTotal - postTotal
+        var formattedPreTotal = accounting.formatMoney(preTotal, '£')
+        $('[data-behaviour^=pre-total]').text(formattedPreTotal)
       }
 
       table
