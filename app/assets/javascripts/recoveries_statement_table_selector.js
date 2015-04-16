@@ -56,28 +56,28 @@
         // calculate subtotals for this table
         var postSubTotal = table.total('tbody tr[data-selected][data-post-claim]')
         var formattedPostSubTotal = accounting.formatMoney(postSubTotal, '£')
-        table.find('[data-behaviour^=postSubTotal] td').text(formattedPostSubTotal)
+        table.find('[data-behaviour=postSubTotal] td').text(formattedPostSubTotal)
 
         var subTotal = table.total('tbody tr[data-selected]')
         var formattedSubTotal = accounting.formatMoney(subTotal, '£')
-        table.find('[data-behaviour^=subtotal] td').text(formattedSubTotal)
+        table.find('[data-behaviour=subtotal] td').text(formattedSubTotal)
 
         var preSubTotal = subTotal - postSubTotal
         var formattedPreSubTotal = accounting.formatMoney(preSubTotal, '£')
-        table.find('[data-behaviour^=preSubTotal] td').text(formattedPreSubTotal)
+        table.find('[data-behaviour=preSubTotal] td').text(formattedPreSubTotal)
 
         // recalculate the grand totals for all tables
         var postTotal = $('table tbody tr[data-selected][data-post-claim]').total()
         var formattedPostTotal = accounting.formatMoney(postTotal, '£')
-        $('[data-behaviour^=post-total]').text(formattedPostTotal)
+        $('[data-behaviour=post-total]').text(formattedPostTotal)
 
         var grandTotal = $('table tbody tr[data-selected]').total()
         var formattedGrandTotal = accounting.formatMoney(grandTotal, '£')
-        $('[data-behaviour^=grand-total]').text(formattedGrandTotal)
+        $('[data-behaviour=grand-total]').text(formattedGrandTotal)
 
         var preTotal = grandTotal - postTotal
         var formattedPreTotal = accounting.formatMoney(preTotal, '£')
-        $('[data-behaviour^=pre-total]').text(formattedPreTotal)
+        $('[data-behaviour=pre-total]').text(formattedPreTotal)
       }
 
       table
@@ -100,7 +100,7 @@ $(document).ready(function() {
     row.toggleClass('info', !!row.attr('data-selected'))
   }
 
-  $('[data-behaviour^=recoveries-statement-table]')
+  $('[data-behaviour=recoveries-statement-table]')
     .selectableRows()
     .calculateTotals()
     .bind('rowSelect', highlightRow)
