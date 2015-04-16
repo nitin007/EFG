@@ -35,8 +35,8 @@
         <table class="table table-striped" data-behaviour="recoveries-statement-table">
           <thead>
             <tr>
-              <th>Confirm Realised?</th>
-              <th>Post Claim Limit?</th>
+              <th>Pre Claim Limit</th>
+              <th>Post Claim Limit</th>
               <th>Loan Reference</th>
               <th>Lender's Reference</th>
               <th>Name</th>
@@ -51,9 +51,9 @@
               <tr id="<%= dom_id(recovery) %>">
                 <td>
                   <%= recovery_form.hidden_field :id %>
-                  <%= recovery_form.check_box :realised %>
+                  <%= recovery_form.radio_button :post_claim_limit, 'no' %>
                 </td>
-                <td><%= recovery_form.check_box :post_claim_limit %>
+                <td><%= recovery_form.radio_button :post_claim_limit, 'yes' %>
                 <td><%= recovery.loan_reference %></td>
                 <td><%= recovery.lender_loan_reference %></td>
                 <td><%= recovery.loan_business_name %></td>

@@ -46,8 +46,8 @@ class RealisationStatementReceived
   def recoveries_attributes=(values)
     values.each do |_, attributes|
       recovery = recoveries_by_id.fetch(attributes['id'].to_i)
-      recovery.realised = (attributes['realised'] == '1')
-      recovery.post_claim_limit = (attributes['post_claim_limit'] == '1')
+      recovery.realised = attributes.has_key?('post_claim_limit')
+      recovery.post_claim_limit = (attributes['post_claim_limit'] == 'yes')
     end
   end
 

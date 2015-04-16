@@ -47,15 +47,15 @@ describe 'Realise loans' do
     page.should have_content('lenderref1')
 
     within "#realise_recovery_#{recovery1.id}" do
-      find('input[type=checkbox][name$="[realised]"]').set(true)
+      find('input[type=radio][value="no"]').set(true)
     end
 
     within "#realise_recovery_#{recovery2.id}" do
-      find('input[type=checkbox][name$="[realised]"]').set(true)
+      find('input[type=radio][value="no"]').set(true)
     end
 
     within "#realise_recovery_#{recovery6.id}" do
-      find('input[type=checkbox][name$="[post_claim_limit]"]').set(true)
+      find('input[type=radio][value="yes"]').set(true)
     end
 
     click_button 'Realise Loans'
