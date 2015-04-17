@@ -8,7 +8,9 @@ module CfeUserPermissions
       RealisationAdjustment,
       RealisationStatement,
       LoanReport,
-      LoanAuditReport
+      LoanAuditReport,
+      RecoveriesReport,
+      RealisationStatement,
     ].include?(resource)
   end
 

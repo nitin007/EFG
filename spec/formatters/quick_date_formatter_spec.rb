@@ -3,11 +3,11 @@ require 'spec_helper'
 describe QuickDateFormatter do
   describe '.parse' do
     it 'correctly parses dd/mm/yyyy' do
-      QuickDateFormatter.parse('11/1/2011').should == Date.new(2011, 1, 11)
+      QuickDateFormatter.parse('11/1/2012').should == Date.new(2012, 1, 11)
     end
 
     it 'correctly parses dd/mm/yy' do
-      QuickDateFormatter.parse('11/1/11').should == Date.new(2011, 1, 11)
+      QuickDateFormatter.parse('11/1/12').should == Date.new(2012, 1, 11)
     end
 
     it 'allows a date from the 90s' do
