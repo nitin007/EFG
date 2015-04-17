@@ -267,6 +267,10 @@ describe CfeUserPermissions do
     it { refute user.can_destroy?(SubLender) }
   end
 
+  context 'RealisationsReport' do
+    it { assert user.can_create?(RealisationsReport) }
+  end
+
   context 'RecoveriesReport' do
     it { assert user.can_create?(RecoveriesReport) }
   end

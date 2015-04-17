@@ -22,6 +22,7 @@ module LenderUserPermissions
         LoanSatisfyLenderDemand,
         LoanTransfer::LegacySflg,
         LoanTransfer::Sflg,
+        RealisationsReport,
         RecoveriesReport,
         Recovery,
         PremiumSchedule,
