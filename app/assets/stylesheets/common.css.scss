@@ -38,3 +38,9 @@ th.center {
 .not-available {
   text-decoration: line-through;
 }
+
+// `td`/`th` included for specificity to compete with Bootstrap's `.table td`.
+td.right-align,
+th.right-align {
+  text-align: right;
+}
