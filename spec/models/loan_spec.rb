@@ -348,6 +348,20 @@ describe Loan do
     end
   end
 
+  describe '#fully_drawn?' do
+    context 'when cumulative drawn amount equals loan amount' do
+      before do
+        allow(loan).to receive(:cumulative_drawn_amount).and_return(loan.amount)
+      end
+
+      specify { expect(loan.fully_drawn?).to eq(true) }
+    end
+
+    context 'when cumulative drawn amount is less than loan amount' do
+      specify { expect(loan.fully_drawn?).to eq(false) }
+    end
+  end
+
   describe '#amount_not_yet_drawn' do
     before do
       loan.save!

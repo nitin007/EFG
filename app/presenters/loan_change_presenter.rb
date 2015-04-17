@@ -10,22 +10,14 @@ class LoanChangePresenter
   end
 
   define_model_callbacks :save
+  define_model_callbacks :validation
 
   attr_reader :created_by, :date_of_change, :loan
-  attr_accessible :date_of_change, :initial_draw_amount, :second_draw_amount,
-    :second_draw_months, :third_draw_amount, :third_draw_months,
-    :fourth_draw_amount, :fourth_draw_months, :initial_capital_repayment_holiday
+  attr_accessible :date_of_change, :initial_draw_amount
 
   validates :date_of_change, presence: true
 
   delegate :initial_draw_amount, :initial_draw_amount=, to: :premium_schedule
-  delegate :initial_capital_repayment_holiday, :initial_capital_repayment_holiday=, to: :premium_schedule
-  delegate :second_draw_amount, :second_draw_amount=, to: :premium_schedule
-  delegate :second_draw_months, :second_draw_months=, to: :premium_schedule
-  delegate :third_draw_amount, :third_draw_amount=, to: :premium_schedule
-  delegate :third_draw_months, :third_draw_months=, to: :premium_schedule
-  delegate :fourth_draw_amount, :fourth_draw_amount=, to: :premium_schedule
-  delegate :fourth_draw_months, :fourth_draw_months=, to: :premium_schedule
 
   def initialize(loan, created_by)
     @loan = loan
@@ -59,8 +51,10 @@ class LoanChangePresenter
   end
 
   def premium_schedule
-    @premium_schedule ||= loan.premium_schedules.new do |premium_schedule|
+    @premium_schedule ||= new_premium_schedule.tap do |premium_schedule|
       premium_schedule.calc_type = PremiumSchedule::RESCHEDULE_TYPE
+      premium_schedule.initial_draw_amount = nil
+      premium_schedule.seq = nil
     end
   end
 
@@ -86,14 +80,16 @@ class LoanChangePresenter
   end
 
   def valid?
-    super
+    run_callbacks :validation do
+      super
 
-    premium_schedule.premium_cheque_month = next_premium_cheque_month
-    premium_schedule.repayment_duration = repayment_duration_at_next_premium
+      premium_schedule.premium_cheque_month = next_premium_cheque_month
+      premium_schedule.repayment_duration = repayment_duration_at_next_premium
 
-    if premium_schedule.invalid?
-      premium_schedule.errors.each do |key, message|
-        errors.add(key, message)
+      if premium_schedule.invalid?
+        premium_schedule.errors.each do |key, message|
+          errors.add(key, message)
+        end
       end
     end
 
@@ -101,6 +97,11 @@ class LoanChangePresenter
   end
 
   private
+
+    def new_premium_schedule
+      loan.premium_schedules.empty? ? loan.premium_schedules.new : loan.premium_schedules.last.dup
+    end
+
     def initial_draw_date
       loan.initial_draw_change.date_of_change
     end
