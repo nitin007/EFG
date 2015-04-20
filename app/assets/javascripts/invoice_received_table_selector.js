@@ -60,11 +60,11 @@
         var subTotal = table.total('tbody tr[data-selected]')
         var formattedSubTotal = accounting.formatMoney(subTotal, '')
 
-        table.find('[data-behaviour^=subtotal] input').val(formattedSubTotal)
+        table.find('[data-behaviour=subtotal] input').val(formattedSubTotal)
 
-        var grandTotal = $('[data-behaviour^=subtotal]').total()
+        var grandTotal = $('[data-behaviour=subtotal]').total()
         var formattedGrandTotal = accounting.formatMoney(grandTotal, '£')
-        $('[data-behaviour^=grand-total]').text(formattedGrandTotal)
+        $('[data-behaviour=grand-total]').text(formattedGrandTotal)
       }
 
       table
@@ -87,12 +87,12 @@ $(document).ready(function() {
     row.toggleClass('info', !!row.attr('data-selected'))
   }
 
-  $('[data-behaviour^=invoice-received-table], [data-behaviour^=recoveries-statement-table]')
+  $('[data-behaviour=invoice-received-table]')
     .selectableRows()
     .subTotal()
     .bind('rowSelect', highlightRow)
 
-  $('[data-behaviour^=invoice-received-table]')
+  $('[data-behaviour=invoice-received-table]')
     .on('blur', 'tbody input[type=text]', function() {
       $(this).parents('table').trigger('recalculate')
     })

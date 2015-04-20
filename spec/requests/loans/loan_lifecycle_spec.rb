@@ -210,7 +210,7 @@ describe 'Loan lifecycle' do
     click_button 'Select Loans'
 
     within "#realise_recovery_#{loan.recoveries.last.id}" do
-      find('input[type=checkbox][name$="[realised]"]').set(true)
+      find('input[type=radio][value="yes"]').set(true)
     end
 
     click_button 'Realise Loans'

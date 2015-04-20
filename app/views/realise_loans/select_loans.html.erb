@@ -3,7 +3,7 @@
 ) %>
 
 <div class="page-header">
-  <h1>Record Loan Recoveries</h1>
+  <h1>Record Realisation of Recoveries</h1>
 
   <ul id="actions">
     <li>
@@ -15,11 +15,11 @@
   </ul>
 </div>
 
-<p>From this page you can record a recovered amount on a loan as realised.</p>
+<p>From this page you can record that a recovered amount has been received (i.e. realised).</p>
 
-<p>The amount realised must agree with the lender's recoveries statement.</p>
+<p>The amounts realised must agree with the lender's recoveries statement.</p>
 
-<p>When you have agreed all loans for which the amount realised has been received (by checking the relevant box) click on 'Recover Loans'. You will then be provided with a list of loans that have been realised.</p>
+<p>Check the relevant box to record that the amount recovered has been received (and therefore realised). When you have finished click on 'Realise Loans'. You will then be provided with a list of loans that have been realised.</p>
 
 <hr>
 
@@ -35,14 +35,14 @@
         <table class="table table-striped" data-behaviour="recoveries-statement-table">
           <thead>
             <tr>
-              <th>Confirm Realised?</th>
-              <th>Post Claim Limit?</th>
+              <th>Pre Claim Limit</th>
+              <th>Post Claim Limit</th>
               <th>Loan Reference</th>
               <th>Lender's Reference</th>
               <th>Name</th>
               <th>Recovered Date</th>
-              <th>Outstanding Demand against Government Guarantee</th>
-              <th>Recovered Amount</th>
+              <th class="right-align">Outstanding Demand against Government Guarantee</th>
+              <th class="right-align">Recovered Amount</th>
             </tr>
           </thead>
           <tbody>
@@ -51,29 +51,30 @@
               <tr id="<%= dom_id(recovery) %>">
                 <td>
                   <%= recovery_form.hidden_field :id %>
-                  <%= recovery_form.check_box :realised %>
+                  <%= recovery_form.radio_button :post_claim_limit, 'no' %>
                 </td>
-                <td><%= recovery_form.check_box :post_claim_limit %>
+                <td><%= recovery_form.radio_button :post_claim_limit, 'yes' %>
                 <td><%= recovery.loan_reference %></td>
                 <td><%= recovery.lender_loan_reference %></td>
                 <td><%= recovery.loan_business_name %></td>
                 <td><%= recovery.recovered_on.to_s(:screen) %></td>
-                <td><%= recovery.loan_dti_amount_claimed.try(:format) %></td>
-                <td data-amount="<%= recovery.amount_due_to_dti %>"><%= recovery.amount_due_to_dti.format %></td>
+                <td class="right-align"><%= recovery.loan_dti_amount_claimed.try(:format) %></td>
+                <td class="right-align" data-amount="<%= recovery.amount_due_to_dti %>"><%= recovery.amount_due_to_dti.format %></td>
               </tr>
             <% end %>
           </tbody>
           <tfoot>
+            <tr data-behaviour="preSubTotal">
+              <th colspan="7">Pre-claim Limit Realised Amount</th>
+              <td class="right-align" data-amount></td>
+            </tr>
+            <tr data-behaviour="postSubTotal">
+              <th colspan="7">Post-claim Limit Realised Amount</th>
+              <td class="right-align" data-amount></td>
+            </tr>
             <tr data-behaviour="subtotal">
-              <th colspan="7">Total Recovered Amount</th>
-              <td>
-                <div class="currency">
-                  <div class="input-prepend">
-                    <span class="add-on">£</span>
-                    <input type="text" disabled="disabled" data-amount>
-                  </div>
-                </div>
-              </td>
+              <th colspan="7">Total Realised Amount</th>
+              <td class="right-align" data-amount></td>
             </tr>
           </tfoot>
         </table>
@@ -81,7 +82,18 @@
     <% end %>
 
     <div class="grand-total">
-      <strong>Grand Total Recovered Amount</strong><span class="value" data-behaviour="grand-total"></span>
+      <p>
+        <strong>Total <em>Pre</em>-claim Limit Realised Amount</strong>
+        <span class="value" data-behaviour="pre-total"></span>
+      </p>
+      <p>
+        <strong>Total <em>Post</em>-claim Limit Realised Amount</strong>
+        <span class="value" data-behaviour="post-total"></span>
+      </p>
+      <p>
+        <strong>Grand Total Realised Amount</strong>
+        <span class="value" data-behaviour="grand-total"></span>
+      </p>
     </div>
 
     <div class="form-actions">
