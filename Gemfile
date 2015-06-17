@@ -10,7 +10,7 @@ gem "devise-encryptable", "0.2.0"
 gem 'protected_attributes'
 gem "devise_security_extension", git: 'https://github.com/phatworx/devise_security_extension.git', ref: '1f35d9630e6cb5ae6208bf9f4a3f4c2bf1efad97'
 gem 'exception_notification', '4.0.1'
-gem 'jquery-rails', "2.2.1"
+gem 'jquery-rails', "3.1.3"
 gem 'less-rails', '2.2.6'
 gem 'lograge', '0.1.2'
 gem 'money', '5.1.1'
@@ -20,7 +20,7 @@ gem 'plek', '0.3.0'
 gem 'prawn', '0.12.0'
 gem 'progressbar', '0.11.0'
 gem 'rack-ssl-enforcer'
-gem 'rails', '4.1.9'
+gem 'rails', '4.1.11'
 gem 'simple_form', '3.0.2'
 gem 'statsd-ruby', '1.0.0'
 gem 'twitter-bootstrap-rails', '2.2.7'
